@@ -20,6 +20,10 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
+        <!-- アイコン -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+    integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -28,9 +32,12 @@
         @include('components.parts.flash_message')
         @include('components.parts.user_header')
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="my-3 container">
+            <main class="col-md-12">
+                @yield('content')
+            </main>
+        </div>
+        @include('components.parts.user_footer')
     </div>
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
