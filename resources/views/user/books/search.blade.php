@@ -18,7 +18,7 @@
         @for ($i = 0; $i < 10; $i++)
             <div class="col-lg-3 col-md-4 col-6 mb-4">
                 <div class="card me-2" style="height: 375px;">
-                    <a href="#" class="text-decoration-none" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+                    <a href="{{ route('user.books.show', 1) }}" class="text-decoration-none" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
                         <img class="card-img-top mt-1" style="max-width: 125px; object-fit: contain;" src="https://books.google.com/books/content?id=NfggEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" alt="thumbnail">
                         <div class="card-body" style="flex-grow: 0;">
                             <div class="card-text">動かして学ぶ！Laravel開発入門</div>

@@ -12,4 +12,9 @@ class BookController extends Controller
     {
         return view('user.books.search');
     }
+
+    public function show(): View
+    {
+        return view('user.books.show');
+    }
 }
