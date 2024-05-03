@@ -30,23 +30,23 @@
                     @endif
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="far fa-search me-1"></i>{{ __('本の検索') }}
+                        <a class="nav-link" href="{{ route('user.books.search') }}">
+                            <i class="fa fa-search me-1"></i>{{ __('技術書検索') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('user.reviews.index') }}">
                             <i class="far fa-comments me-1"></i>{{ __('レビューリスト') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="far fa-book-reader me-1"></i>{{ __('読みたい') }}
+                        <a class="nav-link" href="{{ route('user.favorite_books.index') }}">
+                            <i class="fa fa-book-reader me-1"></i>{{ __('読みたい') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="far fa-university me-1"></i>{{ __('図書館登録') }}
+                        <a class="nav-link" href="{{ route('user.library.create') }}">
+                            <i class="fa fa-university me-1"></i>{{ __('図書館登録') }}
                         </a>
                     </li>
                     <li class="nav-item dropdown">
