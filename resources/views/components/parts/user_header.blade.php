@@ -31,7 +31,7 @@
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.books.search') }}">
-                            <i class="far fa-search me-1"></i>{{ __('本の検索') }}
+                            <i class="far fa-search me-1"></i>{{ __('技術書検索') }}
                         </a>
                     </li>
                     <li class="nav-item">
