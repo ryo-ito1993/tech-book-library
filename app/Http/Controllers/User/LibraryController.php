@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Library;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\User\StoreLibraryRequest;
 
 class LibraryController extends Controller
 {
@@ -15,16 +16,15 @@ class LibraryController extends Controller
         return view('user.libraries.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreLibraryRequest $request): RedirectResponse
     {
         $user = auth()->user();
-        $systemId = $request->input('systemid');
-        $systemName = $request->input('systemname');
+        $validatedData = $request->validated();
 
         Library::updateOrCreate(
             ['user_id' => $user->id],
-            [   'system_id' => $systemId,
-                'system_name' => $systemName
+            [   'system_id' => $validatedData['systemid'],
+                'system_name' => $validatedData['systemname'],
             ]
         );
 

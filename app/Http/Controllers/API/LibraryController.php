@@ -30,13 +30,13 @@ class LibraryController extends Controller
             $libraryList = array_values($libraries);
 
             return response()->json($libraryList);
-        }  
+        }
             Log::error("API Request Failed", [
                 'status_code' => $response->status(),
                 'error' => $response->body()
             ]);
 
-            return response()->json(['error' => 'API request failed'], $response->status());
-        
+            return response()->json(['error' => 'API request failed', 'message' => $response->body()], $response->status());
+
     }
 }
