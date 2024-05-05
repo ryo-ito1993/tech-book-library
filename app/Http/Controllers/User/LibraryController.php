@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\User\StoreLibraryRequest;
 use Illuminate\Support\Facades\Http;
 use App\Library\CalilApiLibrary;
+use App\Models\Prefecture;
 
 class LibraryController extends Controller
 {
@@ -24,11 +25,12 @@ class LibraryController extends Controller
     {
         $userLibrary = auth()->user()->library;
         $userLibraries = [];
+        $prefectures = Prefecture::all();
 
         if ($userLibrary) {
             $userLibraries = $this->calilApiLibrary->getLibrariesBySystemId($userLibrary->system_id);
         }
-        return view('user.libraries.create', ['userLibrary' => $userLibrary, 'userLibraries' => $userLibraries]);
+        return view('user.libraries.create', ['userLibrary' => $userLibrary, 'userLibraries' => $userLibraries, 'prefectures' => $prefectures]);
     }
 
     public function store(StoreLibraryRequest $request): RedirectResponse

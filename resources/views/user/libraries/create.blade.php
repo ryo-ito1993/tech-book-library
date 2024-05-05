@@ -10,12 +10,12 @@
         </h1>
     </header>
     <div class="text-center">
-        <p class="text-secondary">蔵書検索の対象図書館を登録します。現在地または住所で検索できます。</p>
+        <p class="text-secondary">蔵書検索の対象図書館を登録します。現在地または都道府県・市区町村で検索できます。</p>
         @if ($userLibrary)
             <h4>お気に入り図書館エリア：<span>{{ $userLibrary->system_name }}</span></h4>
         @endif
         @if ($userLibraries)
-            <div>
+            <div class="my-2">
                 @foreach ($userLibraries as $library)
                     <span class="badge bg-info me-1">{{ $library['short'] }}</span>
                 @endforeach
@@ -26,11 +26,17 @@
     <button class="btn btn-primary mt-4 btn-lg" @click="getLocation"><i class="fas fa-map-marker-alt me-1"></i>現在地から取得</button>
     <div class="pt-3">
         <div class="input-group my-2">
-            <input type="text" name="area" class="form-control bg-white" placeholder="住所または郵便番号で検索">
-            <button class="btn btn-primary" type="button">検索</button>
+            <select class="form-select bg-white" v-model="selectedPrefecture" @change="fetchCities">
+                <option value="">都道府県を選択</option>
+                <option v-for="prefecture in prefectures" :value="prefecture">@{{ prefecture.name }}</option>
+            </select>
+            <select class="form-select bg-white" v-model="selectedCity" :disabled="cities.length === 0">
+                <option value="">市区町村を選択</option>
+                <option v-for="city in cities" :value="city">@{{ city.name }}</option>
+            </select>
+            <button class="btn btn-primary" type="button" :disabled="!selectedCity" @click="fetchLibrariesByPrefCity">検索</button>
+
         </div>
-        <p class="text-left"><small class="text-secondary">
-            ●例1: 東京都 千代田区 丸の内<br>（都道府県と市町村の間にはスペースを入力）<br>●例2: 1000001（郵便番号で検索）</small></p>
     </div>
     <div v-if="errorMessage" class="alert alert-danger">
         @{{ errorMessage }}
@@ -73,6 +79,10 @@
                 selectedLibraryId: null,
                 errorMessage: null,
                 loading: false,
+                prefectures: @json($prefectures),
+                selectedPrefecture: '',
+                cities: [],
+                selectedCity: '',
             };
         },
         computed: {
@@ -83,6 +93,7 @@
         methods: {
             getLocation() {
                 this.loading = true;
+                this.libraries = [];
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         position => {
@@ -104,7 +115,7 @@
                 }
             },
             fetchLibraries(latitude, longitude) {
-                fetch(`/api/libraries`, {
+                fetch(`/api/getLibrariesByLocation`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -134,6 +145,62 @@
                     console.error("Error fetching libraries:", error);
                 });
             },
+            fetchLibrariesByPrefCity(){
+                this.loading = true;
+                this.libraries = [];
+                if (this.selectedCity) {
+                    fetch(`/api/getLibrariesByPrefCity`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            pref: this.selectedPrefecture.name,
+                            city: this.selectedCity.name,
+                        }),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            return response.json().then(err => {
+                                throw new Error(err.message || 'Unknown error occurred');
+                            });
+                        }
+                    })
+                    .then(data => {
+                        this.libraries = Object.values(data);
+                        console.log("Fetched libraries:", this.libraries);
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        this.errorMessage = "図書館情報の取得に失敗しました。";
+                        console.error("Error fetching libraries:", error);
+                    });
+                }
+            },
+            fetchCities(){
+                this.cities = [];
+                this.selectedCity = '';
+                if (this.selectedPrefecture) {
+                    fetch(`/api/getCitiesByPrefecture/${this.selectedPrefecture.id}`)
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Failed to fetch cities');
+                        }
+                    })
+                    .then(data => {
+                        this.cities = data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cities:', error);
+                    });
+                }
+            },
+
         }
     }).mount('#app');
 </script>

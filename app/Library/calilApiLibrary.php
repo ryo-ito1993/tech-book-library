@@ -56,4 +56,15 @@ class calilApiLibrary
 
         return $this->makeRequest('library', $params);
     }
+
+    public function getLibrariesByPrefCity(string $pref, string $city, int $limit = 30): array
+    {
+        $params = [
+            'pref' => $pref,
+            'city' => $city,
+            'limit' => $limit,
+        ];
+
+        return $this->makeRequest('library', $params);
+    }
 }
