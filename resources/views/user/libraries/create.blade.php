@@ -6,12 +6,22 @@
 <div class="container-fluid" style="max-width: 1200px">
     <header class="bg-info py-3 px-4 mb-3 text-center">
         <h1 class="btn-collapse mb-0 text-white h4">
-            図書館登録
+            {{ $userLibrary ? 'お気に入り図書館編集' : 'お気に入り図書館登録' }}
         </h1>
     </header>
     <div class="text-center">
         <p class="text-secondary">蔵書検索の対象図書館を登録します。現在地または住所で検索できます。</p>
-        <div class="border-bottom"></div>
+        @if ($userLibrary)
+            <h4>お気に入り図書館エリア：<span>{{ $userLibrary->system_name }}</span></h4>
+        @endif
+        @if ($userLibraries)
+            <div>
+                @foreach ($userLibraries as $library)
+                    <span class="badge bg-info me-1">{{ $library['short'] }}</span>
+                @endforeach
+            </div>
+        @endif
+        <div class="border-bottom mt-1"></div>
     </div>
     <button class="btn btn-primary mt-4 btn-lg" @click="getLocation"><i class="fas fa-map-marker-alt me-1"></i>現在地から取得</button>
     <div class="pt-3">
@@ -30,8 +40,13 @@
             <p>{{ $errors->first() }}</p>
         </div>
     @endif
-    <div class="pt-3" v-if="libraries.length > 0">
-        <p>近隣の図書館から一つ選択してください<br>※同じ市区町村など同一の蔵書システムの図書館は同時に登録されます。</p>
+    <div v-if="loading">
+        <div class="text-center">
+            <h1><i class="fas fa-spinner fa-pulse"></i></h1>
+        </div>
+    </div>
+    <div class="pt-3" v-if="!loading && libraries.length > 0">
+        <p class="fw-bold">近隣の図書館から一つ選択してください<br>※同じ市区町村など同一の蔵書システムの図書館は同時に登録されます。</p>
         <div v-for="(library, index) in libraries" :key="library.libid">
             <input type="radio" :id="'library-' + library.libid" :value="library.systemid" v-model="selectedLibraryId">
             <label :for="'library-' + library.libid">@{{ library.formal }}(@{{ library.systemname }})</label>
@@ -40,7 +55,9 @@
             @csrf
             <input type="hidden" name="systemid" :value="selectedLibrary?.systemid">
             <input type="hidden" name="systemname" :value="selectedLibrary?.systemname">
-            <button class="btn btn-success mt-3" :disabled="!selectedLibraryId">登録</button>
+            <button class="btn btn-success mt-3" :disabled="!selectedLibraryId">
+                {{ $userLibrary ? '図書館を更新' : '図書館を登録' }}
+            </button>
         </form>
     </div>
 </div>
@@ -55,6 +72,7 @@
                 libraries: [],
                 selectedLibraryId: null,
                 errorMessage: null,
+                loading: false,
             };
         },
         computed: {
@@ -64,6 +82,7 @@
         },
         methods: {
             getLocation() {
+                this.loading = true;
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         position => {
@@ -73,11 +92,13 @@
                             this.fetchLibraries(this.latitude, this.longitude);
                         },
                         error => {
+                            this.loading = false;
                             this.errorMessage = "位置情報の取得に失敗しました。";
                             console.error("Error occurred. Error code: " + error.code);
                         }
                     );
                 } else {
+                    this.loading = false;
                     this.errorMessage = "位置情報がサポートされていません。";
                     console.error("Geolocation is not supported by this browser.");
                 }
@@ -105,8 +126,10 @@
                 .then(data => {
                     this.libraries = Object.values(data);
                     console.log("Fetched libraries:", this.libraries);
+                    this.loading = false;
                 })
                 .catch(error => {
+                    this.loading = false;
                     this.errorMessage = "図書館情報の取得に失敗しました。";
                     console.error("Error fetching libraries:", error);
                 });
