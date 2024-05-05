@@ -27,7 +27,7 @@ class calilApiLibrary
 
         if ($response->ok()) {
             return $response->json();
-        }  
+        }
             $status = $response->status();
             $error = $response->body();
             Log::error("API Request Failed", [
@@ -35,7 +35,7 @@ class calilApiLibrary
                 'error' => $error,
             ]);
             throw new HttpException($status, "API request failed: " . $error);
-        
+
     }
 
     public function getLibrariesByGeocode(float $latitude, float $longitude, int $limit = 20): array
