@@ -9,25 +9,24 @@ use App\Models\Library;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\User\StoreLibraryRequest;
 use Illuminate\Support\Facades\Http;
+use App\Library\CalilApiLibrary;
 
 class LibraryController extends Controller
 {
+    protected $calilApiLibrary;
+
+    public function __construct(CalilApiLibrary $calilApiLibrary)
+    {
+        $this->calilApiLibrary = $calilApiLibrary;
+    }
+
     public function create(): View
     {
         $userLibrary = auth()->user()->library;
         $userLibraries = [];
 
         if ($userLibrary) {
-            $response = Http::get("https://api.calil.jp/library", [
-                'appkey' => env('CALIL_APP_KEY'),
-                'systemid' => $userLibrary->system_id,
-                'format' => 'json',
-                'callback' => 'no',
-            ]);
-            if ($response->successful()) {
-                $jsonResponse = $response->json();
-                $userLibraries = array_values($jsonResponse);
-            }
+            $userLibraries = $this->calilApiLibrary->getLibrariesBySystemId($userLibrary->system_id);
         }
         return view('user.libraries.create', ['userLibrary' => $userLibrary, 'userLibraries' => $userLibraries]);
     }
