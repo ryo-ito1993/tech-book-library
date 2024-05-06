@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '本の検索')
+@section('title', '本の詳細')
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
