@@ -9,8 +9,11 @@
             技術書検索
         </h1>
     </header>
-    <form action="{{ route('user.books.search') }}" method="GET" class="input-group my-2 mb-3">
-        <input type="text" name="query" class="form-control bg-white" placeholder="本のタイトルまたは著者名" value="{{ $query }}">
+    <form action="{{ route('user.books.search') }}" method="GET" class="my-2 mb-3">
+        <input type="text" name="title" class="form-control bg-white mb-1" placeholder="タイトル" value="{{ old('title', $title) }}">
+        <input type="text" name="author" class="form-control bg-white mb-1" placeholder="著者名" value="{{ old('author', $author) }}">
+        <input type="text" name="isbn" class="form-control bg-white mb-1" placeholder="ISBN10またはISBN13(ともにハイフンなし)" value="{{ old('isbn', $isbn) }}">
+
         <button class="btn btn-primary" type="submit">検索</button>
     </form>
     <div class="row">
@@ -32,7 +35,9 @@
                 </div>
             </div>
         @empty
-            <p>検索結果が見つかりませんでした。</p>
+            @if ($hasSearched)
+                <p>検索結果が見つかりませんでした。</p>
+            @endif
         @endforelse
     </div>
 

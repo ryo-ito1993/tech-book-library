@@ -6,51 +6,48 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Library\GoogleBooksApiLibrary;
 
 class BookController extends Controller
 {
+    protected $googleBooksApiLibrary;
+
+    public function __construct(GoogleBooksApiLibrary $googleBooksApiLibrary)
+    {
+        $this->googleBooksApiLibrary = $googleBooksApiLibrary;
+    }
+
     public function search(Request $request)
     {
-        $query = $request->input('query', '');
+        $title = $request->input('title', '');
+        $author = $request->input('author', '');
+        $isbn = $request->input('isbn', '');
 
-        if ($query) {
-            $response = Http::get('https://www.googleapis.com/books/v1/volumes', [
-                'q' => $query,
-                'maxResults' => 30,
-            ]);
+        $query = '';
 
-            $books = collect($response->json('items'))
-                ->map(function ($item) {
-                    $volumeInfo = $item['volumeInfo'] ?? [];
-                    $imageLinks = $volumeInfo['imageLinks'] ?? [];
-                    $industryIdentifiers = $volumeInfo['industryIdentifiers'] ?? [];
-                    // Find either ISBN_13 or ISBN_10
-                    $isbn = collect($industryIdentifiers)
-                        ->filter(function ($identifier) {
-                            return in_array($identifier['type'], ['ISBN_13', 'ISBN_10']);
-                        })
-                        ->pluck('identifier')
-                        ->first() ?? 'ISBN不明';
-
-                    if ($isbn === 'ISBN不明') {
-                        return null;
-                    }
-
-                    return [
-                        'id' => $item['id'],
-                        'title' => $volumeInfo['title'] ?? 'タイトル不明',
-                        'authors' => $volumeInfo['authors'] ?? ['著者不明'],
-                        'thumbnail' => $imageLinks['thumbnail'] ?? '',
-                        'isbn' => $isbn,
-                    ];
-                })
-                ->filter()
-                ->all();
-        } else {
-            $books = [];
+        if ($title) {
+            $query .= 'intitle:' . $title . '+';
         }
 
-        return view('user.books.search', ['books' => $books, 'query' => $query]);
+        if ($author) {
+            $query .= 'inauthor:' . $author . '+';
+        }
+
+        if ($isbn) {
+            $query .= 'isbn:' . $isbn . '+';
+        }
+
+        $query = rtrim($query, '+');
+
+        $hasSearched = $query !== '';
+
+        $books= [];
+
+        if ($query) {
+            $books = $this->googleBooksApiLibrary->searchBooks($query, 30);
+        }
+
+        return view('user.books.search', ['books' => $books, 'title' => $title, 'author' => $author, 'isbn' => $isbn, 'hasSearched' => $hasSearched]);
     }
 
     public function show(): View
