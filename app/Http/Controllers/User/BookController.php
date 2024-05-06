@@ -50,8 +50,9 @@ class BookController extends Controller
         return view('user.books.search', ['books' => $books, 'title' => $title, 'author' => $author, 'isbn' => $isbn, 'hasSearched' => $hasSearched]);
     }
 
-    public function show(): View
+    public function show($isbn): View
     {
-        return view('user.books.show');
+        $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
+        return view('user.books.show', ['book' => $book]);
     }
 }

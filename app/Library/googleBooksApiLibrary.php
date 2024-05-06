@@ -4,6 +4,7 @@ namespace App\Library;
 
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Support\Facades\Log;
 
 class googleBooksApiLibrary
 {
@@ -46,11 +47,15 @@ class googleBooksApiLibrary
                 ->all();
 
             return $books;
-        }  
+        }
             $status = $response->status();
             $error = $response->body();
+            Log::error("API Request Failed", [
+                'status_code' => $status,
+                'error' => $error,
+            ]);
             throw new HttpException($status, "API request failed: " . $error);
-        
+
     }
 
     public function getBookByIsbn($isbn)
