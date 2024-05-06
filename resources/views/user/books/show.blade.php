@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '本の検索')
+@section('title', '本の詳細')
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
@@ -9,13 +9,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex flex-row">
-                        <img src="https://books.google.com/books/content?id=NfggEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" alt="thumbnail" class="img-fluid me-3" style="height: 175px; object-fit: contain; width: auto;">
+                        <img src="{{ !empty($book['thumbnail']) ? $book['thumbnail'] : asset('images/no-image.jpeg') }}" alt="thumbnail" class="img-fluid me-3" style="height: 175px; object-fit: contain; width: auto;">
                         <div class="flex-grow-1">
-                            <h5 class="card-title">動かして学ぶ！Laravel開発入門</h5>
+                            <h5 class="card-title">{{ $book['title'] }}</h5>
                             <div class="card-text">
                                 <small class="text-muted">
                                     <span class="me-1"><i class="fas fa-user-circle"></i></span>
-                                    山崎 大助
+                                    {{ implode(', ', $book['authors']) }}
                                 </small>
                             </div>
                             <button id="favorite-button" class="btn btn-outline-primary mt-1" type="button">
