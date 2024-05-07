@@ -17,7 +17,7 @@ class CitiesTableSeeder extends Seeder
     public function run(): void
     {
         $apiKey = env('RESAS_API_KEY');
-        $url = 'https://opendata.resas-portal.go.jp/api/v1/cities';
+        $url = config('services.resas.api_base_url') . 'cities';
 
         $prefectures = Prefecture::all();
 

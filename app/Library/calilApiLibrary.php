@@ -8,13 +8,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class calilApiLibrary
 {
-    protected $apiBaseUrl = 'https://api.calil.jp/';
-
+    protected $apiBaseUrl;
     protected $appKey;
 
     public function __construct()
     {
-        $this->appKey = env('CALIL_APP_KEY');
+        $this->appKey = config('services.calil.app_key');
+        $this->apiBaseUrl = config('services.calil.api_base_url');
     }
 
     protected function makeRequest(string $endpoint, array $params): array

@@ -15,8 +15,8 @@ class PrefecturesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $apiKey = env('RESAS_API_KEY');
-        $url = 'https://opendata.resas-portal.go.jp/api/v1/prefectures';
+        $apiKey = config('services.resas.api_key');
+        $url = config('services.resas.api_base_url') . 'prefectures';
 
         $response = Http::withHeaders([
             'X-API-KEY' => $apiKey
