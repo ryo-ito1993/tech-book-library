@@ -30,16 +30,26 @@
                     </h1>
                 </div>
                 <div class="text-center mb-4">
-                    <h5>品川区図書館(登録した図書館が出る)の蔵書</h5>
-                    <div>
+                    <h5>{{ $user->library->system_name }}の蔵書</h5>
+                    @if ($bookAvailable)
+                        <div>
+                            @foreach($bookAvailable['libkey'] as $libraryName => $status)
+                                <span class="badge {{ $status === '貸出可' ? 'bg-success' : ($status === '貸出中' ? 'bg-danger' : 'bg-warning text-dark') }} mb-2" style="font-size: 1em;">
+                                    {{ $libraryName }}：{{ $status }}
+                                </span>
+                            @endforeach
+                        </div>
+                        <button class="btn btn-primary mt-2">予約する</button>
+                    @endif
+
+                    {{-- <div>
                         <span class="badge bg-success mb-2" style="font-size: 1em;">玉川台：貸出可</span>
                         <span class="badge bg-danger mb-2" style="font-size: 1em;">世田谷：貸出中</span>
                         <span class="badge bg-warning text-dark mb-2" style="font-size: 1em;">経堂：館内のみ</span>
                         <span class="badge bg-success mb-2" style="font-size: 1em;">玉川台：貸出可</span>
                         <span class="badge bg-danger mb-2" style="font-size: 1em;">世田谷：貸出中</span>
                         <span class="badge bg-warning text-dark mb-2" style="font-size: 1em;">経堂：館内のみ</span>
-                    </div>
-                    <button class="btn btn-primary mt-2">予約する</button>
+                    </div> --}}
                 </div>
             </div>
         </div>

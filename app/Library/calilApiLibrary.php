@@ -67,4 +67,26 @@ class calilApiLibrary
 
         return $this->makeRequest('library', $params);
     }
+
+    public function checkBookAvailability(string $isbn, string $systemid, string $session = null): array
+    {
+        $params = [
+            'isbn' => $isbn,
+            'systemid' => $systemid
+        ];
+
+        if ($session) {
+            $params['session'] = $session;
+        }
+
+        $response = $this->makeRequest('check', $params);
+
+        // Continue flagが1の場合はポーリングを続ける
+        if ($response['continue'] == 1) {
+            sleep(2); // APIの指示に従い、少なくとも2秒待つ
+            return $this->checkBookAvailability($isbn, $systemid, $response['session']);
+        }
+
+        return $response;
+    }
 }
