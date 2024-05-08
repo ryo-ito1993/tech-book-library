@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\FavoriteBook;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Book;
 
 class BookController extends Controller
 {
@@ -13,15 +15,25 @@ class BookController extends Controller
         $user = User::findorFail($request->input('user_id'));
         $isbn = $request->input('isbn');
 
-        $favorite = $user->favoriteBooks()->where('isbn', $isbn)->first();
+        $book = Book::firstOrCreate(
+            ['isbn' => $isbn],
+            ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
+        );
+
+        $favorite = $user->favoriteBooks()->where('book_id', $book->id)->first();
 
         if ($favorite) {
             $favorite->delete();
+            if (FavoriteBook::where('book_id', $book->id)->doesntExist()) {
+                $book->delete();
+            }
         } else {
-            $user->favoriteBooks()->create(['isbn' => $isbn]);
+            $user->favoriteBooks()->create(['book_id' => $book->id]);
+            $authors = $request->input('authors', []);
+            foreach ($authors as $author) {
+                $book->authors()->firstOrCreate(['name' => $author]);
+            }
         }
-
-        \Log::info("user_id: {$user->id}, isbn: {$isbn} {$favorite}");
 
         return response()->json(['status' => 'success']);
     }

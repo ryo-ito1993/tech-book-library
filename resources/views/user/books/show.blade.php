@@ -146,6 +146,9 @@
                     body: JSON.stringify({
                         isbn: this.isbn,
                         user_id: '{{ $user->id }}',
+                        title : '{{ $book['title'] }}',
+                        thumbnail: '{{ $book['thumbnail'] }}',
+                        authors: @json($book['authors']),
                     }),
                 })
                 .then(response => response.json())
