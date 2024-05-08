@@ -10,7 +10,7 @@ class googleBooksApiLibrary
 {
     protected $apiUrl = 'https://www.googleapis.com/books/v1/volumes';
 
-    public function searchBooks($query, $maxResults = 30)
+    public function searchBooks($query, $maxResults = 40)
     {
         $response = Http::get($this->apiUrl, [
             'q' => $query,

@@ -48,7 +48,7 @@ class BookController extends Controller
         $books= [];
 
         if ($query) {
-            $books = $this->googleBooksApiLibrary->searchBooks($query, 30);
+            $books = $this->googleBooksApiLibrary->searchBooks($query);
         }
 
         return view('user.books.search', ['books' => $books, 'title' => $title, 'author' => $author, 'isbn' => $isbn, 'hasSearched' => $hasSearched]);

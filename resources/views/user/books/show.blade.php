@@ -42,7 +42,7 @@
                                 <div v-for="(info, system) in data" :key="system">
                                     <div v-if="Object.keys(info.libkey).length > 0">
                                         <span v-for="(status, library) in info.libkey" :key="library">
-                                            <span class="badge me-1 fs-6" :class="{'bg-info': status === '貸出可', 'bg-danger': status === '貸出中', 'bg-secondary': status !== '貸出可' && status !== '貸出中'}">
+                                            <span class="badge me-1 mt-1 fs-6" :class="{'bg-info': status === '貸出可', 'bg-danger': status === '貸出中', 'bg-secondary': status !== '貸出可' && status !== '貸出中'}">
                                                 @{{ library }}：@{{ status }}
                                             </span>
                                         </span>
