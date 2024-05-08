@@ -54,6 +54,7 @@ class BookController extends Controller
     {
         $user = auth()->user();
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
-        return view('user.books.show', ['user' => $user, 'book' => $book]);
+        $isFavorite = $user->favoriteBooks->contains('isbn', $isbn);
+        return view('user.books.show', ['user' => $user, 'book' => $book, 'isFavorite' => $isFavorite]);
     }
 }

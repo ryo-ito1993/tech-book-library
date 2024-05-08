@@ -18,7 +18,10 @@
                                     {{ implode(', ', $book['authors']) }}
                                 </small>
                             </div>
-                            <button id="favorite-button" class="btn btn-outline-primary mt-1" type="button">
+                            <button v-if="!isFavorite" id="favorite-button" class="btn btn-outline-warning mt-1" type="button" @click="toggleFavorite">
+                                <i class="fa fa-book-reader"></i> 読みたい
+                            </button>
+                            <button v-if="isFavorite" id="favorite-button" class="btn btn-warning mt-1" type="button" @click="toggleFavorite">
                                 <i class="fa fa-book-reader"></i> 読みたい
                             </button>
                         </div>
@@ -94,7 +97,6 @@
         </div>
         @endfor
     </div>
-
 </div>
 @endsection
 @section('script')
@@ -107,6 +109,7 @@
                 availability: {},
                 loading: false,
                 errorMessage: null,
+                isFavorite: {{ $isFavorite ? 'true' : 'false' }},
             };
         },
         mounted() {
@@ -133,9 +136,27 @@
                 .catch(error => {
                     this.errorMessage = '蔵書情報が利用できません';
                 })
+            },
+            toggleFavorite() {
+                fetch(`/api/books/toggleFavorite`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        isbn: this.isbn,
+                        user_id: '{{ $user->id }}',
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.isFavorite = !this.isFavorite;
+                })
+                .catch(error => {
+                    alert('読みたいの登録に失敗しました');
+                })
             }
         }
     }).mount('#app');
-
 </script>
 @endsection
