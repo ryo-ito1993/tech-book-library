@@ -19,7 +19,7 @@ class FavoriteBookController extends Controller
     {
         $user = auth()->user();
         $favoriteBookIds = $user->favoriteBooks()->pluck('book_id');
-        $books = Book::whereIn('id', $favoriteBookIds)->get();
+        $books = Book::whereIn('id', $favoriteBookIds)->paginate(20);
 
         return view('user.favorite_books.index', ['books' => $books]);
     }

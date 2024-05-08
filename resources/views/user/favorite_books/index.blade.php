@@ -34,5 +34,6 @@
             </div>
         @endforelse
     </div>
+    {{ $books->links('pagination::bootstrap-5') }}
 </div>
 @endsection
