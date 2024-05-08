@@ -5,9 +5,9 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use App\Library\googleBooksApiLibrary;
 use App\Library\calilApiLibrary;
+use App\Models\Book;
 
 class BookController extends Controller
 {
@@ -54,6 +54,9 @@ class BookController extends Controller
     {
         $user = auth()->user();
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
-        return view('user.books.show', ['user' => $user, 'book' => $book]);
+
+        $bookModel = Book::where('isbn', $isbn)->first();
+        $isFavorite = $bookModel ? $user->favoriteBooks()->where('book_id', $bookModel->id)->exists() : false;
+        return view('user.books.show', ['user' => $user, 'book' => $book, 'isFavorite' => $isFavorite]);
     }
 }
