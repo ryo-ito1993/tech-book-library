@@ -9,16 +9,14 @@ use App\Models\Library;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\User\StoreLibraryRequest;
 use Illuminate\Support\Facades\Http;
-use App\Library\CalilApiLibrary;
+use App\Library\calilApiLibrary;
 use App\Models\Prefecture;
 
 class LibraryController extends Controller
 {
-    protected $calilApiLibrary;
-
-    public function __construct(CalilApiLibrary $calilApiLibrary)
-    {
-        $this->calilApiLibrary = $calilApiLibrary;
+    public function __construct(
+        protected CalilApiLibrary $calilApiLibrary,
+    ) {
     }
 
     public function create(): View

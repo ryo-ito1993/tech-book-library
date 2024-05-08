@@ -8,9 +8,14 @@ use Illuminate\Support\Facades\Log;
 
 class googleBooksApiLibrary
 {
-    protected $apiUrl = 'https://www.googleapis.com/books/v1/volumes';
+    protected string $apiUrl;
 
-    public function searchBooks($query, $maxResults = 40)
+    public function __construct()
+    {
+        $this->apiUrl = config('services.google_books.api_base_url');
+    }
+
+    public function searchBooks(string $query, int $maxResults = 40): array
     {
         $response = Http::get($this->apiUrl, [
             'q' => $query,
@@ -55,10 +60,9 @@ class googleBooksApiLibrary
                 'error' => $error,
             ]);
             throw new HttpException($status, "API request failed: " . $error);
-
     }
 
-    public function getBookByIsbn($isbn)
+    public function getBookByIsbn(string $isbn): ?array
     {
         $query = 'isbn:' . $isbn;
         $books = $this->searchBooks($query, 1);

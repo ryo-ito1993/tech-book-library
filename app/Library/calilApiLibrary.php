@@ -8,9 +8,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class calilApiLibrary
 {
-    protected $apiBaseUrl;
+    protected string $apiBaseUrl;
 
-    protected $appKey;
+    protected string $appKey;
 
     public function __construct()
     {
