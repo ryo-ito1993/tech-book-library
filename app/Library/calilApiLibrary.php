@@ -8,13 +8,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class calilApiLibrary
 {
-    protected $apiBaseUrl = 'https://api.calil.jp/';
+    protected string $apiBaseUrl;
 
-    protected $appKey;
+    protected string $appKey;
 
     public function __construct()
     {
-        $this->appKey = env('CALIL_APP_KEY');
+        $this->appKey = config('services.calil.app_key');
+        $this->apiBaseUrl = config('services.calil.api_base_url');
     }
 
     protected function makeRequest(string $endpoint, array $params): array
@@ -66,5 +67,27 @@ class calilApiLibrary
         ];
 
         return $this->makeRequest('library', $params);
+    }
+
+    public function checkBookAvailability(string $isbn, string $systemId, ?string $session = null): array
+    {
+        $params = [
+            'isbn' => $isbn,
+            'systemid' => $systemId
+        ];
+
+        if ($session) {
+            $params['session'] = $session;
+        }
+
+        $response = $this->makeRequest('check', $params);
+
+        // continueが1の場合はポーリングを続ける
+        if ($response['continue'] === 1) {
+            sleep(2);
+            return $this->checkBookAvailability($isbn, $systemId, $response['session']);
+        }
+
+        return $response;
     }
 }

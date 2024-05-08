@@ -6,22 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use App\Models\Library;
 use App\Models\City;
-use App\Library\CalilApiLibrary;
-use Illuminate\Http\Client\HttpException;
+use App\Library\calilApiLibrary;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Exception;
+use Illuminate\Http\JsonResponse;
 
 class LibraryController extends Controller
 {
-    protected $calilApiLibrary;
-
-    public function __construct(CalilApiLibrary $calilApiLibrary)
-    {
-        $this->calilApiLibrary = $calilApiLibrary;
+    public function __construct(
+        protected CalilApiLibrary $calilApiLibrary,
+    ) {
     }
 
-    public function getLibrariesByLocation(Request $request)
+    public function getLibrariesByLocation(Request $request): JsonResponse
     {
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
@@ -35,7 +33,7 @@ class LibraryController extends Controller
         }
     }
 
-    public function getLibrariesByPrefCity(Request $request)
+    public function getLibrariesByPrefCity(Request $request): JsonResponse
     {
         $pref = $request->input('pref');
         $city = $request->input('city');
@@ -49,9 +47,23 @@ class LibraryController extends Controller
         }
     }
 
-    public function getCitiesByPrefecture(int $prefectureId)
+    public function getCitiesByPrefecture(int $prefectureId): JsonResponse
     {
         $cities = City::where('prefecture_id', $prefectureId)->get();
         return response()->json($cities);
+    }
+
+    public function getBookAvailability(Request $request): JsonResponse
+    {
+        $isbn = $request->input('isbn');
+        $systemId = $request->input('systemId');
+        try {
+            $bookAvailable = $this->calilApiLibrary->checkBookAvailability($isbn, $systemId);
+            return response()->json($bookAvailable);
+        } catch (HttpException $e) {
+            return response()->json(['error' => 'API request failed', 'message' => $e->getMessage()], $e->getStatusCode());
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred', 'message' => $e->getMessage()], 500);
+        }
     }
 }

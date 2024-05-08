@@ -8,7 +8,7 @@ use Illuminate\View\View;
 
 class FavoriteBookController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('user.favorite_books.index');
     }

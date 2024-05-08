@@ -17,7 +17,7 @@
         @if ($userLibraries)
             <div class="my-2">
                 @foreach ($userLibraries as $library)
-                    <span class="badge bg-info me-1">{{ $library['short'] }}</span>
+                    <span class="badge bg-info me-1 mb-2 fs-6">{{ $library['short'] }}</span>
                 @endforeach
             </div>
         @endif

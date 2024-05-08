@@ -6,18 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Library\GoogleBooksApiLibrary;
+use App\Library\googleBooksApiLibrary;
+use App\Library\calilApiLibrary;
 
 class BookController extends Controller
 {
-    protected $googleBooksApiLibrary;
-
-    public function __construct(GoogleBooksApiLibrary $googleBooksApiLibrary)
-    {
-        $this->googleBooksApiLibrary = $googleBooksApiLibrary;
+    public function __construct(
+        protected CalilApiLibrary $calilApiLibrary,
+        protected googleBooksApiLibrary $googleBooksApiLibrary
+    ) {
     }
 
-    public function search(Request $request)
+    public function search(Request $request): View
     {
         $title = $request->input('title', '');
         $author = $request->input('author', '');
@@ -44,15 +44,16 @@ class BookController extends Controller
         $books= [];
 
         if ($query) {
-            $books = $this->googleBooksApiLibrary->searchBooks($query, 30);
+            $books = $this->googleBooksApiLibrary->searchBooks($query);
         }
 
         return view('user.books.search', ['books' => $books, 'title' => $title, 'author' => $author, 'isbn' => $isbn, 'hasSearched' => $hasSearched]);
     }
 
-    public function show($isbn): View
+    public function show(string $isbn): View
     {
+        $user = auth()->user();
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
-        return view('user.books.show', ['book' => $book]);
+        return view('user.books.show', ['user' => $user, 'book' => $book]);
     }
 }

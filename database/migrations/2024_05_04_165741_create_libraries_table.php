@@ -13,10 +13,11 @@ return new class() extends Migration
     {
         Schema::create('libraries', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('system_id');
             $table->string('system_name');
             $table->timestamps();
+            $table->unique('user_id');
         });
     }
 
