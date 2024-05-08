@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Library\googleBooksApiLibrary;
+use App\Models\Book;
 
 class FavoriteBookController extends Controller
 {
@@ -17,16 +18,9 @@ class FavoriteBookController extends Controller
     public function index(): View
     {
         $user = auth()->user();
-        $favoriteBooks = $user->favoriteBooks;
-        $favoriteBooksIsbn = $favoriteBooks->pluck('isbn');
-        $books = [];
+        $favoriteBookIds = $user->favoriteBooks()->pluck('book_id');
+        $books = Book::whereIn('id', $favoriteBookIds)->get();
 
-        if ($favoriteBooksIsbn->isNotEmpty()) {
-            foreach ($favoriteBooksIsbn as $isbn)
-            {
-                $books[] = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
-            }
-        }
         return view('user.favorite_books.index', ['books' => $books]);
     }
 }
