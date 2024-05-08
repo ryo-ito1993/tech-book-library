@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class calilApiLibrary
 {
     protected $apiBaseUrl;
+
     protected $appKey;
 
     public function __construct()
@@ -68,11 +69,11 @@ class calilApiLibrary
         return $this->makeRequest('library', $params);
     }
 
-    public function checkBookAvailability(string $isbn, string $systemid, string $session = null): array
+    public function checkBookAvailability(string $isbn, string $systemId, ?string $session = null): array
     {
         $params = [
             'isbn' => $isbn,
-            'systemid' => $systemid
+            'systemid' => $systemId
         ];
 
         if ($session) {
@@ -81,10 +82,10 @@ class calilApiLibrary
 
         $response = $this->makeRequest('check', $params);
 
-        // Continue flagが1の場合はポーリングを続ける
-        if ($response['continue'] == 1) {
-            sleep(2); // APIの指示に従い、少なくとも2秒待つ
-            return $this->checkBookAvailability($isbn, $systemid, $response['session']);
+        // continueが1の場合はポーリングを続ける
+        if ($response['continue'] === 1) {
+            sleep(2);
+            return $this->checkBookAvailability($isbn, $systemId, $response['session']);
         }
 
         return $response;

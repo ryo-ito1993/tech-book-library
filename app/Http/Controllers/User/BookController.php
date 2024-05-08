@@ -12,6 +12,7 @@ use App\Library\CalilApiLibrary;
 class BookController extends Controller
 {
     protected $googleBooksApiLibrary;
+
     protected $calilApiLibrary;
 
     public function __construct(GoogleBooksApiLibrary $googleBooksApiLibrary, CalilApiLibrary $calilApiLibrary)
@@ -56,9 +57,7 @@ class BookController extends Controller
     public function show($isbn): View
     {
         $user = auth()->user();
-        $systemid = $user->library->system_id;
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
-        $bookAvailable = $this->calilApiLibrary->checkBookAvailability($isbn, $systemid);
-        return view('user.books.show', ['user' => $user, 'book' => $book, 'bookAvailable' => $bookAvailable['books'][$isbn][$systemid] ?? null]);
+        return view('user.books.show', ['user' => $user, 'book' => $book]);
     }
 }

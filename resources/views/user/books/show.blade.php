@@ -29,28 +29,47 @@
                         お気に入り図書館の蔵書
                     </h1>
                 </div>
-                <div class="text-center mb-4">
-                    <h5>{{ $user->library->system_name }}の蔵書</h5>
-                    @if ($bookAvailable)
-                        <div>
-                            @foreach($bookAvailable['libkey'] as $libraryName => $status)
-                                <span class="badge {{ $status === '貸出可' ? 'bg-success' : ($status === '貸出中' ? 'bg-danger' : 'bg-warning text-dark') }} mb-2" style="font-size: 1em;">
-                                    {{ $libraryName }}：{{ $status }}
-                                </span>
-                            @endforeach
+                @if ($user->library)
+                    <div class="text-center mb-4">
+                        <h5>お気に入り図書館エリア：<span>{{ optional($user->library)->system_name }}</span></h5>
+                        <div v-if="loading">
+                            <div class="text-center">
+                                <h1><i class="fas fa-spinner fa-pulse"></i></h1>
+                            </div>
                         </div>
-                        <button class="btn btn-primary mt-2">予約する</button>
-                    @endif
-
-                    {{-- <div>
-                        <span class="badge bg-success mb-2" style="font-size: 1em;">玉川台：貸出可</span>
-                        <span class="badge bg-danger mb-2" style="font-size: 1em;">世田谷：貸出中</span>
-                        <span class="badge bg-warning text-dark mb-2" style="font-size: 1em;">経堂：館内のみ</span>
-                        <span class="badge bg-success mb-2" style="font-size: 1em;">玉川台：貸出可</span>
-                        <span class="badge bg-danger mb-2" style="font-size: 1em;">世田谷：貸出中</span>
-                        <span class="badge bg-warning text-dark mb-2" style="font-size: 1em;">経堂：館内のみ</span>
-                    </div> --}}
-                </div>
+                        <div v-if="!loading && availability.books && Object.keys(availability.books).length > 0">
+                            <div v-for="(data, isbn) in availability.books" :key="isbn">
+                                <div v-for="(info, system) in data" :key="system">
+                                    <div v-if="Object.keys(info.libkey).length > 0">
+                                        <span v-for="(status, library) in info.libkey" :key="library">
+                                            <span class="badge me-1 fs-6" :class="{'bg-info': status === '貸出可', 'bg-danger': status === '貸出中', 'bg-secondary': status !== '貸出可' && status !== '貸出中'}">
+                                                @{{ library }}：@{{ status }}
+                                            </span>
+                                        </span>
+                                        <div class="mt-1">
+                                            <a v-if="info.reserveurl" :href="info.reserveurl" class="btn btn-primary mt-2" target="_blank">この本を予約する</a>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <span class="badge bg-secondary fs-6">蔵書なし</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="errorMessage" class="alert alert-danger">
+                            @{{ errorMessage }}
+                        </div>
+                    </div>
+                @else
+                    <div class="text-center">
+                        <div class="alert alert-info">
+                            貸出状況を表示するには図書館登録をしてください。
+                            <div class="mt-1">
+                                <a href="{{ route('user.library.create') }}" class="btn btn-primary">こちらから図書館を登録</a>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -77,4 +96,46 @@
     </div>
 
 </div>
+@endsection
+@section('script')
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                isbn: '{{ $book['isbn'] }}',
+                systemId: '{{ optional($user->library)->system_id }}',
+                availability: {},
+                loading: false,
+                errorMessage: null,
+            };
+        },
+        mounted() {
+            this.fetchBookAvailability();
+        },
+        methods: {
+            fetchBookAvailability() {
+                this.loading = true;
+                fetch(`/api/getBookAvailability`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            isbn: this.isbn,
+                            systemId: this.systemId,
+                        }),
+                    })
+                .then(response => response.json())
+                .then(data => {
+                    this.availability = data;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    this.errorMessage = '蔵書情報が利用できません';
+                })
+            }
+        }
+    }).mount('#app');
+
+</script>
 @endsection

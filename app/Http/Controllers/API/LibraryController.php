@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Library;
 use App\Models\City;
 use App\Library\CalilApiLibrary;
-use Illuminate\Http\Client\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Exception;
 
 class LibraryController extends Controller
@@ -53,5 +53,19 @@ class LibraryController extends Controller
     {
         $cities = City::where('prefecture_id', $prefectureId)->get();
         return response()->json($cities);
+    }
+
+    public function getBookAvailability(Request $request)
+    {
+        $isbn = $request->input('isbn');
+        $systemId = $request->input('systemId');
+        try {
+            $bookAvailable = $this->calilApiLibrary->checkBookAvailability($isbn, $systemId);
+            return response()->json($bookAvailable);
+        } catch (HttpException $e) {
+            return response()->json(['error' => 'API request failed', 'message' => $e->getMessage()], $e->getStatusCode());
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred', 'message' => $e->getMessage()], 500);
+        }
     }
 }
