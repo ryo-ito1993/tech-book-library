@@ -113,7 +113,9 @@
             };
         },
         mounted() {
-            this.fetchBookAvailability();
+            if (this.systemId) {
+                this.fetchBookAvailability();
+            }
         },
         methods: {
             fetchBookAvailability() {
