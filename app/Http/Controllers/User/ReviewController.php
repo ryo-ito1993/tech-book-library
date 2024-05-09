@@ -21,7 +21,7 @@ class ReviewController extends Controller
 
     public function index(): View
     {
-        $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(20);
+        $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(10);
         return view('user.reviews.index', ['reviews' => $reviews]);
     }
 

@@ -45,5 +45,6 @@
             </div>
         @endforeach
     </div>
+    {{ $reviews->links('pagination::bootstrap-5') }}
 </div>
 @endsection
