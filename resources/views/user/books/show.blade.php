@@ -90,24 +90,27 @@
     </div>
     <div class="col-12">
         <a href="{{ route('user.reviews.create', $book['isbn']) }}" class="btn btn-primary mb-3">この本をレビュー</a>
-        @for ($i = 0; $i < 3; $i++)
+        @foreach ($reviews as $review)
         <div class="card mb-1">
             <div class="card-body">
-                <h5 class="card-title">ユーザー名: タロウ 山田</h5>
-                <p class="card-text">投稿日: 2024/04/23</p>
+                <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
                 <p class="card-text">
-                    評価:
-                    <span class="star-rating">★★★☆☆</span>
+                    本の評価:
+                    <span class="star-rating">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <i class="{{ $i <= $review->rate ? 'fas fa-star text-warning' : 'far fa-star' }}"></i>
+                        @endfor
+                    </span>
                 </p>
                 <p class="card-text">
-                    カテゴリー:
-                    <span class="badge bg-info text-white">文学</span>
-                    <span class="badge bg-info text-white">プログラミング</span>
+                    @foreach ($review->categories as $category)
+                        <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
+                    @endforeach
                 </p>
-                <p class="card-text">この本は非常に役立ちました。初心者でも理解しやすい内容で、具体的な例が豊富に紹介されています。</p>
+                <p class="card-text">{{ $review->body }}</p>
             </div>
         </div>
-        @endfor
+        @endforeach
     </div>
 </div>
 @endsection
