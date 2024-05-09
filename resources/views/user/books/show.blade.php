@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <div class="d-flex flex-row">
                         <img src="{{ !empty($book['thumbnail']) ? $book['thumbnail'] : asset('images/no-image.jpeg') }}" alt="thumbnail" class="img-fluid me-3" style="height: 175px; object-fit: contain; width: auto;">
-                        <div class="flex-grow-1">
+                        <div class="flex-grow-1 ms-4">
                             <h5 class="card-title">{{ $book['title'] }}</h5>
                             <div class="card-text">
                                 <small class="text-muted">
@@ -18,10 +18,22 @@
                                     {{ implode(', ', $book['authors']) }}
                                 </small>
                             </div>
-                            <button v-if="!isFavorite" id="favorite-button" class="btn btn-outline-warning mt-1" type="button" @click="toggleFavorite">
+                            <div><small class="text-muted">出版社：{{ $book['publisher'] }}</small></div>
+                            <div><small class="text-muted">出版日：{{ $book['publishedDate'] }}</small></div>
+                            <div>
+                                <small class="text-muted">
+                                    <a href="{{ $book['infoLink'] }}" target="_blank">
+                                        <i class="fas fa-external-link-alt me-1"></i>GoogleBooks
+                                    </a>
+                                    <a href="https://calil.jp/book/{{ $book['isbn'] }}" target="_blank" class="ms-2">
+                                        <i class="fas fa-external-link-alt me-1"></i>カーリル
+                                    </a>
+                                </small>
+                            </div>
+                            <button v-if="!isFavorite" id="favorite-button" class="btn btn-outline-warning mt-2" type="button" @click="toggleFavorite">
                                 <i class="fa fa-book-reader"></i> 読みたい
                             </button>
-                            <button v-if="isFavorite" id="favorite-button" class="btn btn-warning mt-1" type="button" @click="toggleFavorite">
+                            <button v-if="isFavorite" id="favorite-button" class="btn btn-warning mt-2" type="button" @click="toggleFavorite">
                                 <i class="fa fa-book-reader"></i> 読みたい
                             </button>
                         </div>
@@ -77,7 +89,7 @@
         </div>
     </div>
     <div class="col-12">
-        <button class="btn btn-primary mb-3">この本をレビュー</button>
+        <a href="{{ route('user.reviews.create', $book['isbn']) }}" class="btn btn-primary mb-3">この本をレビュー</a>
         @for ($i = 0; $i < 3; $i++)
         <div class="card mb-1">
             <div class="card-body">
