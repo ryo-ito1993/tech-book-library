@@ -34,7 +34,8 @@
                     </div>
                 </div>
             </div>
-            <form class="mt-3">
+            <form action="{{ route('user.reviews.store') }}" method="post" class="mt-3">
+                @csrf
                 <div class="rating mb-3">
                     本の評価：
                     <span v-for="(star, index) in stars" :key="index" class="star me-1"
@@ -43,7 +44,7 @@
                         <i :class="index < rating ? 'fas fa-star' : 'far fa-star'"></i>
                     </span>
                 </div>
-                <input type="hidden" class="rating-value" v-model="rating">
+                <input type="hidden" name="rating" v-model="rating">
                 <div class="form-group mb-3">
                     <label for="review">レビュー:</label>
                     <textarea name="review" class="form-control" required></textarea>
@@ -57,6 +58,9 @@
                     </select>
 
                 </div>
+                <input type="hidden" name="title" value="{{ $book['title'] }}">
+                <input type="hidden" name="isbn" value="{{ $book['isbn'] }}">
+                <input type="hidden" name="thumbnail" value="{{ $book['thumbnail'] }}">
                 <button type="submit" class="btn btn-primary">レビューを投稿</button>
             </form>
         </div>
