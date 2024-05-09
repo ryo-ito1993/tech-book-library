@@ -19,6 +19,12 @@ class BookController extends Controller
             ['isbn' => $isbn],
             ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
         );
+        if ($book->authors()->doesntExist()) {
+            $authors = $request->input('authors', []);
+            foreach ($authors as $author) {
+                $book->authors()->firstOrCreate(['name' => $author]);
+            }
+        }
 
         $favorite = $user->favoriteBooks()->where('book_id', $book->id)->first();
 
@@ -29,10 +35,6 @@ class BookController extends Controller
             }
         } else {
             $user->favoriteBooks()->create(['book_id' => $book->id]);
-            $authors = $request->input('authors', []);
-            foreach ($authors as $author) {
-                $book->authors()->firstOrCreate(['name' => $author]);
-            }
         }
 
         return response()->json(['status' => 'success']);

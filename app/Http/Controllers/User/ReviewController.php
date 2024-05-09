@@ -21,7 +21,8 @@ class ReviewController extends Controller
 
     public function index(): View
     {
-        return view('user.reviews.index');
+        $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(20);
+        return view('user.reviews.index', ['reviews' => $reviews]);
     }
 
     public function create(string $isbn): View
@@ -39,6 +40,12 @@ class ReviewController extends Controller
             ['isbn' => $isbn],
             ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
         );
+        if ($book->authors()->doesntExist()) {
+            $authors = $request->input('authors', []);
+            foreach ($authors as $author) {
+                $book->authors()->firstOrCreate(['name' => $author]);
+            }
+        }
 
         $review = new Review();
         $review->user_id = $user->id;
@@ -52,6 +59,7 @@ class ReviewController extends Controller
                 ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
             }
         }
+
         return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを投稿しました');
     }
 }

@@ -61,6 +61,9 @@
                 <input type="hidden" name="title" value="{{ $book['title'] }}">
                 <input type="hidden" name="isbn" value="{{ $book['isbn'] }}">
                 <input type="hidden" name="thumbnail" value="{{ $book['thumbnail'] }}">
+                @foreach ($book['authors'] as $author)
+                    <input type="hidden" name="authors[]" value="{{ $author }}">
+                @endforeach
                 <button type="submit" class="btn btn-primary">レビューを投稿</button>
             </form>
         </div>
