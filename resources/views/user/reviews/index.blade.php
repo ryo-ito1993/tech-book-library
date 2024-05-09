@@ -14,8 +14,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-row">
-                            <img src="{{ !empty($review->book->thumbnail) ? html_entity_decode($review->book->thumbnail) : asset('images/no-image.jpeg') }}" alt="thumbnail" class="img-fluid me-3" style="height: 150px; object-fit: contain; width: auto;">
-                            <div class="flex-grow-1">
+                            <a href="{{ route('user.books.show', $review->book->isbn) }}" class="text-decoration-none">
+                                <img src="{{ !empty($review->book->thumbnail) ? html_entity_decode($review->book->thumbnail) : asset('images/no-image.jpeg') }}" alt="thumbnail" class="img-fluid me-3" style="height: 175px; object-fit: contain; width: auto;">
+                            </a>
+                                <div class="flex-grow-1">
                                 <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
                                 <h5 class="card-title">{{ $review->book->title }}</h5>
                                 <div class="card-text">
