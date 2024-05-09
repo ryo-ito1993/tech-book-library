@@ -18,8 +18,12 @@
                                     {{ implode(', ', $book['authors']) }}
                                 </small>
                             </div>
-                            <div><small class="text-muted">出版社：{{ $book['publisher'] }}</small></div>
-                            <div><small class="text-muted">出版日：{{ $book['publishedDate'] }}</small></div>
+                            @if ($book['publisher'])
+                                <div><small class="text-muted">出版社：{{ $book['publisher'] }}</small></div>
+                            @endif
+                            @if ($book['publishedDate'])
+                                <div><small class="text-muted">出版日：{{ $book['publishedDate'] }}</small></div>
+                            @endif
                             <div>
                                 <small class="text-muted">
                                     <a href="{{ $book['infoLink'] }}" target="_blank">
