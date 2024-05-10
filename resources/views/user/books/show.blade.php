@@ -95,25 +95,33 @@
     <div class="col-12">
         <a href="{{ route('user.reviews.create', $book['isbn']) }}" class="btn btn-primary mb-3">この本をレビュー</a>
         @foreach ($reviews as $review)
-        <div class="card mb-1">
-            <div class="card-body">
-                <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
-                <p class="card-text">
-                    本の評価:
-                    <span class="star-rating">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <i class="{{ $i <= $review->rate ? 'fas fa-star text-warning' : 'far fa-star' }}"></i>
-                        @endfor
-                    </span>
-                </p>
-                <p class="card-text">
-                    @foreach ($review->categories as $category)
-                        <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
-                    @endforeach
-                </p>
-                <p class="card-text">{{ $review->body }}</p>
+            <div class="card mb-1">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
+                        @if ($review->user->id === auth()->id())
+                            <div class="ms-auto">
+                                <a href="{{ route('user.reviews.edit', $review) }}" class="btn btn-sm btn-success me-1"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        @endif
+                    </div>
+                        <p class="card-text">
+                            本の評価:
+                            <span class="star-rating">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="{{ $i <= $review->rate ? 'fas fa-star text-warning' : 'far fa-star' }}"></i>
+                                @endfor
+                            </span>
+                        </p>
+                        <p class="card-text">
+                            @foreach ($review->categories as $category)
+                                <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
+                            @endforeach
+                        </p>
+                        <p class="card-text">{{ $review->body }}</p>
+                    </div>
             </div>
-        </div>
         @endforeach
     </div>
 </div>

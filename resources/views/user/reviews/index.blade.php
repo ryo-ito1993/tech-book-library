@@ -50,8 +50,6 @@
                                 <div class="ms-auto me-1">
                                     <a href="{{ route('user.reviews.edit', $review) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
                                 </div>
-                            @endif
-                            @if ($review->user->id === auth()->id())
                                 <div class="ms-auto">
                                     <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
                                 </div>
