@@ -100,9 +100,13 @@
                     <div class="d-flex">
                         <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
                         @if ($review->user->id === auth()->id())
-                            <div class="ms-auto">
+                            <div class="ms-auto d-flex">
                                 <a href="{{ route('user.reviews.edit', $review) }}" class="btn btn-sm btn-success me-1"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                <form action="{{ route('user.reviews.destroy', $review) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('このレビューを削除しますか？');"><i class="fas fa-trash-alt"></i></button>
+                                </form>
                             </div>
                         @endif
                     </div>

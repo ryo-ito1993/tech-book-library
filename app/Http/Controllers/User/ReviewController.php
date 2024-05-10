@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Review;
 use App\Http\Requests\User\StoreReviewRequest;
 use App\Http\Requests\User\UpdateReviewRequest;
+use App\Models\FavoriteBook;
 
 class ReviewController extends Controller
 {
@@ -92,5 +93,17 @@ class ReviewController extends Controller
         });
 
         return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを更新しました');
+    }
+
+    public function destroy(Review $review): RedirectResponse
+    {
+        $isbn = $review->book->isbn;
+        $book = $review->book;
+
+        $review->delete();
+        if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
+            $book->delete();
+        }
+        return redirect()->back()->with('status', 'レビューを削除しました');
     }
 }

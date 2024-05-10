@@ -20,9 +20,6 @@
                             <div class="flex-grow-1">
                                 <div class="card-text text-muted mb-3">
                                     <span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー
-                                    {{-- @if ($review->user->id === $user->id)
-                                        <a href="#" class="btn btn-sm btn-secondary">編集</a>
-                                    @endif --}}
                                 </div>
                                 <h5 class="card-title">{{ $review->book->title }}</h5>
                                 <div class="card-text">
@@ -51,7 +48,11 @@
                                     <a href="{{ route('user.reviews.edit', $review) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
                                 </div>
                                 <div class="ms-auto">
-                                    <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                    <form action="{{ route('user.reviews.destroy', $review) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('このレビューを削除しますか？');"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
                                 </div>
                             @endif
                         </div>

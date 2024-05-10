@@ -31,7 +31,7 @@ class BookController extends Controller
 
             if ($favorite) {
                 $favorite->delete();
-                if (FavoriteBook::where('book_id', $book->id)->doesntExist()) {
+                if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
                     $book->delete();
                 }
             } else {
