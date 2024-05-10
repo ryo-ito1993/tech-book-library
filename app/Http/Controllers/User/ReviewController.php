@@ -12,6 +12,7 @@ use App\Models\ReviewCategory;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Review;
 use App\Http\Requests\User\StoreReviewRequest;
+use App\Http\Requests\User\UpdateReviewRequest;
 
 class ReviewController extends Controller
 {
@@ -75,5 +76,21 @@ class ReviewController extends Controller
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
         $categories = Category::all();
         return view('user.reviews.edit', ['review' => $review, 'categories' => $categories, 'book' => $book]);
+    }
+
+    public function update(UpdateReviewRequest $request, Review $review): RedirectResponse
+    {
+        $validated = $request->validated();
+        $isbn = $review->book->isbn;
+
+        \DB::transaction(function () use ($validated, $review) {
+            $review->body = $validated['review'];
+            $review->rate = $validated['rating'];
+            $review->save();
+
+            $review->categories()->sync($validated['categories'] ?? []);
+        });
+
+        return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを更新しました');
     }
 }

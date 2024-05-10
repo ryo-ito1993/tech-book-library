@@ -12,6 +12,7 @@ Route::get('/favorite_books', [FavoriteBookController::class, 'index'])->name('f
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
 Route::get('/reviews/create/{isbn}', [ReviewController::class, 'create'])->name('reviews.create');
 Route::get('/reviews/edit/{review}', [ReviewController::class, 'edit'])->name('reviews.edit');
+Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('/books/seach', [BookController::class, 'search'])->name('books.search');
 Route::get('/books/{isbn}', [BookController::class, 'show'])->name('books.show');
