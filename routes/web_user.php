@@ -6,13 +6,23 @@ use App\Http\Controllers\User\FavoriteBookController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\BookController;
 
-Route::get('/library', [LibraryController::class, 'create'])->name('library.create');
-Route::post('/library', [LibraryController::class, 'store'])->name('library.store');
+Route::controller(LibraryController::class)->name('library.')->group(function () {
+    Route::get('/library', 'create')->name('create');
+    Route::post('/library', 'store')->name('store');
+});
+
+Route::controller(BookController::class)->name('books.')->group(function () {
+    Route::get('/books/search', 'search')->name('search');
+    Route::get('/books/{isbn}', 'show')->name('show');
+});
+
 Route::get('/favorite_books', [FavoriteBookController::class, 'index'])->name('favorite_books.index');
-Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-Route::get('/reviews/create/{isbn}', [ReviewController::class, 'create'])->name('reviews.create');
-Route::get('/reviews/edit/{review}', [ReviewController::class, 'edit'])->name('reviews.edit');
-Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::get('/books/seach', [BookController::class, 'search'])->name('books.search');
-Route::get('/books/{isbn}', [BookController::class, 'show'])->name('books.show');
+
+Route::controller(ReviewController::class)->name('reviews.')->group(function () {
+    Route::get('/reviews', 'index')->name('index');
+    Route::get('/reviews/create/{isbn}', 'create')->name('create');
+    Route::get('/reviews/edit/{review}', 'edit')->name('edit');
+    Route::put('/reviews/{review}', 'update')->name('update');
+    Route::post('/reviews', 'store')->name('store');
+    Route::delete('/reviews/{review}', 'destroy')->name('destroy');
+});
