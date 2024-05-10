@@ -12,6 +12,8 @@ use App\Models\ReviewCategory;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Review;
 use App\Http\Requests\User\StoreReviewRequest;
+use App\Http\Requests\User\UpdateReviewRequest;
+use App\Models\FavoriteBook;
 
 class ReviewController extends Controller
 {
@@ -22,8 +24,9 @@ class ReviewController extends Controller
 
     public function index(): View
     {
+        $user = auth()->user();
         $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(10);
-        return view('user.reviews.index', ['reviews' => $reviews]);
+        return view('user.reviews.index', ['reviews' => $reviews, 'user' => $user]);
     }
 
     public function create(string $isbn): View
@@ -66,5 +69,41 @@ class ReviewController extends Controller
         });
 
         return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを投稿しました');
+    }
+
+    public function edit(Review $review): View
+    {
+        $isbn = $review->book->isbn;
+        $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
+        $categories = Category::all();
+        return view('user.reviews.edit', ['review' => $review, 'categories' => $categories, 'book' => $book]);
+    }
+
+    public function update(UpdateReviewRequest $request, Review $review): RedirectResponse
+    {
+        $validated = $request->validated();
+        $isbn = $review->book->isbn;
+
+        \DB::transaction(function () use ($validated, $review) {
+            $review->body = $validated['review'];
+            $review->rate = $validated['rating'];
+            $review->save();
+
+            $review->categories()->sync($validated['categories'] ?? []);
+        });
+
+        return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを更新しました');
+    }
+
+    public function destroy(Review $review): RedirectResponse
+    {
+        $isbn = $review->book->isbn;
+        $book = $review->book;
+
+        $review->delete();
+        if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
+            $book->delete();
+        }
+        return redirect()->back()->with('status', 'レビューを削除しました');
     }
 }

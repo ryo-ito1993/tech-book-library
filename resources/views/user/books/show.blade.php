@@ -6,7 +6,7 @@
 <div class="container-fluid" style="max-width: 1200px">
     <div class="row">
         <div class="col-12 mb-3">
-            <div class="card">
+            <div class="card bg-white">
                 <div class="card-body">
                     <div class="d-flex flex-row">
                         <img src="{{ !empty($book['thumbnail']) ? $book['thumbnail'] : asset('images/no-image.jpeg') }}" alt="thumbnail" class="img-fluid me-3" style="height: 175px; object-fit: contain; width: auto;">
@@ -95,25 +95,37 @@
     <div class="col-12">
         <a href="{{ route('user.reviews.create', $book['isbn']) }}" class="btn btn-primary mb-3">この本をレビュー</a>
         @foreach ($reviews as $review)
-        <div class="card mb-1">
-            <div class="card-body">
-                <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
-                <p class="card-text">
-                    本の評価:
-                    <span class="star-rating">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <i class="{{ $i <= $review->rate ? 'fas fa-star text-warning' : 'far fa-star' }}"></i>
-                        @endfor
-                    </span>
-                </p>
-                <p class="card-text">
-                    @foreach ($review->categories as $category)
-                        <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
-                    @endforeach
-                </p>
-                <p class="card-text">{{ $review->body }}</p>
+            <div class="card bg-white mb-1">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
+                        @if ($review->user->id === auth()->id())
+                            <div class="ms-auto d-flex">
+                                <a href="{{ route('user.reviews.edit', $review) }}" class="btn btn-sm btn-success me-1"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('user.reviews.destroy', $review) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('このレビューを削除しますか？');"><i class="fas fa-trash-alt"></i></button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
+                        <p class="card-text">
+                            本の評価:
+                            <span class="star-rating">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="{{ $i <= $review->rate ? 'fas fa-star text-warning' : 'far fa-star' }}"></i>
+                                @endfor
+                            </span>
+                        </p>
+                        <p class="card-text">
+                            @foreach ($review->categories as $category)
+                                <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
+                            @endforeach
+                        </p>
+                        <p class="card-text">{{ $review->body }}</p>
+                    </div>
             </div>
-        </div>
         @endforeach
     </div>
 </div>

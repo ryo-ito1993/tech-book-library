@@ -7,10 +7,11 @@ use App\Models\FavoriteBook;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 
 class BookController extends Controller
 {
-    public function toggleFavorite(Request $request)
+    public function toggleFavorite(Request $request): JsonResponse
     {
         $user = User::findorFail($request->input('user_id'));
         $isbn = $request->input('isbn');
@@ -31,7 +32,7 @@ class BookController extends Controller
 
             if ($favorite) {
                 $favorite->delete();
-                if (FavoriteBook::where('book_id', $book->id)->doesntExist()) {
+                if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
                     $book->delete();
                 }
             } else {

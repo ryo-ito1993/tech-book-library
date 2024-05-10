@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'レビュー登録')
+@section('title', 'レビュー編集')
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
     <header class="bg-info py-3 px-4 mb-3 text-center">
-        <h1 class="mb-0 text-white h4">レビュー登録</h1>
+        <h1 class="mb-0 text-white h4">レビュー編集</h1>
     </header>
 
     <div class="card bg-white">
@@ -38,8 +38,9 @@
                     </div>
                 </div>
             </div>
-            <form action="{{ route('user.reviews.store') }}" method="post" class="mt-3">
+            <form action="{{ route('user.reviews.update', $review) }}" method="post" class="mt-3">
                 @csrf
+                @method('PUT')
                 <div class="rating mb-3">
                     本の評価：
                     <span v-for="(star, index) in stars" :key="index" class="star me-1"
@@ -51,14 +52,14 @@
                 <input type="hidden" name="rating" v-model="rating">
                 <div class="form-group mb-3">
                     <label for="review">レビュー:</label>
-                    <textarea name="review" class="form-control bg-white @error('review') is-invalid @enderror" required>{{ old('review') }}</textarea>
+                    <textarea name="review" class="form-control bg-white @error('review') is-invalid @enderror" required>{{ old('review', $review->body) }}</textarea>
                     @include('components.form.error', ['name' => 'review'])
                 </div>
                 <div class="form-group mb-3">
                     <label for="categories">カテゴリ:</label>
                     <select id="categories" class="form-control @error('categories') is-invalid @enderror" name="categories[]" multiple="multiple">
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" @if (old('categories') && in_array($category->id, old('categories'))) selected @endif>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" @if (in_array($category->id, old('categories', $review->categories->pluck('id')->toArray()))) selected @endif>{{ $category->name }}</option>
                         @endforeach
                     </select>
                     @include('components.form.error', ['name' => 'categories'])
@@ -70,7 +71,7 @@
                 @foreach ($book['authors'] as $author)
                     <input type="hidden" name="authors[]" value="{{ $author }}">
                 @endforeach
-                <button type="submit" class="btn btn-primary">レビューを投稿</button>
+                <button type="submit" class="btn btn-primary">レビューを更新</button>
             </form>
         </div>
     </div>
@@ -81,7 +82,7 @@
     Vue.createApp({
         data() {
             return {
-                rating: {{ old('rating', 3) }},
+                rating: {{ old('rating', $review->rate) }},
                 stars: 5,
             };
         },
