@@ -57,6 +57,7 @@ class BookController extends Controller
 
         $bookModel = Book::where('isbn', $isbn)->first();
         $isFavorite = $bookModel ? $user->favoriteBooks()->where('book_id', $bookModel->id)->exists() : false;
-        return view('user.books.show', ['user' => $user, 'book' => $book, 'isFavorite' => $isFavorite]);
+        $reviews = $bookModel ? $bookModel->reviews : [];
+        return view('user.books.show', ['user' => $user, 'book' => $book, 'isFavorite' => $isFavorite, 'reviews' => $reviews]);
     }
 }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\BookAuthor;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
 class Book extends Model
 {
     use HasFactory;
@@ -17,5 +16,10 @@ class Book extends Model
     public function authors(): HasMany
     {
         return $this->hasMany(BookAuthor::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

@@ -15,25 +15,29 @@ class BookController extends Controller
         $user = User::findorFail($request->input('user_id'));
         $isbn = $request->input('isbn');
 
-        $book = Book::firstOrCreate(
-            ['isbn' => $isbn],
-            ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
-        );
-
-        $favorite = $user->favoriteBooks()->where('book_id', $book->id)->first();
-
-        if ($favorite) {
-            $favorite->delete();
-            if (FavoriteBook::where('book_id', $book->id)->doesntExist()) {
-                $book->delete();
+        \DB::transaction(function () use ($user, $isbn, $request) {
+            $book = Book::firstOrCreate(
+                ['isbn' => $isbn],
+                ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
+            );
+            if ($book->authors()->doesntExist()) {
+                $authors = $request->input('authors', []);
+                foreach ($authors as $author) {
+                    $book->authors()->firstOrCreate(['name' => $author]);
+                }
             }
-        } else {
-            $user->favoriteBooks()->create(['book_id' => $book->id]);
-            $authors = $request->input('authors', []);
-            foreach ($authors as $author) {
-                $book->authors()->firstOrCreate(['name' => $author]);
+
+            $favorite = $user->favoriteBooks()->where('book_id', $book->id)->first();
+
+            if ($favorite) {
+                $favorite->delete();
+                if (FavoriteBook::where('book_id', $book->id)->doesntExist()) {
+                    $book->delete();
+                }
+            } else {
+                $user->favoriteBooks()->create(['book_id' => $book->id]);
             }
-        }
+        });
 
         return response()->json(['status' => 'success']);
     }

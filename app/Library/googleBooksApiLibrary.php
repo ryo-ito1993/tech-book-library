@@ -43,9 +43,10 @@ class googleBooksApiLibrary
                         'title' => $volumeInfo['title'] ?? '',
                         'authors' => $volumeInfo['authors'] ?? [],
                         'publishedDate' => $volumeInfo['publishedDate'] ?? '',
-                        'description' => $volumeInfo['description'] ?? '',
+                        'publisher' => $volumeInfo['publisher'] ?? '',
                         'isbn' => $isbn,
                         'thumbnail' => $imageLinks['thumbnail'] ?? '',
+                        'infoLink' => $volumeInfo['infoLink'] ?? '',
                     ];
                 })
                 ->filter()
