@@ -11,6 +11,7 @@ use App\Models\Book;
 use App\Models\ReviewCategory;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Review;
+use App\Http\Requests\User\StoreReviewRequest;
 
 class ReviewController extends Controller
 {
@@ -32,16 +33,17 @@ class ReviewController extends Controller
         return view('user.reviews.create', ['book' => $book, 'categories' => $categories]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreReviewRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
         $user = auth()->user();
-        $isbn = $request->input('isbn');
+        $isbn = $validated['isbn'];
         $book = Book::firstOrCreate(
             ['isbn' => $isbn],
-            ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
+            ['title' => $validated['title'], 'thumbnail' => $validated['thumbnail']]
         );
         if ($book->authors()->doesntExist()) {
-            $authors = $request->input('authors', []);
+            $authors = $validated['authors'];
             foreach ($authors as $author) {
                 $book->authors()->firstOrCreate(['name' => $author]);
             }
@@ -50,12 +52,12 @@ class ReviewController extends Controller
         $review = new Review();
         $review->user_id = $user->id;
         $review->book_id = $book->id;
-        $review->body = $request->input('review');
-        $review->rate = $request->input('rating');
+        $review->body = $validated['review'];
+        $review->rate = $validated['rating'];
         $review->save();
 
-        if ($request->input('categories')) {
-            foreach ($request->input('categories') as $categoryId) {
+        if ($validated['categories']) {
+            foreach ($validated['categories'] as $categoryId) {
                 ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
             }
         }
