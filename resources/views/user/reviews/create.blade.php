@@ -51,15 +51,17 @@
                 <input type="hidden" name="rating" v-model="rating">
                 <div class="form-group mb-3">
                     <label for="review">レビュー:</label>
-                    <textarea name="review" class="form-control" required></textarea>
+                    <textarea name="review" class="form-control @error('review') is-invalid @enderror" required></textarea>
+                    @include('components.form.error', ['name' => 'review'])
                 </div>
                 <div class="form-group mb-3">
                     <label for="categories">カテゴリ:</label>
-                    <select id="categories" class="form-control" name="categories[]" multiple="multiple">
+                    <select id="categories" class="form-control @error('categories') is-invalid @enderror" name="categories[]" multiple="multiple">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
+                    @include('components.form.error', ['name' => 'categories'])
 
                 </div>
                 <input type="hidden" name="title" value="{{ $book['title'] }}">
