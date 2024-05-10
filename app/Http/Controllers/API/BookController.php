@@ -7,10 +7,11 @@ use App\Models\FavoriteBook;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 
 class BookController extends Controller
 {
-    public function toggleFavorite(Request $request)
+    public function toggleFavorite(Request $request): JsonResponse
     {
         $user = User::findorFail($request->input('user_id'));
         $isbn = $request->input('isbn');
