@@ -8,7 +8,7 @@
         <h1 class="mb-0 text-white h4">レビュー登録</h1>
     </header>
 
-    <div class="card">
+    <div class="card bg-white">
         <div class="card-body">
             <div class="d-flex flex-row">
                 <img src="{{ $book['thumbnail'] }}" alt="thumbnail" class="img-fluid me-3" style="height: 150px; object-fit: contain;">
@@ -51,7 +51,7 @@
                 <input type="hidden" name="rating" v-model="rating">
                 <div class="form-group mb-3">
                     <label for="review">レビュー:</label>
-                    <textarea name="review" class="form-control @error('review') is-invalid @enderror" required>{{ old('review') }}</textarea>
+                    <textarea name="review" class="form-control bg-white @error('review') is-invalid @enderror" required>{{ old('review') }}</textarea>
                     @include('components.form.error', ['name' => 'review'])
                 </div>
                 <div class="form-group mb-3">

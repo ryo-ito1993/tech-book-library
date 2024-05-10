@@ -11,7 +11,7 @@
     <div class="row">
         @foreach ($reviews as $review)
             <div class="col-12 mb-3">
-                <div class="card">
+                <div class="card bg-white">
                     <div class="card-body">
                         <div class="d-flex flex-row">
                             <a href="{{ route('user.books.show', $review->book->isbn) }}" class="text-decoration-none">

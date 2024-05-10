@@ -13,7 +13,7 @@
     <div class="row">
         @forelse ($books as $book)
             <div class="col-lg-3 col-md-4 col-6 mb-4">
-                <div class="card me-2" style="height: 375px;">
+                <div class="card bg-white me-2" style="height: 375px;">
                     <a href="{{ route('user.books.show', $book->isbn) }}" class="text-decoration-none" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
                         <img class="card-img-top mt-1" style="max-width: 125px; object-fit: contain;" src="{{ !empty($book->thumbnail) ? html_entity_decode($book->thumbnail) : asset('images/no-image.jpeg') }}" alt="thumbnail">
                         <div class="card-body" style="flex-grow: 0;">

@@ -6,7 +6,7 @@
 <div class="container-fluid" style="max-width: 1200px">
     <div class="row">
         <div class="col-12 mb-3">
-            <div class="card">
+            <div class="card bg-white">
                 <div class="card-body">
                     <div class="d-flex flex-row">
                         <img src="{{ !empty($book['thumbnail']) ? $book['thumbnail'] : asset('images/no-image.jpeg') }}" alt="thumbnail" class="img-fluid me-3" style="height: 175px; object-fit: contain; width: auto;">
@@ -95,7 +95,7 @@
     <div class="col-12">
         <a href="{{ route('user.reviews.create', $book['isbn']) }}" class="btn btn-primary mb-3">この本をレビュー</a>
         @foreach ($reviews as $review)
-            <div class="card mb-1">
+            <div class="card bg-white mb-1">
                 <div class="card-body">
                     <div class="d-flex">
                         <div class="card-text text-muted mb-1"><span class="me-2">{{ $review->created_at->format('Y/m/d') }}</span>{{ $review->user->name }}さんのレビュー</div>
