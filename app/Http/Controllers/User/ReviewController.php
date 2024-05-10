@@ -22,8 +22,9 @@ class ReviewController extends Controller
 
     public function index(): View
     {
+        $user = auth()->user();
         $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(10);
-        return view('user.reviews.index', ['reviews' => $reviews]);
+        return view('user.reviews.index', ['reviews' => $reviews, 'user' => $user]);
     }
 
     public function create(string $isbn): View
@@ -66,5 +67,13 @@ class ReviewController extends Controller
         });
 
         return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを投稿しました');
+    }
+
+    public function edit(Review $review): View
+    {
+        $isbn = $review->book->isbn;
+        $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
+        $categories = Category::all();
+        return view('user.reviews.edit', ['review' => $review, 'categories' => $categories, 'book' => $book]);
     }
 }
