@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -38,7 +37,7 @@ class CategoriesTableSeeder extends Seeder
             'セキュリティ',
             'AI',
             'ビジネス',
-            'その他'
+            'その他',
         ];
 
         foreach ($categories as $category) {

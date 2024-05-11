@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use App\Models\Library;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\User\StoreLibraryRequest;
-use Illuminate\Support\Facades\Http;
 use App\Library\calilApiLibrary;
+use App\Models\Library;
 use App\Models\Prefecture;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class LibraryController extends Controller
 {
@@ -28,6 +26,7 @@ class LibraryController extends Controller
         if ($userLibrary) {
             $userLibraries = $this->calilApiLibrary->getLibrariesBySystemId($userLibrary->system_id);
         }
+
         return view('user.libraries.create', ['userLibrary' => $userLibrary, 'userLibraries' => $userLibraries, 'prefectures' => $prefectures]);
     }
 
@@ -38,7 +37,7 @@ class LibraryController extends Controller
 
         Library::updateOrCreate(
             ['user_id' => $user->id],
-            [   'system_id' => $validatedData['systemid'],
+            ['system_id' => $validatedData['systemid'],
                 'system_name' => $validatedData['systemname'],
             ]
         );

@@ -24,19 +24,18 @@ class calilApiLibrary
         $params['format'] = 'json';
         $params['callback'] = 'no';
 
-        $response = Http::get($this->apiBaseUrl . $endpoint, $params);
+        $response = Http::get($this->apiBaseUrl.$endpoint, $params);
 
         if ($response->ok()) {
             return $response->json();
         }
-            $status = $response->status();
-            $error = $response->body();
-            Log::error("API Request Failed", [
-                'status_code' => $status,
-                'error' => $error,
-            ]);
-            throw new HttpException($status, "API request failed: " . $error);
-
+        $status = $response->status();
+        $error = $response->body();
+        Log::error('API Request Failed', [
+            'status_code' => $status,
+            'error' => $error,
+        ]);
+        throw new HttpException($status, 'API request failed: '.$error);
     }
 
     public function getLibrariesByGeocode(float $latitude, float $longitude, int $limit = 20): array
@@ -73,7 +72,7 @@ class calilApiLibrary
     {
         $params = [
             'isbn' => $isbn,
-            'systemid' => $systemId
+            'systemid' => $systemId,
         ];
 
         if ($session) {
@@ -85,6 +84,7 @@ class calilApiLibrary
         // continueが1の場合はポーリングを続ける
         if ($response['continue'] === 1) {
             sleep(2);
+
             return $this->checkBookAvailability($isbn, $systemId, $response['session']);
         }
 

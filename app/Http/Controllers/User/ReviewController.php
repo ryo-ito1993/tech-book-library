@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use App\Library\googleBooksApiLibrary;
-use App\Models\Category;
-use App\Models\Book;
-use App\Models\ReviewCategory;
-use Illuminate\Http\RedirectResponse;
-use App\Models\Review;
 use App\Http\Requests\User\StoreReviewRequest;
 use App\Http\Requests\User\UpdateReviewRequest;
-use App\Models\FavoriteBook;
+use App\Library\googleBooksApiLibrary;
+use App\Models\Book;
+use App\Models\Category;
+use App\Models\Review;
+use App\Models\ReviewCategory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
@@ -26,6 +24,7 @@ class ReviewController extends Controller
     {
         $user = auth()->user();
         $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(10);
+
         return view('user.reviews.index', ['reviews' => $reviews, 'user' => $user]);
     }
 
@@ -33,6 +32,7 @@ class ReviewController extends Controller
     {
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
         $categories = Category::all();
+
         return view('user.reviews.create', ['book' => $book, 'categories' => $categories]);
     }
 
@@ -76,6 +76,7 @@ class ReviewController extends Controller
         $isbn = $review->book->isbn;
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
         $categories = Category::all();
+
         return view('user.reviews.edit', ['review' => $review, 'categories' => $categories, 'book' => $book]);
     }
 
@@ -104,6 +105,7 @@ class ReviewController extends Controller
         if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
             $book->delete();
         }
+
         return redirect()->back()->with('status', 'レビューを削除しました');
     }
 }
