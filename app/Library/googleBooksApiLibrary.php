@@ -3,8 +3,8 @@
 namespace App\Library;
 
 use Illuminate\Support\Facades\Http;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class googleBooksApiLibrary
 {
@@ -54,19 +54,20 @@ class googleBooksApiLibrary
 
             return $books;
         }
-            $status = $response->status();
-            $error = $response->body();
-            Log::error("API Request Failed", [
-                'status_code' => $status,
-                'error' => $error,
-            ]);
-            throw new HttpException($status, "API request failed: " . $error);
+        $status = $response->status();
+        $error = $response->body();
+        Log::error('API Request Failed', [
+            'status_code' => $status,
+            'error' => $error,
+        ]);
+        throw new HttpException($status, 'API request failed: '.$error);
     }
 
     public function getBookByIsbn(string $isbn): ?array
     {
-        $query = 'isbn:' . $isbn;
+        $query = 'isbn:'.$isbn;
         $books = $this->searchBooks($query, 1);
+
         return $books[0] ?? null;
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\LibraryController;
-use App\Http\Controllers\User\FavoriteBookController;
-use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\BookController;
+use App\Http\Controllers\User\FavoriteBookController;
+use App\Http\Controllers\User\LibraryController;
+use App\Http\Controllers\User\ReviewController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(ReviewController::class)->name('reviews.')->group(static function () {
     Route::get('/reviews', 'index')->name('index');

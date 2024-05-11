@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use App\Models\City;
 use App\Library\calilApiLibrary;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Models\City;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class LibraryController extends Controller
 {
@@ -25,6 +23,7 @@ class LibraryController extends Controller
         $longitude = $request->input('longitude');
         try {
             $libraries = $this->calilApiLibrary->getLibrariesByGeocode($latitude, $longitude);
+
             return response()->json($libraries);
         } catch (HttpException $e) {
             return response()->json(['error' => 'API request failed', 'message' => $e->getMessage()], $e->getStatusCode());
@@ -39,6 +38,7 @@ class LibraryController extends Controller
         $city = $request->input('city');
         try {
             $libraries = $this->calilApiLibrary->getLibrariesByPrefCity($pref, $city);
+
             return response()->json($libraries);
         } catch (HttpException $e) {
             return response()->json(['error' => 'API request failed', 'message' => $e->getMessage()], $e->getStatusCode());
@@ -50,6 +50,7 @@ class LibraryController extends Controller
     public function getCitiesByPrefecture(int $prefectureId): JsonResponse
     {
         $cities = City::where('prefecture_id', $prefectureId)->get();
+
         return response()->json($cities);
     }
 
@@ -59,6 +60,7 @@ class LibraryController extends Controller
         $systemId = $request->input('systemId');
         try {
             $bookAvailable = $this->calilApiLibrary->checkBookAvailability($isbn, $systemId);
+
             return response()->json($bookAvailable);
         } catch (HttpException $e) {
             return response()->json(['error' => 'API request failed', 'message' => $e->getMessage()], $e->getStatusCode());

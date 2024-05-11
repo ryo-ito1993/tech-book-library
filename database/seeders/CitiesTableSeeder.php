@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\City;
+use App\Models\Prefecture;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use App\Models\City;
-use App\Models\Prefecture;
 
 class CitiesTableSeeder extends Seeder
 {
@@ -17,13 +16,13 @@ class CitiesTableSeeder extends Seeder
     public function run(): void
     {
         $apiKey = env('RESAS_API_KEY');
-        $url = config('services.resas.api_base_url') . 'cities';
+        $url = config('services.resas.api_base_url').'cities';
 
         $prefectures = Prefecture::all();
 
         foreach ($prefectures as $prefecture) {
             $response = Http::withHeaders([
-                'X-API-KEY' => $apiKey
+                'X-API-KEY' => $apiKey,
             ])->get($url, [
                 'prefCode' => $prefecture->pref_code,
             ]);
@@ -44,7 +43,7 @@ class CitiesTableSeeder extends Seeder
                 Log::error('Failed to fetch cities from RESAS API', [
                     'prefCode' => $prefecture->pref_code,
                     'status' => $response->status(),
-                    'body' => $response->body()
+                    'body' => $response->body(),
                 ]);
             }
         }

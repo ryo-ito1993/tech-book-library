@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Prefecture;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use App\Models\Prefecture;
 
 class PrefecturesTableSeeder extends Seeder
 {
@@ -16,10 +15,10 @@ class PrefecturesTableSeeder extends Seeder
     public function run(): void
     {
         $apiKey = config('services.resas.api_key');
-        $url = config('services.resas.api_base_url') . 'prefectures';
+        $url = config('services.resas.api_base_url').'prefectures';
 
         $response = Http::withHeaders([
-            'X-API-KEY' => $apiKey
+            'X-API-KEY' => $apiKey,
         ])->get($url);
 
         if ($response->successful()) {
@@ -34,7 +33,7 @@ class PrefecturesTableSeeder extends Seeder
         } else {
             Log::error('Failed to fetch prefectures from RESAS API', [
                 'status' => $response->status(),
-                'body' => $response->body()
+                'body' => $response->body(),
             ]);
         }
     }

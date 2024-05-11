@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Library\calilApiLibrary;
+use App\Library\googleBooksApiLibrary;
+use App\Models\Book;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use App\Library\googleBooksApiLibrary;
-use App\Library\calilApiLibrary;
-use App\Models\Book;
 
 class BookController extends Controller
 {
@@ -26,22 +26,22 @@ class BookController extends Controller
         $query = '';
 
         if ($title) {
-            $query .= 'intitle:' . $title . '+';
+            $query .= 'intitle:'.$title.'+';
         }
 
         if ($author) {
-            $query .= 'inauthor:' . $author . '+';
+            $query .= 'inauthor:'.$author.'+';
         }
 
         if ($isbn) {
-            $query .= 'isbn:' . $isbn . '+';
+            $query .= 'isbn:'.$isbn.'+';
         }
 
         $query = rtrim($query, '+');
 
         $hasSearched = $query !== '';
 
-        $books= [];
+        $books = [];
 
         if ($query) {
             $books = $this->googleBooksApiLibrary->searchBooks($query);
@@ -58,6 +58,7 @@ class BookController extends Controller
         $bookModel = Book::where('isbn', $isbn)->first();
         $isFavorite = $bookModel ? $user->favoriteBooks()->where('book_id', $bookModel->id)->exists() : false;
         $reviews = $bookModel ? $bookModel->reviews->sortByDesc('created_at') : [];
+
         return view('user.books.show', ['user' => $user, 'book' => $book, 'isFavorite' => $isFavorite, 'reviews' => $reviews]);
     }
 }

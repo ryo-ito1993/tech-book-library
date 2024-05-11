@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 use App\Library\googleBooksApiLibrary;
 use App\Models\Book;
+use Illuminate\View\View;
 
 class FavoriteBookController extends Controller
 {
