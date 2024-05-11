@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             PrefecturesTableSeeder::class,
             CitiesTableSeeder::class,
             CategoriesTableSeeder::class,
-            AdminTableSeeder::class,
+            AdminsTableSeeder::class,
         ]);
     }
 }
