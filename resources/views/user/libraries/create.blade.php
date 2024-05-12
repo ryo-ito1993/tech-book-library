@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
-    <header class="bg-info py-3 px-4 mb-3 text-center">
+    <header class="bg-primary py-3 px-4 mb-3 text-center">
         <h1 class="btn-collapse mb-0 text-white h4">
             {{ $userLibrary ? 'お気に入り図書館編集' : 'お気に入り図書館登録' }}
         </h1>

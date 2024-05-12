@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
-    <header class="bg-info py-3 px-4 mb-3 text-center">
+    <header class="bg-primary py-3 px-4 mb-3 text-center">
         <h1 class="mb-0 text-white h4">レビュー登録</h1>
     </header>
 
