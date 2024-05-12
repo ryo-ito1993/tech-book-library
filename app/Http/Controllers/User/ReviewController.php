@@ -12,6 +12,7 @@ use App\Models\Review;
 use App\Models\ReviewCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
@@ -20,13 +21,20 @@ class ReviewController extends Controller
     ) {
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
         $user = auth()->user();
-        $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(10);
+        $query = Review::with(['book.authors', 'user', 'categories'])->latest();
+        if ($request->has('category')) {
+            $query->whereHas('categories', static function ($query) use ($request) {
+                $query->where('categories.id', $request->input('category'));
+            });
+        }
+        $reviews = $query->paginate(10);
 
         return view('user.reviews.index', ['reviews' => $reviews, 'user' => $user]);
     }
+
 
     public function create(string $isbn): View
     {
@@ -42,7 +50,7 @@ class ReviewController extends Controller
         $user = auth()->user();
         $isbn = $validated['isbn'];
 
-        \DB::transaction(function () use ($validated, $user, $isbn) {
+        \DB::transaction(static function () use ($validated, $user, $isbn) {
             $book = Book::firstOrCreate(
                 ['isbn' => $isbn],
                 ['title' => $validated['title'], 'thumbnail' => $validated['thumbnail']]
@@ -85,7 +93,7 @@ class ReviewController extends Controller
         $validated = $request->validated();
         $isbn = $review->book->isbn;
 
-        \DB::transaction(function () use ($validated, $review) {
+        \DB::transaction(static function () use ($validated, $review) {
             $review->body = $validated['review'];
             $review->rate = $validated['rating'];
             $review->save();

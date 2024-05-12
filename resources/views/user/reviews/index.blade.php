@@ -38,7 +38,10 @@
                                 </div>
                                 <p class="card-text">
                                     @foreach ($review->categories as $category)
-                                        <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
+                                        {{-- <a href="{{ route('user.reviews.index', ['category' => $category->id]) }}">
+                                            <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
+                                        </a> --}}
+                                        <a href="{{ route('user.reviews.index', ['category' => $category->id]) }}" class="btn btn-sm btn-info text-white">{{ $category->name }}</a>
                                     @endforeach
                                 </p>
                                 <p class="card-text mt-2">{!! nl2br(e($review->body)) !!}</p>
