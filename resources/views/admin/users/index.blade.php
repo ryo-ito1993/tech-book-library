@@ -9,7 +9,7 @@
         </div>
         <div class="card-body table-responsive">
         <div class="bg-white mb-3">
-            <x-parts.search_box route='admin.users.index' :userName="\Request::get('userName') ?? ''" :email="\Request::get('email') ?? ''"></x-parts.search_box>
+            <x-parts.search_box route='admin.users.index' :userName="\Request::get('userName') ?? ''" :email="\Request::get('email') ?? ''" :library="\Request::get('library') ?? ''"></x-parts.search_box>
 
             <div class="d-flex justify-content-end align-items-center mb-3">
                 {{ $users->appends(request()->query())->links('pagination::bootstrap-4') }}
@@ -20,6 +20,7 @@
                         <th scope="col" class="text-nowrap">会員ID</th>
                         <th scope="col" class="text-nowrap">名前</th>
                         <th scope="col" class="text-nowrap">メールアドレス</th>
+                        <th scope="col" class="text-nowrap">登録図書館エリア</th>
                     </tr>
                 </thead>
                 <tbody style="border-style: none">
@@ -30,6 +31,13 @@
                                 <a href="{{ route('admin.users.show', ['user' => $user]) }}">{{ $user->name }}</a>
                             </td>
                             <td class="text-nowrap px-2">{{ $user->email }}</td>
+                            <td class="text-nowrap px-2">
+                                @if ($user->library)
+                                    {{ $user->library->system_name }}
+                                @else
+                                    未登録
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

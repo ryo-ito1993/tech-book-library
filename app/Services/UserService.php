@@ -20,6 +20,16 @@ class UserService
             $query->where('email', 'like', '%' . $input['email'] . '%');
         }
 
+        if (isset($input['library'])) {
+            if ($input['library'] === '未登録') {
+                $query->doesntHave('library');
+            } else {
+                $query->whereHas('library', function ($query) use ($input) {
+                    $query->where('system_name', 'like', '%' . $input['library'] . '%');
+                });
+            }
+        }
+
         return $query;
     }
 }

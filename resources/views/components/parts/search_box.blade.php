@@ -13,6 +13,12 @@
                     <input type="text" name="email" value="{{ $email ?? '' }}" class="form-control" />
                 </div>
             @endif
+            @if (isset($library))
+                <div class="form-group mb-3 mr-3">
+                    <label for="" class="form-check-label mr-3">登録図書館エリア</label>
+                    <input type="text" name="library" value="{{ $library ?? '' }}" class="form-control" />
+                </div>
+            @endif
 
         <div class="row justify-content-center">
             <button class="btn btn-dark w-25 me-4">検索</button>
