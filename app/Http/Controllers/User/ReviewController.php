@@ -51,41 +51,9 @@ class ReviewController extends Controller
     {
         $validated = $request->validated();
         $user = auth()->user();
-        $isbn = $validated['isbn'];
+        $this->reviewService->storeReview($validated, $user->id);
 
-        \DB::transaction(static function () use ($validated, $user, $isbn) {
-            $book = Book::firstOrCreate(
-                ['isbn' => $isbn],
-                ['title' => $validated['title'], 'thumbnail' => $validated['thumbnail']]
-            );
-            if ($book->authors()->doesntExist()) {
-                $authors = $validated['authors'];
-                foreach ($authors as $author) {
-                    $book->authors()->firstOrCreate(['name' => $author]);
-                }
-            }
-
-            $review = new Review();
-            $review->user_id = $user->id;
-            $review->book_id = $book->id;
-            $review->body = $validated['review'];
-            $review->rate = $validated['rating'];
-            $review->save();
-
-            if (isset($validated['categories'])) {
-                foreach ($validated['categories'] as $categoryId) {
-                    ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
-                }
-            }
-
-            if (isset($validated['levelCategories'])) {
-                foreach ($validated['levelCategories'] as $levelCategoryId) {
-                    ReviewLevelCategory::create(['review_id' => $review->id, 'level_category_id' => $levelCategoryId]);
-                }
-            }
-        });
-
-        return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを投稿しました');
+        return redirect()->route('user.books.show', ['isbn' => $validated['isbn']])->with('status', 'レビューを投稿しました');
     }
 
     public function edit(Review $review): View

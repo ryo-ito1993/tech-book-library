@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Book;
+use App\Models\ReviewCategory;
+use App\Models\ReviewLevelCategory;
 
 class ReviewService
 {
@@ -45,5 +48,49 @@ class ReviewService
         }
 
         return $query;
+    }
+
+    // レビュー登録
+    public function storeReview($validated, $userId): Review
+    {
+        return \DB::transaction(function () use ($validated, $userId) {
+            $book = Book::firstOrCreate(
+                ['isbn' => $validated['isbn']],
+                ['title' => $validated['title'], 'thumbnail' => $validated['thumbnail']]
+            );
+
+            if ($book->authors()->doesntExist()) {
+                foreach ($validated['authors'] as $author) {
+                    $book->authors()->firstOrCreate(['name' => $author]);
+                }
+            }
+
+            $review = new Review([
+                'user_id' => $userId,
+                'book_id' => $book->id,
+                'body'    => $validated['review'],
+                'rate'    => $validated['rating']
+            ]);
+            $review->save();
+
+            $this->attachCategories($review, $validated['categories'] ?? []);
+            $this->attachLevelCategories($review, $validated['levelCategories'] ?? []);
+
+            return $review;
+        });
+    }
+
+    private function attachCategories(Review $review, array $categories)
+    {
+        foreach ($categories as $categoryId) {
+            ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
+        }
+    }
+
+    private function attachLevelCategories(Review $review, array $levelCategories)
+    {
+        foreach ($levelCategories as $levelCategoryId) {
+            ReviewLevelCategory::create(['review_id' => $review->id, 'level_category_id' => $levelCategoryId]);
+        }
     }
 }
