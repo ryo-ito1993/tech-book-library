@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
-    <header class="bg-info py-3 px-4 mb-3 text-center">
+    <header class="bg-primary py-3 px-4 mb-3 text-center">
         <h1 class="mb-0 text-white h4">レビューリスト</h1>
     </header>
 
@@ -41,7 +41,7 @@
                                         <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
                                     @endforeach
                                 </p>
-                                <p class="card-text mt-2">{{ $review->body }}</p>
+                                <p class="card-text mt-2">{!! nl2br(e($review->body)) !!}</p>
                             </div>
                             @if ($review->user->id === auth()->id())
                                 <div class="ms-auto me-1">

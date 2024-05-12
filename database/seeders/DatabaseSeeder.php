@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PrefecturesTableSeeder::class,
             CitiesTableSeeder::class,
+            CategoriesTableSeeder::class,
+            AdminsTableSeeder::class,
         ]);
     }
 }

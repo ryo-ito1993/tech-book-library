@@ -15,7 +15,7 @@ class PrefecturesTableSeeder extends Seeder
     public function run(): void
     {
         $apiKey = config('services.resas.api_key');
-        $url = config('services.resas.api_base_url').'prefectures';
+        $url = config('services.resas.api_base_url') . 'prefectures';
 
         $response = Http::withHeaders([
             'X-API-KEY' => $apiKey,

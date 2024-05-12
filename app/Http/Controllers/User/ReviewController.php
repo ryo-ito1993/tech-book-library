@@ -61,7 +61,7 @@ class ReviewController extends Controller
             $review->rate = $validated['rating'];
             $review->save();
 
-            if ($validated['categories']) {
+            if (isset($validated['categories'])) {
                 foreach ($validated['categories'] as $categoryId) {
                     ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
                 }
@@ -98,7 +98,6 @@ class ReviewController extends Controller
 
     public function destroy(Review $review): RedirectResponse
     {
-        $isbn = $review->book->isbn;
         $book = $review->book;
 
         $review->delete();

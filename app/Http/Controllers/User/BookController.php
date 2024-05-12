@@ -26,15 +26,15 @@ class BookController extends Controller
         $query = '';
 
         if ($title) {
-            $query .= 'intitle:'.$title.'+';
+            $query .= 'intitle:' . $title . '+';
         }
 
         if ($author) {
-            $query .= 'inauthor:'.$author.'+';
+            $query .= 'inauthor:' . $author . '+';
         }
 
         if ($isbn) {
-            $query .= 'isbn:'.$isbn.'+';
+            $query .= 'isbn:' . $isbn . '+';
         }
 
         $query = rtrim($query, '+');
