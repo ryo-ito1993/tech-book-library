@@ -51,7 +51,7 @@ class ReviewService
     }
 
     // レビュー登録
-    public function storeReview($validated, $userId): Review
+    public function storeReview(array $validated, int $userId): Review
     {
         return \DB::transaction(function () use ($validated, $userId) {
             $book = Book::firstOrCreate(
@@ -80,14 +80,14 @@ class ReviewService
         });
     }
 
-    private function attachCategories(Review $review, array $categories)
+    private function attachCategories(Review $review, array $categories): void
     {
         foreach ($categories as $categoryId) {
             ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
         }
     }
 
-    private function attachLevelCategories(Review $review, array $levelCategories)
+    private function attachLevelCategories(Review $review, array $levelCategories): void
     {
         foreach ($levelCategories as $levelCategoryId) {
             ReviewLevelCategory::create(['review_id' => $review->id, 'level_category_id' => $levelCategoryId]);

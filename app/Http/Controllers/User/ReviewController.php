@@ -37,7 +37,6 @@ class ReviewController extends Controller
         return view('user.reviews.index', ['reviews' => $reviews, 'user' => $user]);
     }
 
-
     public function create(string $isbn): View
     {
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
