@@ -8,6 +8,8 @@
             <h5 class="m-2">会員一覧：{{ $users->total() . '件中' . $users->firstItem() . '-' . $users->lastItem() }}件</h5>
         </div>
         <div class="card-body table-responsive">
+        <div class="bg-white mb-3">
+            <x-parts.search_box route='admin.users.index' :userName="\Request::get('userName') ?? ''" :email="\Request::get('email') ?? ''"></x-parts.search_box>
 
             <div class="d-flex justify-content-end align-items-center mb-3">
                 {{ $users->appends(request()->query())->links('pagination::bootstrap-4') }}
