@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="col-3 me-5 mt-5">
-                    <a href="#" class="card shadow text-decoration-none list-group-item-action h-100">
+                    <a href="{{ route('admin.categories.index') }}" class="card shadow text-decoration-none list-group-item-action h-100">
                         <div class="card-header text-center">
                             <h1 class="mb-0 display-2"><i class="fa fa-tags me-1"></i></h1>
                             <h5 class="mb-0">カテゴリ管理</h5>
