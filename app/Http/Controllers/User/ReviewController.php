@@ -98,7 +98,6 @@ class ReviewController extends Controller
 
     public function destroy(Review $review): RedirectResponse
     {
-        $isbn = $review->book->isbn;
         $book = $review->book;
 
         $review->delete();

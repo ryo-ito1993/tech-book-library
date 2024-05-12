@@ -53,8 +53,13 @@
                         <td>{{ $review->updated_at }}</td>
                     </tr>
             </table>
-            <div class="text-center">
-                <a href="{{ route('admin.reviews.index') }}" class="btn btn-outline-dark mr-4">一覧へ戻る</a>
+            <div class="d-flex justify-content-center">
+                <a href="{{ route('admin.reviews.index') }}" class="btn btn-outline-dark me-4">一覧へ戻る</a>
+                <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" onclick="return confirm('このレビューを削除しますか？');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </form>
             </div>
         </div>
     </div>

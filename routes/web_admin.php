@@ -19,6 +19,6 @@ Route::middleware('auth:admin')->group(static function () {
     Route::resource('users', UserController::class)->only(['index', 'show']);
 
     // レビュー管理
-    Route::resource('reviews', ReviewController::class)->only(['index', 'show']);
+    Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
 
 });

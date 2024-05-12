@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Services\ReviewService;
+use Illuminate\Http\RedirectResponse;
 
 class ReviewController extends Controller
 {
@@ -24,4 +25,17 @@ class ReviewController extends Controller
     {
         return view('admin.reviews.show', ['review' => $review]);
     }
+
+    public function destroy(Review $review): RedirectResponse
+    {
+        $book = $review->book;
+
+        $review->delete();
+        if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
+            $book->delete();
+        }
+
+        return redirect()->route('admin.reviews.index')->with('status', 'レビューを削除しました');
+    }
+
 }
