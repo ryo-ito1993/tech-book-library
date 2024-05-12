@@ -26,10 +26,10 @@
                 <tbody style="border-style: none">
                     @foreach ($users as $user)
                         <tr>
-                            <td class="text-wrap px-2">{{ $user->id }}</td>
                             <td class="text-wrap px-2">
-                                <a href="{{ route('admin.users.show', ['user' => $user]) }}">{{ $user->name }}</a>
+                                <a href="{{ route('admin.users.show', ['user' => $user]) }}">{{ $user->id }}</a>
                             </td>
+                            <td class="text-wrap px-2">{{ $user->name }}</a></td>
                             <td class="text-nowrap px-2">{{ $user->email }}</td>
                             <td class="text-nowrap px-2">
                                 @if ($user->library)

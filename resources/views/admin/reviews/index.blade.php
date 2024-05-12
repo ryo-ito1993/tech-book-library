@@ -20,6 +20,7 @@
                         <th scope="col" class="text-nowrap">レビューID</th>
                         <th scope="col" class="text-nowrap">投稿者</th>
                         <th scope="col" class="text-nowrap">書籍名</th>
+                        <th scope="col" class="text-nowrap">投稿日</th>
                     </tr>
                 </thead>
                 <tbody style="border-style: none">
@@ -30,6 +31,7 @@
                             </td>
                             <td class="text-wrap px-2">{{ $review->user->name }}</td>
                             <td class="text-nowrap px-2">{{ $review->book->title }}</td>
+                            <td class="text-nowrap px-2">{{ $review->created_at->format('Y/m/d') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -10,7 +10,7 @@ class ReviewService
     // 検索
     public static function search(array $input): Builder
     {
-        $query = Review::query();
+        $query = Review::with(['book', 'user']);
 
         if (isset($input['reviewer'])) {
             $query->whereHas('user', function ($query) use ($input) {

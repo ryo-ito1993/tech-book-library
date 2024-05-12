@@ -41,7 +41,7 @@
                                         <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
                                     @endforeach
                                 </p>
-                                <p class="card-text mt-2">{{ $review->body }}</p>
+                                <p class="card-text mt-2">{!! nl2br(e($review->body)) !!}</p>
                             </div>
                             @if ($review->user->id === auth()->id())
                                 <div class="ms-auto me-1">

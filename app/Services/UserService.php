@@ -10,7 +10,7 @@ class UserService
     // 検索
     public static function search(array $input): Builder
     {
-        $query = User::query();
+        $query = User::with('library');
 
         if (isset($input['userName'])) {
             $query->where('name', 'like', '%' . $input['userName'] . '%');

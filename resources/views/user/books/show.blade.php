@@ -123,7 +123,7 @@
                                 <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
                             @endforeach
                         </p>
-                        <p class="card-text">{{ $review->body }}</p>
+                        <p class="card-text">{!! nl2br(e($review->body)) !!}</p>
                     </div>
             </div>
         @endforeach
