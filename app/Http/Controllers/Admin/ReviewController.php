@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Review;
 use App\Services\ReviewService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $searchInput = [
             'reviewer' => $request->input('reviewer'),
@@ -21,7 +22,7 @@ class ReviewController extends Controller
         return view('admin.reviews.index', ['reviews' => $reviews]);
     }
 
-    public function show(Review $review)
+    public function show(Review $review): View
     {
         return view('admin.reviews.show', ['review' => $review]);
     }
@@ -37,5 +38,4 @@ class ReviewController extends Controller
 
         return redirect()->route('admin.reviews.index')->with('status', 'レビューを削除しました');
     }
-
 }

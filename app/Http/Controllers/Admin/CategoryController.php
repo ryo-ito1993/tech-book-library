@@ -8,10 +8,12 @@ use App\Models\Category;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Services\CategoryService;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $searchInput = [
             'categoryName' => $request->input('categoryName'),
@@ -21,12 +23,12 @@ class CategoryController extends Controller
         return view('admin.categories.index', ['categories' => $categories]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('admin.categories.create');
     }
 
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -35,12 +37,12 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('status', 'カテゴリを追加しました');
     }
 
-    public function edit(Category $category)
+    public function edit(Category $category): View
     {
         return view('admin.categories.edit', ['category' => $category]);
     }
 
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
         $request->validate([
             'name' => 'unique:categories|required|string|max:255',
@@ -51,7 +53,7 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('status', 'カテゴリを更新しました');
     }
 
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
         $category->delete();
 

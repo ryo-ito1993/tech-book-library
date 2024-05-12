@@ -60,12 +60,12 @@ class googleBooksApiLibrary
             'status_code' => $status,
             'error' => $error,
         ]);
-        throw new HttpException($status, 'API request failed: '.$error);
+        throw new HttpException($status, 'API request failed: ' . $error);
     }
 
     public function getBookByIsbn(string $isbn): ?array
     {
-        $query = 'isbn:'.$isbn;
+        $query = 'isbn:' . $isbn;
         $books = $this->searchBooks($query, 1);
 
         return $books[0] ?? null;
