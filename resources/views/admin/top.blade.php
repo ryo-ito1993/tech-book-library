@@ -14,7 +14,7 @@
             <div class="row justify-content-around mb-5">
 
                 <div class="col-3 me-5 mt-5">
-                    <a href="#" class="card shadow text-decoration-none list-group-item-action h-100">
+                    <a href="{{ route('admin.users.index') }}" class="card shadow text-decoration-none list-group-item-action h-100">
                         <div class="card-header text-center">
                             <h1 class="mb-0 display-2"><i class="fa fa-users me-1"></i></h1>
                             <h5 class="mb-0">会員管理</h5>
