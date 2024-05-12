@@ -8,6 +8,8 @@ use App\Http\Requests\User\UpdateReviewRequest;
 use App\Library\googleBooksApiLibrary;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\LevelCategory;
+use App\Models\ReviewLevelCategory;
 use App\Models\Review;
 use App\Models\ReviewCategory;
 use Illuminate\Http\RedirectResponse;
@@ -40,8 +42,9 @@ class ReviewController extends Controller
     {
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
         $categories = Category::all();
+        $levelCategories = LevelCategory::all();
 
-        return view('user.reviews.create', ['book' => $book, 'categories' => $categories]);
+        return view('user.reviews.create', ['book' => $book, 'categories' => $categories, 'levelCategories' => $levelCategories]);
     }
 
     public function store(StoreReviewRequest $request): RedirectResponse
@@ -74,6 +77,12 @@ class ReviewController extends Controller
                     ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
                 }
             }
+
+            if (isset($validated['levelCategories'])) {
+                foreach ($validated['levelCategories'] as $levelCategoryId) {
+                    ReviewLevelCategory::create(['review_id' => $review->id, 'level_category_id' => $levelCategoryId]);
+                }
+            }
         });
 
         return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを投稿しました');
@@ -84,8 +93,9 @@ class ReviewController extends Controller
         $isbn = $review->book->isbn;
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
         $categories = Category::all();
+        $levelCategories = LevelCategory::all();
 
-        return view('user.reviews.edit', ['review' => $review, 'categories' => $categories, 'book' => $book]);
+        return view('user.reviews.edit', ['review' => $review, 'book' => $book, 'categories' => $categories, 'levelCategories' => $levelCategories]);
     }
 
     public function update(UpdateReviewRequest $request, Review $review): RedirectResponse
@@ -99,6 +109,7 @@ class ReviewController extends Controller
             $review->save();
 
             $review->categories()->sync($validated['categories'] ?? []);
+            $review->levelCategories()->sync($validated['levelCategories'] ?? []);
         });
 
         return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを更新しました');

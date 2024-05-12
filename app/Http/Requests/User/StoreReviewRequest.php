@@ -31,6 +31,8 @@ class StoreReviewRequest extends FormRequest
             'rating' => ['required', 'integer', 'between:1,5'],
             'categories' => ['array', 'nullable'],
             'categories.*' => ['exists:categories,id'],
+            'levelCategories' => ['array', 'nullable'],
+            'levelCategories.*' => ['exists:level_categories,id'],
         ];
     }
 }
