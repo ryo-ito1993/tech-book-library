@@ -26,10 +26,15 @@ class ReviewController extends Controller
     public function index(Request $request): View
     {
         $user = auth()->user();
-        $query = Review::with(['book.authors', 'user', 'categories'])->latest();
+        $query = Review::with(['book.authors', 'user', 'categories', 'levelCategories'])->orderBy('created_at', 'desc');
         if ($request->has('category')) {
             $query->whereHas('categories', static function ($query) use ($request) {
                 $query->where('categories.id', $request->input('category'));
+            });
+        }
+        if ($request->has('levelCategory')) {
+            $query->whereHas('levelCategories', static function ($query) use ($request) {
+                $query->where('level_categories.id', $request->input('levelCategory'));
             });
         }
         $reviews = $query->paginate(10);

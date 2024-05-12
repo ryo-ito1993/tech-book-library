@@ -55,7 +55,7 @@ class BookController extends Controller
         $user = auth()->user();
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
 
-        $bookModel = Book::where('isbn', $isbn)->first();
+        $bookModel = Book::with(['reviews.user', 'reviews.categories', 'reviews.levelCategories'])->where('isbn', $isbn)->first();
         $isFavorite = $bookModel ? $user->favoriteBooks()->where('book_id', $bookModel->id)->exists() : false;
         $reviews = $bookModel ? $bookModel->reviews->sortByDesc('created_at') : [];
 

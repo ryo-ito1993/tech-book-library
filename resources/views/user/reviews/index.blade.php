@@ -37,10 +37,10 @@
                                     </span>
                                 </div>
                                 <p class="card-text">
+                                    @foreach ($review->levelCategories as $levelCategory)
+                                        <a href="{{ route('user.reviews.index', ['levelCategory' => $levelCategory->id]) }}" class="btn btn-sm btn-primary text-white">{{ $levelCategory->name }}</a>
+                                    @endforeach
                                     @foreach ($review->categories as $category)
-                                        {{-- <a href="{{ route('user.reviews.index', ['category' => $category->id]) }}">
-                                            <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
-                                        </a> --}}
                                         <a href="{{ route('user.reviews.index', ['category' => $category->id]) }}" class="btn btn-sm btn-info text-white">{{ $category->name }}</a>
                                     @endforeach
                                 </p>
