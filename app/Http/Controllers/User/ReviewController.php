@@ -12,6 +12,7 @@ use App\Models\LevelCategory;
 use App\Models\ReviewLevelCategory;
 use App\Models\Review;
 use App\Models\ReviewCategory;
+use App\Services\ReviewService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -19,25 +20,19 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
     public function __construct(
-        protected googleBooksApiLibrary $googleBooksApiLibrary
+        protected googleBooksApiLibrary $googleBooksApiLibrary,
+        protected ReviewService $reviewService
     ) {
     }
 
     public function index(Request $request): View
     {
         $user = auth()->user();
-        $query = Review::with(['book.authors', 'user', 'categories', 'levelCategories'])->orderBy('created_at', 'desc');
-        if ($request->has('category')) {
-            $query->whereHas('categories', static function ($query) use ($request) {
-                $query->where('categories.id', $request->input('category'));
-            });
-        }
-        if ($request->has('levelCategory')) {
-            $query->whereHas('levelCategories', static function ($query) use ($request) {
-                $query->where('level_categories.id', $request->input('levelCategory'));
-            });
-        }
-        $reviews = $query->paginate(10);
+        $searchInput = [
+            'category' => $request->input('category'),
+            'levelCategory' => $request->input('levelCategory'),
+        ];
+        $reviews = $this->reviewService->searchCategory($searchInput)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('user.reviews.index', ['reviews' => $reviews, 'user' => $user]);
     }

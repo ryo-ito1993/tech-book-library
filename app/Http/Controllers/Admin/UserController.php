@@ -10,6 +10,11 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    public function __construct(
+        protected UserService $userService
+    ) {
+    }
+
     public function index(Request $request): View
     {
         $searchInput = [
@@ -17,7 +22,7 @@ class UserController extends Controller
             'email' => $request->input('email'),
             'library' => $request->input('library'),
         ];
-        $users = UserService::search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
+        $users = $this->userService->search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
         return view('admin.users.index', ['users' => $users]);
     }
 

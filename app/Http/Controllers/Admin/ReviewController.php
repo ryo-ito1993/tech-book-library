@@ -11,13 +11,18 @@ use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
+    public function __construct(
+        protected ReviewService $reviewService
+    ) {
+    }
+
     public function index(Request $request): View
     {
         $searchInput = [
             'reviewer' => $request->input('reviewer'),
             'bookName' => $request->input('bookName'),
         ];
-        $reviews = ReviewService::search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
+        $reviews = $this->reviewService->search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
 
         return view('admin.reviews.index', ['reviews' => $reviews]);
     }

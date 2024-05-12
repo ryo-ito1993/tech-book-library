@@ -13,12 +13,17 @@ use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
+    public function __construct(
+        protected CategoryService $categoryService
+    ) {
+    }
+
     public function index(Request $request): View
     {
         $searchInput = [
             'categoryName' => $request->input('categoryName'),
         ];
-        $categories = CategoryService::search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
+        $categories = $this->categoryService->search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
 
         return view('admin.categories.index', ['categories' => $categories]);
     }
