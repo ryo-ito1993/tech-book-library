@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             CategoriesTableSeeder::class,
             AdminsTableSeeder::class,
+            LevelCategoriesTableSeeder::class,
         ]);
     }
 }
