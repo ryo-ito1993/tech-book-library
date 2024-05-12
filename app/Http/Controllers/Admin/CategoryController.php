@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Http\Requests\Admin\StoreCategoryRequest;
+use App\Http\Requests\Admin\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -19,13 +21,11 @@ class CategoryController extends Controller
         return view('admin.categories.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'unique:categories|required|string|max:255',
-        ]);
+        $validated = $request->validated();
 
-        Category::create($request->all());
+        Category::create($validated);
 
         return redirect()->route('admin.categories.index')->with('status', 'カテゴリを追加しました');
     }
@@ -35,7 +35,7 @@ class CategoryController extends Controller
         return view('admin.categories.edit', ['category' => $category]);
     }
 
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         $request->validate([
             'name' => 'unique:categories|required|string|max:255',
