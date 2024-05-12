@@ -13,6 +13,7 @@
 
                 <div class="form-group mb-3">
                     <label for="category" class="col-form-label text-black-50 mr-2">カテゴリ名</label>
+                    @include('components.parts.required_badge')
                     <input type="text" name="name" id="category" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
                     @include('components.form.error', ['name' => 'name'])
                 </div>

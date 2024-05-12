@@ -42,7 +42,10 @@
                 @csrf
                 @method('PUT')
                 <div class="rating mb-3">
-                    本の評価：
+                    <div class="mb-1">
+                        本の評価
+                        @include('components.parts.required_badge')
+                    </div>
                     <span v-for="(star, index) in stars" :key="index" class="star me-1"
                     @mouseover="setRating(index+1)"
                     :class="{ 'text-warning': index < rating }">
@@ -51,12 +54,13 @@
                 </div>
                 <input type="hidden" name="rating" v-model="rating">
                 <div class="form-group mb-3">
-                    <label for="review">レビュー:</label>
-                    <textarea name="review" class="form-control bg-white @error('review') is-invalid @enderror" required>{{ old('review', $review->body) }}</textarea>
+                    <label for="review">レビュー</label>
+                    @include('components.parts.required_badge')
+                    <textarea name="review" class="form-control bg-white mt-1 @error('review') is-invalid @enderror" required>{{ old('review', $review->body) }}</textarea>
                     @include('components.form.error', ['name' => 'review'])
                 </div>
                 <div class="form-group mb-3">
-                    <label for="categories">カテゴリ:</label>
+                    <label for="categories">カテゴリ</label>
                     <select id="categories" class="form-control @error('categories') is-invalid @enderror" name="categories[]" multiple="multiple">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" @if (in_array($category->id, old('categories', $review->categories->pluck('id')->toArray()))) selected @endif>{{ $category->name }}</option>
