@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
+use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::orderBy('created_at', 'desc')->paginate(30);
+        $searchInput = [
+            'categoryName' => $request->input('categoryName'),
+        ];
+        $categories = CategoryService::search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
+
         return view('admin.categories.index', ['categories' => $categories]);
     }
 

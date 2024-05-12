@@ -7,28 +7,39 @@
                     <input type="text" name="userName" value="{{ $userName ?? '' }}" class="form-control" />
                 </div>
             @endif
+
             @if (isset($email))
                 <div class="form-group mb-3 mr-3">
                     <label for="" class="form-check-label mr-3">メールアドレス</label>
                     <input type="text" name="email" value="{{ $email ?? '' }}" class="form-control" />
                 </div>
             @endif
+
             @if (isset($library))
                 <div class="form-group mb-3 mr-3">
                     <label for="" class="form-check-label mr-3">登録図書館エリア</label>
                     <input type="text" name="library" value="{{ $library ?? '' }}" class="form-control" />
                 </div>
             @endif
+
             @if (isset($reviewer))
                 <div class="form-group mb-3 mr-3">
                     <label for="" class="form-check-label mr-3">投稿者</label>
                     <input type="text" name="reviewer" value="{{ $reviewer ?? '' }}" class="form-control" />
                 </div>
             @endif
+
             @if (isset($bookName))
                 <div class="form-group mb-3 mr-3">
                     <label for="" class="form-check-label mr-3">書籍名</label>
                     <input type="text" name="bookName" value="{{ $bookName ?? '' }}" class="form-control" />
+                </div>
+            @endif
+
+            @if (isset($categoryName))
+                <div class="form-group mb-3 mr-3">
+                    <label for="" class="form-check-label mr-3">カテゴリ名</label>
+                    <input type="text" name="categoryName" value="{{ $categoryName ?? '' }}" class="form-control" />
                 </div>
             @endif
 
