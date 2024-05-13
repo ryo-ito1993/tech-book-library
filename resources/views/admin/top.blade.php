@@ -63,7 +63,7 @@
                     <div class="col-3 me-5 mt-5">
                         <a href="{{ route('admin.contacts.index') }}" class="card shadow text-decoration-none list-group-item-action h-100">
                             <div class="card-header text-center">
-                                <h1 class="mb-0 display-2"><i class="fas fa-laptop-code me-1"></i></h1>
+                                <h1 class="mb-0 display-2"><i class="far fa-envelope"></i></h1>
                                 <h5 class="mb-0">お問い合わせ管理</h5>
                             </div>
                             <div class="card-body text-dark text-center">
