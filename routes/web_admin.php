@@ -32,5 +32,5 @@ Route::middleware('auth:admin')->group(static function () {
 
     // お問合せ管理
     Route::resource('contacts', ContactController::class)->only('index', 'show');
-    Route::get('/contacts/{contact}/update_status', [ContactController::class, 'updateStatus'])->name('contacts.update_status');
+    Route::patch('/contacts/{contact}/update_status', [ContactController::class, 'updateStatus'])->name('contacts.update_status');
 });

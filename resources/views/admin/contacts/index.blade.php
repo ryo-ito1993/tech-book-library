@@ -29,9 +29,21 @@
 
                             <td class="text-wrap px-2">{{ $contact->name }}</a></td>
                             <td class="text-nowrap px-2">{{ $contact->email }}</td>
-                            <td class="text-nowrap px-2">{{ $contact->status }}</td>
-                            <td class="text-wrap px-2">
-                                <a href="{{ route('admin.contacts.show', ['contact' => $contact]) }}">{{ $contact->id }}</a>
+                            <td class="text-nowrap px-2">
+                                <form action="{{ route('admin.contacts.update_status', $contact) }}" method="post">
+                                    @csrf
+                                    @method('PATCH')
+                                    <select name="status" class="form-control bg-white" onchange="this.form.submit()">
+                                        @foreach (App\Models\Contact::statuses() as $statusValue => $statusName)
+                                            <option value="{{ $statusValue }}" @if ($contact->status == $statusValue) selected @endif>
+                                                {{ $statusName }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </form>
+                            </td>
+                            <td class="text-wrap px-2 text-center">
+                                <a href="{{ route('admin.contacts.show', ['contact' => $contact]) }}" class="btn btn-primary">詳細</a>
                             </td>
                         </tr>
                     @endforeach

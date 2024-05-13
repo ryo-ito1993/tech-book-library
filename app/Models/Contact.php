@@ -16,22 +16,12 @@ class Contact extends Model
     const STATUS_IN_PROGRESS = 1;
     const STATUS_COMPLETED = 2;
 
-    public function getStatusTextAttribute(): string
+    public static function statuses()
     {
-        return self::getStatusText($this->status);
-    }
-
-    public static function getStatusText($status): string
-    {
-        switch ($status) {
-            case self::STATUS_UNATTENDED:
-                return '未対応';
-            case self::STATUS_IN_PROGRESS:
-                return '対応中';
-            case self::STATUS_COMPLETED:
-                return '対応済';
-            default:
-                return '未定義';
-        }
+        return [
+            self::STATUS_UNATTENDED => '未対応',
+            self::STATUS_IN_PROGRESS => '対応中',
+            self::STATUS_COMPLETED => '対応済',
+        ];
     }
 }
