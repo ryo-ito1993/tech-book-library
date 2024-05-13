@@ -24,6 +24,6 @@ class ContactController extends Controller
     {
         $contact->update(['status' => $request->status]);
 
-        return redirect()->route('admin.contacts.index', ['contact' => $contact])->with('status', 'お問い合わせのステータスを更新しました');
+        return redirect()->back()->with('status', 'お問い合わせのステータスを更新しました');
     }
 }
