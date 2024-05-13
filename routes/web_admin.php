@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\LevelCategoryController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactController;
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
@@ -28,4 +29,8 @@ Route::middleware('auth:admin')->group(static function () {
 
     // 技術カテゴリ管理
     Route::resource('categories', CategoryController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+
+    // お問合せ管理
+    Route::resource('contacts', ContactController::class)->only('index', 'show');
+    Route::get('/contacts/{contact}/update_status', [ContactController::class, 'updateStatus'])->name('contacts.update_status');
 });
