@@ -6,7 +6,7 @@
     <div class="top-image" style="background-image: url('{{ asset('images/top-image.jpg') }}')">
         <div>
             <h1 class="display-1" style="font-family: 'Kaisei Tokumin', serif;">TechBookLibrary</h1>
-            <p>TechBookLibraryは技術書検索と図書館検索を同時に行うことができるサービスです。</p>
+            <p class="fs-5">TechBookLibraryは技術書検索と図書館検索を同時に行うことができるサービスです。</p>
         </div>
     </div>
 
