@@ -9,7 +9,7 @@
                 <li class="pt-3"><a href="#" class="text-decoration-none me-4 text-dark">
                         <span>プライバシーポリシー</span>
                     </a></li>
-                <li class="pt-3"><a href="#"
+                <li class="pt-3"><a href="{{ route('user.contacts.create') }}"
                         class="text-decoration-none me-4 text-dark">
                         <span>お問い合わせ</span>
                     </a>

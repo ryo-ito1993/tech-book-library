@@ -8,6 +8,13 @@
                 </div>
             @endif
 
+            @if (isset($contactName))
+                <div class="form-group mb-3 mr-3">
+                    <label for="" class="form-check-label mr-3">名前</label>
+                    <input type="text" name="contactName" value="{{ $contactName ?? '' }}" class="form-control" />
+                </div>
+            @endif
+
             @if (isset($email))
                 <div class="form-group mb-3 mr-3">
                     <label for="" class="form-check-label mr-3">メールアドレス</label>
@@ -47,6 +54,19 @@
                 <div class="form-group mb-3 mr-3">
                     <label for="" class="form-check-label mr-3">技術カテゴリ名</label>
                     <input type="text" name="categoryName" value="{{ $categoryName ?? '' }}" class="form-control" />
+                </div>
+            @endif
+
+            @if (isset($status))
+                <div class="form-group mb-3 mr-3">
+                    <label for="" class="form-check-label mr-3">ステータス</label>
+                    <select name="status" class="form-control">
+                        <option value="">選択してください</option>
+                        @foreach (App\Models\Contact::statuses() as $value => $statusName)
+                            <option value="{{ $value }}" @if (request('status') == (string)$value) selected @endif>{{ $statusName }}</option>
+                        @endforeach
+
+                    </select>
                 </div>
             @endif
 

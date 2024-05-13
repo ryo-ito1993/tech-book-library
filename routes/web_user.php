@@ -4,12 +4,21 @@ use App\Http\Controllers\User\BookController;
 use App\Http\Controllers\User\FavoriteBookController;
 use App\Http\Controllers\User\LibraryController;
 use App\Http\Controllers\User\ReviewController;
+use App\Http\Controllers\User\ContactController;
 use Illuminate\Support\Facades\Route;
 
 // レビュー一覧
 Route::controller(ReviewController::class)->name('reviews.')->group(static function () {
     Route::get('/reviews', 'index')->name('index');
 });
+
+// お問い合わせ
+Route::prefix('contacts')->name('contacts.')->group(static function () {
+    Route::post('confirm', [ContactController::class, 'confirm'])->name('confirm');
+    Route::get('complete', [ContactController::class, 'complete'])->name('complete');
+    Route::post('back', [ContactController::class, 'back'])->name('back');
+});
+Route::resource('contacts', ContactController::class)->only('create', 'store');
 
 // ログイン済のユーザーのみアクセス可能
 Route::middleware(['auth:web', 'verified'])->group(static function () {
