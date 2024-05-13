@@ -13,10 +13,12 @@ class Contact extends Model
 
     // ステータス値を定数として定義
     const STATUS_UNATTENDED = 0;
+
     const STATUS_IN_PROGRESS = 1;
+
     const STATUS_COMPLETED = 2;
 
-    public static function statuses()
+    public static function statuses(): array
     {
         return [
             self::STATUS_UNATTENDED => '未対応',
