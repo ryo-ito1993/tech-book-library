@@ -119,6 +119,9 @@
                             </span>
                         </p>
                         <p class="card-text">
+                            @foreach ($review->levelCategories as $levelCategory)
+                                <span class="badge bg-primary text-white me-1">{{ $levelCategory->name }}</span>
+                            @endforeach
                             @foreach ($review->categories as $category)
                                 <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
                             @endforeach

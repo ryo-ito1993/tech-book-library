@@ -27,4 +27,9 @@ class Review extends Model
     {
         return $this->belongsToMany(Category::class, 'review_categories');
     }
+
+    public function levelCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(LevelCategory::class, 'review_level_categories');
+    }
 }

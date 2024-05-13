@@ -17,21 +17,22 @@
             <table class="table table-bordered">
                 <thead class="">
                     <tr>
-                        <th scope="col" class="text-nowrap">レビューID</th>
                         <th scope="col" class="text-nowrap">投稿者</th>
                         <th scope="col" class="text-nowrap">書籍名</th>
                         <th scope="col" class="text-nowrap">投稿日</th>
+                        <th scope="col" class="text-nowrap">詳細</th>
                     </tr>
                 </thead>
                 <tbody style="border-style: none">
                     @foreach ($reviews as $review)
                         <tr>
-                            <td class="text-wrap px-2">
-                                <a href="{{ route('admin.reviews.show', ['review' => $review]) }}">{{ $review->id }}</a>
-                            </td>
+
                             <td class="text-wrap px-2">{{ $review->user->name }}</td>
                             <td class="text-nowrap px-2">{{ $review->book->title }}</td>
                             <td class="text-nowrap px-2">{{ $review->created_at->format('Y/m/d') }}</td>
+                            <td class="text-wrap px-2 text-center">
+                                <a href="{{ route('admin.reviews.show', ['review' => $review]) }}" class="btn btn-primary">詳細</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

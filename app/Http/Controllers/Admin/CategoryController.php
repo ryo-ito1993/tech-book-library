@@ -13,12 +13,17 @@ use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
+    public function __construct(
+        protected CategoryService $categoryService
+    ) {
+    }
+
     public function index(Request $request): View
     {
         $searchInput = [
             'categoryName' => $request->input('categoryName'),
         ];
-        $categories = CategoryService::search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
+        $categories = $this->categoryService->search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
 
         return view('admin.categories.index', ['categories' => $categories]);
     }
@@ -34,7 +39,7 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
-        return redirect()->route('admin.categories.index')->with('status', 'カテゴリを追加しました');
+        return redirect()->route('admin.categories.index')->with('status', '技術カテゴリを追加しました');
     }
 
     public function edit(Category $category): View
@@ -44,19 +49,17 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
-        $request->validate([
-            'name' => 'unique:categories|required|string|max:255',
-        ]);
+        $validated = $request->validated();
 
-        $category->update($request->all());
+        $category->update($validated);
 
-        return redirect()->route('admin.categories.index')->with('status', 'カテゴリを更新しました');
+        return redirect()->route('admin.categories.index')->with('status', '技術カテゴリを更新しました');
     }
 
     public function destroy(Category $category): RedirectResponse
     {
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('status', 'カテゴリを削除しました');
+        return redirect()->route('admin.categories.index')->with('status', '技術カテゴリを削除しました');
     }
 }

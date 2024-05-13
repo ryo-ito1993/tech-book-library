@@ -58,14 +58,22 @@
                     @include('components.form.error', ['name' => 'review'])
                 </div>
                 <div class="form-group mb-3">
-                    <label for="categories">カテゴリ</label>
+                    <label for="levelCategories">レベルカテゴリ</label>
+                    <select id="levelCategories" class="form-control @error('levelCategories') is-invalid @enderror" name="levelCategories[]" multiple="multiple">
+                        @foreach ($levelCategories as $levelCategory)
+                            <option value="{{ $levelCategory->id }}" @if (old('levelCategories') && in_array($levelCategory->id, old('levelCategories'))) selected @endif>{{ $levelCategory->name }}</option>
+                        @endforeach
+                    </select>
+                    @include('components.form.error', ['name' => 'levelCategories'])
+                </div>
+                <div class="form-group mb-3">
+                    <label for="categories">技術カテゴリ</label>
                     <select id="categories" class="form-control @error('categories') is-invalid @enderror" name="categories[]" multiple="multiple">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" @if (old('categories') && in_array($category->id, old('categories'))) selected @endif>{{ $category->name }}</option>
                         @endforeach
                     </select>
                     @include('components.form.error', ['name' => 'categories'])
-
                 </div>
                 <input type="hidden" name="title" value="{{ $book['title'] }}">
                 <input type="hidden" name="isbn" value="{{ $book['isbn'] }}">
@@ -96,13 +104,19 @@
     }).mount('#app');
 </script>
 <script>
-    $(document).ready(function() {
-        $('#categories').select2({
-            placeholder: "カテゴリを選択",
-            allowClear: true,
-            width: '100%'
-        });
+$(document).ready(function() {
+    $('#categories').select2({
+        placeholder: "カテゴリを選択",
+        allowClear: true,
+        width: '100%'
     });
+    $('#levelCategories').select2({
+        placeholder: "レベルカテゴリを選択",
+        allowClear: true,
+        width: '100%'
+    });
+});
+
 
 </script>
 @endsection

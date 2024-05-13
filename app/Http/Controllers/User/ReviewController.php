@@ -8,22 +8,31 @@ use App\Http\Requests\User\UpdateReviewRequest;
 use App\Library\googleBooksApiLibrary;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\LevelCategory;
+use App\Models\ReviewLevelCategory;
 use App\Models\Review;
 use App\Models\ReviewCategory;
+use App\Services\ReviewService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     public function __construct(
-        protected googleBooksApiLibrary $googleBooksApiLibrary
+        protected googleBooksApiLibrary $googleBooksApiLibrary,
+        protected ReviewService $reviewService
     ) {
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
         $user = auth()->user();
-        $reviews = Review::with(['book.authors', 'user', 'categories'])->latest()->paginate(10);
+        $searchInput = [
+            'category' => $request->input('category'),
+            'levelCategory' => $request->input('levelCategory'),
+        ];
+        $reviews = $this->reviewService->searchCategory($searchInput)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('user.reviews.index', ['reviews' => $reviews, 'user' => $user]);
     }
@@ -32,43 +41,18 @@ class ReviewController extends Controller
     {
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
         $categories = Category::all();
+        $levelCategories = LevelCategory::all();
 
-        return view('user.reviews.create', ['book' => $book, 'categories' => $categories]);
+        return view('user.reviews.create', ['book' => $book, 'categories' => $categories, 'levelCategories' => $levelCategories]);
     }
 
     public function store(StoreReviewRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $user = auth()->user();
-        $isbn = $validated['isbn'];
+        $this->reviewService->storeReview($validated, $user->id);
 
-        \DB::transaction(function () use ($validated, $user, $isbn) {
-            $book = Book::firstOrCreate(
-                ['isbn' => $isbn],
-                ['title' => $validated['title'], 'thumbnail' => $validated['thumbnail']]
-            );
-            if ($book->authors()->doesntExist()) {
-                $authors = $validated['authors'];
-                foreach ($authors as $author) {
-                    $book->authors()->firstOrCreate(['name' => $author]);
-                }
-            }
-
-            $review = new Review();
-            $review->user_id = $user->id;
-            $review->book_id = $book->id;
-            $review->body = $validated['review'];
-            $review->rate = $validated['rating'];
-            $review->save();
-
-            if (isset($validated['categories'])) {
-                foreach ($validated['categories'] as $categoryId) {
-                    ReviewCategory::create(['review_id' => $review->id, 'category_id' => $categoryId]);
-                }
-            }
-        });
-
-        return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを投稿しました');
+        return redirect()->route('user.books.show', ['isbn' => $validated['isbn']])->with('status', 'レビューを投稿しました');
     }
 
     public function edit(Review $review): View
@@ -76,8 +60,9 @@ class ReviewController extends Controller
         $isbn = $review->book->isbn;
         $book = $this->googleBooksApiLibrary->getBookByIsbn($isbn);
         $categories = Category::all();
+        $levelCategories = LevelCategory::all();
 
-        return view('user.reviews.edit', ['review' => $review, 'categories' => $categories, 'book' => $book]);
+        return view('user.reviews.edit', ['review' => $review, 'book' => $book, 'categories' => $categories, 'levelCategories' => $levelCategories]);
     }
 
     public function update(UpdateReviewRequest $request, Review $review): RedirectResponse
@@ -85,12 +70,13 @@ class ReviewController extends Controller
         $validated = $request->validated();
         $isbn = $review->book->isbn;
 
-        \DB::transaction(function () use ($validated, $review) {
+        \DB::transaction(static function () use ($validated, $review) {
             $review->body = $validated['review'];
             $review->rate = $validated['rating'];
             $review->save();
 
             $review->categories()->sync($validated['categories'] ?? []);
+            $review->levelCategories()->sync($validated['levelCategories'] ?? []);
         });
 
         return redirect()->route('user.books.show', ['isbn' => $isbn])->with('status', 'レビューを更新しました');
