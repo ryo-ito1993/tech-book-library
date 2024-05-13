@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
-    <header class="bg-primary py-3 px-4 mb-3 text-center">
-        <h1 class="mb-0 text-white h4">レビューリスト</h1>
+    <header class="bg-primary py-2 px-4 mb-3 text-center">
+        <h1 class="mb-0 text-white h5">レビューリスト</h1>
     </header>
 
     <div class="row">

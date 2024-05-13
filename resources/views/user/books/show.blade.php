@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="bg-success py-1 px-4 mb-3 text-center">
-                    <h1 class="btn-collapse mb-0 text-white h4">
+                    <h1 class="btn-collapse mb-0 text-white h5">
                         お気に入り図書館の蔵書
                     </h1>
                 </div>
