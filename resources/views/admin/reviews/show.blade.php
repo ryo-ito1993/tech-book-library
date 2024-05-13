@@ -37,7 +37,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">カテゴリ</th>
+                        <th scope="row">レベルカテゴリ</th>
+                        <td>
+                            @foreach ($review->levelCategories as $levelCategory)
+                                <span class="badge bg-primary text-white me-1">{{ $levelCategory->name }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">技術カテゴリ</th>
                         <td>
                             @foreach ($review->categories as $category)
                                 <span class="badge bg-info text-white me-1">{{ $category->name }}</span>
