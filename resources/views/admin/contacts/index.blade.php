@@ -9,7 +9,7 @@
         </div>
         <div class="card-body table-responsive">
         <div class="bg-white mb-3">
-            <x-parts.search_box route='admin.contacts.index' :contactName="\Request::get('contactName') ?? ''" :email="\Request::get('email') ?? ''"></x-parts.search_box>
+            <x-parts.search_box route='admin.contacts.index' :contactName="\Request::get('contactName') ?? ''" :email="\Request::get('email') ?? ''" :status="\Request::get('status') ?? ''"></x-parts.search_box>
 
             <div class="d-flex justify-content-end align-items-center mb-3">
                 {{ $contacts->appends(request()->query())->links('pagination::bootstrap-4') }}

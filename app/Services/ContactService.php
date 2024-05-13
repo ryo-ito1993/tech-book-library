@@ -20,6 +20,10 @@ class ContactService
             $query->where('email', 'like', '%' . $input['email'] . '%');
         }
 
+        if (isset($input['status'])) {
+            $query->where('status', $input['status']);
+        }
+
         return $query;
     }
 }

@@ -57,6 +57,19 @@
                 </div>
             @endif
 
+            @if (isset($status))
+                <div class="form-group mb-3 mr-3">
+                    <label for="" class="form-check-label mr-3">ステータス</label>
+                    <select name="status" class="form-control">
+                        <option value="">選択してください</option>
+                        @foreach (App\Models\Contact::statuses() as $value => $statusName)
+                            <option value="{{ $value }}" @if (request('status') == (string)$value) selected @endif>{{ $statusName }}</option>
+                        @endforeach
+
+                    </select>
+                </div>
+            @endif
+
         <div class="row justify-content-center">
             <button class="btn btn-dark w-25 me-4">検索</button>
             <a href="{{ route($route) }}" class="btn btn-outline-secondary w-25" name="reset">リセット</a>

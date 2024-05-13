@@ -21,6 +21,7 @@ class ContactController extends Controller
         $searchInput = [
             'contactName' => $request->input('contactName'),
             'email' => $request->input('email'),
+            'status' => $request->input('status'),
         ];
         $contacts = $this->contactService->search($searchInput)->orderBy('created_at', 'desc')->paginate(30);
 
