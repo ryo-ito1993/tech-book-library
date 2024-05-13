@@ -12,23 +12,23 @@
             </div>
             <div class="px-3 pb-5 pt-3 collapse show">
                 <div class="card-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{ route('user.contacts.confirm') }}">
                         @csrf
 
                         <div class="form-group row mb-3">
-                            <label for="name" class="form-label">お名前</label>
-                            <input type="text" class="form-control bg-white @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}">
+                            <label for="name" class="form-label">お名前@include('components.parts.required_badge')</label>
+                            <input type="text" class="form-control bg-white @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
                             @include('components.form.error', ['name' => 'name'])
                         </div>
 
                         <div class="form-group row mb-3">
-                            <label for="email" class="form-label">メールアドレス</label>
-                            <input type="text" class="form-control bg-white @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}">
+                            <label for="email" class="form-label">メールアドレス@include('components.parts.required_badge')</label>
+                            <input type="text" class="form-control bg-white @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
                             @include('components.form.error', ['name' => 'email'])
                         </div>
 
                         <div class="form-group row mb-3">
-                            <label for="message" class="form-label">お問い合わせ内容</label>
+                            <label for="message" class="form-label">お問い合わせ内容@include('components.parts.required_badge')</label>
                             <textarea class="form-control bg-white @error('message') is-invalid @enderror" id="message" name="message" rows="5" required>{{ old('message') }}</textarea>
                             @include('components.form.error', ['name' => 'message'])
                         </div>
