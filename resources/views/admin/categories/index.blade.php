@@ -6,7 +6,7 @@
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between">
             <h5 class="m-2">技術カテゴリ一覧：{{ $categories->total() . '件中' . $categories->firstItem() . '-' . $categories->lastItem() }}件</h5>
-            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary float-right">新規カテゴリ登録</a>
+            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary float-right">新規登録</a>
         </div>
         <div class="card-body table-responsive">
             <div class="bg-white mb-3">

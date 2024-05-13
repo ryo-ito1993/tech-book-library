@@ -6,7 +6,7 @@
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between">
             <h5 class="m-2">レベルカテゴリ一覧：{{ $levelCategories->total() . '件中' . $levelCategories->firstItem() . '-' . $levelCategories->lastItem() }}件</h5>
-            <a href="{{ route('admin.level_categories.create') }}" class="btn btn-primary float-right">新規カテゴリ登録</a>
+            <a href="{{ route('admin.level_categories.create') }}" class="btn btn-primary float-right">新規登録</a>
         </div>
         <div class="card-body table-responsive">
             <div class="bg-white mb-3">

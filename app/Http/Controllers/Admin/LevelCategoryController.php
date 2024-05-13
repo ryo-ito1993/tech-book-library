@@ -8,6 +8,7 @@ use App\Models\LevelCategory;
 use App\Services\LevelCategoryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Http\Requests\Admin\StoreLevelCategoryRequest;
 
 class LevelCategoryController extends Controller
 {
@@ -28,17 +29,17 @@ class LevelCategoryController extends Controller
 
     public function create(): View
     {
-        return view('admin.categories.create');
+        return view('admin.level_categories.create');
     }
 
-    // public function store(StoreCategoryRequest $request): RedirectResponse
-    // {
-    //     $validated = $request->validated();
+    public function store(StoreLevelCategoryRequest $request): RedirectResponse
+    {
+        $validated = $request->validated();
 
-    //     Category::create($validated);
+        LevelCategory::create($validated);
 
-    //     return redirect()->route('admin.categories.index')->with('status', 'カテゴリを追加しました');
-    // }
+        return redirect()->route('admin.level_categories.index')->with('status', 'カテゴリを追加しました');
+    }
 
     // public function edit(Category $category): View
     // {
