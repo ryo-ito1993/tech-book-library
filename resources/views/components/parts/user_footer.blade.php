@@ -1,5 +1,5 @@
 <hr>
-<footer class="pb-4 pt-md-2">
+<footer class="pb-4 pt-md-2  border-top border-2 border-info">
     <div class="container">
         <nav>
             <ul class="d-md-flex justify-content-center mb-0" style="list-style: none;">

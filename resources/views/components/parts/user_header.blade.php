@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm border-bottom border-2 border-info">
     <div class="container">
         <a class="navbar-brand top-logo" href="{{ url('/') }}">
             {{ config('app.name', 'TechBookLibrary') }}
