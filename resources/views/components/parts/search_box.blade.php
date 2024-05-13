@@ -8,6 +8,13 @@
                 </div>
             @endif
 
+            @if (isset($contactName))
+                <div class="form-group mb-3 mr-3">
+                    <label for="" class="form-check-label mr-3">名前</label>
+                    <input type="text" name="contactName" value="{{ $contactName ?? '' }}" class="form-control" />
+                </div>
+            @endif
+
             @if (isset($email))
                 <div class="form-group mb-3 mr-3">
                     <label for="" class="form-check-label mr-3">メールアドレス</label>
