@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
         @guest
-            <a class="navbar-brand" href="{{ url('admin/login') }}">
+            <a class="navbar-brand top-logo" href="{{ url('admin/login') }}">
                 {{ config('app.name', 'TechBookLibrary') }}
             </a>
             @else
-            <a class="navbar-brand" href="{{ url('admin/top') }}">
+            <a class="navbar-brand top-logo" href="{{ url('admin/top') }}">
                 {{ config('app.name', 'TechBookLibrary') }}
             </a>
         @endguest

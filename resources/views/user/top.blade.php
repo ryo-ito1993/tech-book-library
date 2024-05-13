@@ -3,9 +3,11 @@
 @section('title', 'TOPページ')
 
 @section('content')
-    <div class="text-center">
-        <h3 class="p-4">TechBookLibrary</h3>
-            　TechBookLibraryは技術書検索と図書館検索を同時に行うことができるサービスです。
+    <div class="top-image" style="background-image: url('{{ asset('images/top-image.jpg') }}')">
+        <div>
+            <h1 class="display-1" style="font-family: 'Kaisei Tokumin', serif;">TechBookLibrary</h1>
+            <p>TechBookLibraryは技術書検索と図書館検索を同時に行うことができるサービスです。</p>
+        </div>
     </div>
 
     <div class="border-bottom" style="padding:10px;"></div>
@@ -13,8 +15,8 @@
     <div class="text-center items-center">
         <div class="mb-4"></div>
 
-        <div class="items-center justify-center">
-        {{-- <%= image_tag 'map.png', size: '150x150' %> --}}
+        <div class="items-center justify-center mb-2">
+            <img src="{{ asset('images/library.png') }}" alt="library" style="height: 130px; width: 190px;">
         </div>
 
         <div class="flex-grow">
@@ -29,8 +31,8 @@
     <div class="text-center items-center">
         <div class="mb-4"></div>
 
-        <div class="items-center justify-center">
-        {{-- <%= image_tag 'book.png', size: '150x150' %> --}}
+        <div class="items-center justify-center mb-2">
+            <img src="{{ asset('images/read-book.png') }}" alt="read-book" style="height: 160px;">
         </div>
 
         <div class="flex-grow">
@@ -44,8 +46,8 @@
     <div class="text-center items-center">
         <div class="mb-4"></div>
 
-        <div class="items-center justify-center">
-        {{-- <%= image_tag 'book.png', size: '150x150' %> --}}
+        <div class="items-center justify-center mb-2">
+            <img src="{{ asset('images/review-book.png') }}" alt="review-book" style="height: 160px;">
         </div>
 
         <div class="flex-grow">
@@ -55,5 +57,7 @@
 
         <div class="border-bottom" style="padding:10px;"></div>
     </div>
+<style>
 
+</style>
 @endsection
