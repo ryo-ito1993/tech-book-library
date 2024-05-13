@@ -9,6 +9,7 @@ use App\Services\LevelCategoryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Http\Requests\Admin\StoreLevelCategoryRequest;
+use App\Http\Requests\Admin\UpdateLevelCategoryRequest;
 
 class LevelCategoryController extends Controller
 {
@@ -38,29 +39,27 @@ class LevelCategoryController extends Controller
 
         LevelCategory::create($validated);
 
-        return redirect()->route('admin.level_categories.index')->with('status', 'カテゴリを追加しました');
+        return redirect()->route('admin.level_categories.index')->with('status', 'レベルカテゴリを追加しました');
     }
 
-    // public function edit(Category $category): View
-    // {
-    //     return view('admin.categories.edit', ['category' => $category]);
-    // }
+    public function edit(LevelCategory $levelCategory): View
+    {
+        return view('admin.level_categories.edit', ['levelCategory' => $levelCategory]);
+    }
 
-    // public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
-    // {
-    //     $request->validate([
-    //         'name' => 'unique:categories|required|string|max:255',
-    //     ]);
+    public function update(UpdateLevelCategoryRequest $request, LevelCategory $levelCategory): RedirectResponse
+    {
+        $validated = $request->validated();
 
-    //     $category->update($request->all());
+        $levelCategory->update($validated);
 
-    //     return redirect()->route('admin.categories.index')->with('status', 'カテゴリを更新しました');
-    // }
+        return redirect()->route('admin.level_categories.index')->with('status', 'レベルカテゴリを更新しました');
+    }
 
-    // public function destroy(Category $category): RedirectResponse
-    // {
-    //     $category->delete();
+    public function destroy(LevelCategory $levelCategory): RedirectResponse
+    {
+        $levelCategory->delete();
 
-    //     return redirect()->route('admin.categories.index')->with('status', 'カテゴリを削除しました');
-    // }
+        return redirect()->route('admin.level_categories.index')->with('status', 'レベルカテゴリを削除しました');
+    }
 }

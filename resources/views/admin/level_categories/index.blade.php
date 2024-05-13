@@ -27,7 +27,7 @@
                             <tr>
                                 <td class="text-nowrap px-2">{{ $levelCategory->name }}</td>
                                 <td class="text-nowrap px-2 text-center">
-                                    <a href="#" class="btn btn-success">編集</a>
+                                    <a href="{{ route('admin.level_categories.edit', $levelCategory) }}" class="btn btn-success">編集</a>
                                 </td>
                                 <td class="text-nowrap px-2 text-center">
                                     <form method="POST" action="{{ route('admin.level_categories.destroy', $levelCategory) }}" onclick="return confirm('このレベルカテゴリを削除しますか？');">
