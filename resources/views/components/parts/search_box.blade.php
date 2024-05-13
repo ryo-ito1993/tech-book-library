@@ -36,9 +36,16 @@
                 </div>
             @endif
 
+            @if (isset($levelCategoryName))
+                <div class="form-group mb-3 mr-3">
+                    <label for="" class="form-check-label mr-3">レベルカテゴリ名</label>
+                    <input type="text" name="levelCategoryName" value="{{ $levelCategoryName ?? '' }}" class="form-control" />
+                </div>
+            @endif
+
             @if (isset($categoryName))
                 <div class="form-group mb-3 mr-3">
-                    <label for="" class="form-check-label mr-3">カテゴリ名</label>
+                    <label for="" class="form-check-label mr-3">技術カテゴリ名</label>
                     <input type="text" name="categoryName" value="{{ $categoryName ?? '' }}" class="form-control" />
                 </div>
             @endif
