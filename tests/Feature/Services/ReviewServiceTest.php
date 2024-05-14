@@ -71,4 +71,31 @@ class ReviewServiceTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals('test_level_category', $result->first()->levelCategories->first()->name);
     }
+
+    public function testStoreReview()
+    {
+        $service = new ReviewService();
+        $review = Review::where('body', 'Good')->first();
+        $category = Category::where('name', 'test_category')->first();
+        $levelCategory = LevelCategory::where('name', 'test_level_category')->first();
+        $validated = [
+            'isbn' => $review->book->isbn,
+            'title' => $review->book->title,
+            'thumbnail' => $review->book->thumbnail,
+            'authors' => ['test_author'],
+            'review' => $review->body,
+            'rating' => $review->rate,
+            'categories' => [$category->id],
+            'levelCategories' => [$levelCategory->id],
+        ];
+        $user = User::where('name', 'Yamada Taro')->first();
+        $result = $service->storeReview($validated, $user->id);
+        $this->assertEquals('Good', $result->body);
+        $this->assertEquals(5, $result->rate);
+        $this->assertEquals('test_book1', $result->book->title);
+        $this->assertEquals('test_author', $result->book->authors->first()->name);
+        $this->assertEquals('test_category', $result->categories->first()->name);
+        $this->assertEquals('test_level_category', $result->levelCategories->first()->name);
+
+    }
 }
