@@ -36,7 +36,9 @@
             </div>
         @empty
             @if ($hasSearched)
-                <p>検索結果が見つかりませんでした。</p>
+                <div class="alert alert-info" role="alert">
+                    検索結果が見つかりませんでした。
+                </div>
             @endif
         @endforelse
     </div>
