@@ -13,6 +13,11 @@ class LibraryControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+        /**
+     * @var calilApiLibrary
+     */
+    protected $calilApiLibrary;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,7 +37,7 @@ class LibraryControllerTest extends TestCase
         });
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $user = User::factory()->create();
         $prefectures = Prefecture::factory()->count(3)->create();
@@ -46,7 +51,7 @@ class LibraryControllerTest extends TestCase
         $response->assertViewHas('prefectures', $prefectures);
     }
 
-    public function testCreateWithUserLibrary()
+    public function testCreateWithUserLibrary(): void
     {
         $user = User::factory()->create();
         $prefectures = Prefecture::factory()->count(3)->create();
@@ -75,7 +80,7 @@ class LibraryControllerTest extends TestCase
         ]);
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);

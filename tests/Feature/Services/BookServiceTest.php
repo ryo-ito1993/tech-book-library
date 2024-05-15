@@ -12,6 +12,16 @@ class BookServiceTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    /**
+     * @var googleBooksApiLibrary
+     */
+    protected $googleBooksApiLibrary;
+
+    /**
+     * @var BookService
+     */
+    protected $bookService;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -20,7 +30,7 @@ class BookServiceTest extends TestCase
         $this->bookService = new BookService($this->googleBooksApiLibrary);
     }
 
-    public function testSearchBooks()
+    public function testSearchBooks(): void
     {
         $searchParams = [
             'title' => 'Test Book 1',
@@ -33,7 +43,6 @@ class BookServiceTest extends TestCase
             ['title' => 'Test Book 2', 'authors' => ['Test Author 2'], 'publishedDate' => '2021-02-01', 'publisher' => 'Test Publisher 2', 'isbn' => '1234567890', 'thumbnail' => 'test.jpg', 'infoLink' => 'https://example.com'],
         ];
 
-        // Set expectations for the googleBooksApiLibrary mock
         $this->googleBooksApiLibrary
             ->shouldReceive('searchBooks')
             ->once()
@@ -42,16 +51,15 @@ class BookServiceTest extends TestCase
 
         $response = $this->bookService->searchBooks($searchParams);
 
-
-        $this->assertEquals($mockBooks, $response);
+        $this->assertSame($mockBooks, $response);
     }
 
-    public function testSearchBooksNoParams()
+    public function testSearchBooksNoParams(): void
     {
         $searchParams = [];
 
         $response = $this->bookService->searchBooks($searchParams);
 
-        $this->assertEquals([], $response);
+        $this->assertSame([], $response);
     }
 }

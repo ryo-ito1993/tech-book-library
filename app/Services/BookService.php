@@ -6,7 +6,6 @@ use App\Models\Book;
 use Illuminate\Database\Eloquent\Builder;
 use App\Library\googleBooksApiLibrary;
 
-
 class BookService
 {
     public function __construct(
@@ -43,5 +42,4 @@ class BookService
 
         return [];
     }
-
 }

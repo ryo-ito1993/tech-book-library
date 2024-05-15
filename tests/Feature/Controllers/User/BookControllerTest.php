@@ -14,6 +14,16 @@ class BookControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    /**
+     * @var googleBooksApiLibrary
+     */
+    protected $googleBooksApiLibrary;
+
+    /**
+     * @var BookService
+     */
+    protected $bookService;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -23,7 +33,7 @@ class BookControllerTest extends TestCase
         $this->bookService = $this->mock(BookService::class);
     }
 
-    public function testSearch()
+    public function testSearch(): void
     {
         // Create and authenticate a user
         $user = User::factory()->create();
@@ -58,15 +68,13 @@ class BookControllerTest extends TestCase
         $response->assertViewHas('hasSearched', true);
     }
 
-
-    public function testShow()
+    public function testShow(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $isbn = '1234567890';
         $mockBook = ['title' => 'Test Book 1', 'authors' => ['Test Author 1'], 'publishedDate' => '2021-01-01', 'publisher' => 'Test Publisher 1', 'isbn' => '1234567890', 'thumbnail' => 'test.jpg', 'infoLink' => 'https://example.com'];
-
 
         $this->googleBooksApiLibrary
             ->shouldReceive('getBookByIsbn')

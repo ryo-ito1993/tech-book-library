@@ -14,6 +14,16 @@ class ReviewControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var googleBooksApiLibrary
+     */
+    protected $googleBooksApiLibrary;
+
+    /**
+     * @var ReviewService
+     */
+    protected $reviewService;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -29,7 +39,7 @@ class ReviewControllerTest extends TestCase
         parent::tearDown();
     }
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $user = User::factory()->create();
 
@@ -47,7 +57,7 @@ class ReviewControllerTest extends TestCase
         $response->assertViewHas('user', $user);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $user = User::factory()->create();
         $isbn = '1234567890';
@@ -72,7 +82,7 @@ class ReviewControllerTest extends TestCase
         $response->assertViewIs('user.reviews.create');
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -98,7 +108,7 @@ class ReviewControllerTest extends TestCase
         $response->assertRedirect(route('user.books.show', ['isbn' => $reviewData['isbn']]));
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $user = User::factory()->create();
         $review = Review::factory()->create();
@@ -123,7 +133,7 @@ class ReviewControllerTest extends TestCase
         $response->assertViewIs('user.reviews.edit');
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -146,7 +156,7 @@ class ReviewControllerTest extends TestCase
         $response->assertRedirect(route('user.books.show', ['isbn' => $review->book->isbn]));
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -156,9 +166,4 @@ class ReviewControllerTest extends TestCase
 
         $response->assertRedirect();
     }
-
-
-
-
-
 }

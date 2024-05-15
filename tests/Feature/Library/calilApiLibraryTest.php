@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class calilApiLibraryTest extends TestCase
 {
-    public function testGetLibrariesByGeocodeSuccess()
+    public function testGetLibrariesByGeocodeSuccess(): void
     {
         // モックするレスポンスデータ
         $mockResponse = [
@@ -36,15 +36,15 @@ class calilApiLibraryTest extends TestCase
         $result = $library->getLibrariesByGeocode(35.6895, 139.6917);
 
         $this->assertCount(1, $result['libraries']);
-        $this->assertEquals('test_systemid', $result['libraries'][0]['systemid']);
-        $this->assertEquals('test_systemname', $result['libraries'][0]['systemname']);
-        $this->assertEquals('test_libid', $result['libraries'][0]['libid']);
-        $this->assertEquals('test_libkey', $result['libraries'][0]['libkey']);
-        $this->assertEquals('test_short', $result['libraries'][0]['short']);
-        $this->assertEquals('test_formal', $result['libraries'][0]['formal']);
+        $this->assertSame('test_systemid', $result['libraries'][0]['systemid']);
+        $this->assertSame('test_systemname', $result['libraries'][0]['systemname']);
+        $this->assertSame('test_libid', $result['libraries'][0]['libid']);
+        $this->assertSame('test_libkey', $result['libraries'][0]['libkey']);
+        $this->assertSame('test_short', $result['libraries'][0]['short']);
+        $this->assertSame('test_formal', $result['libraries'][0]['formal']);
     }
 
-    public function testGetLibrariesByGeocodeApiFailure()
+    public function testGetLibrariesByGeocodeApiFailure(): void
     {
         Http::fake([
             '*' => Http::response('API Error', 500)
@@ -58,7 +58,7 @@ class calilApiLibraryTest extends TestCase
         $library->getLibrariesByGeocode(35.6895, 139.6917);
     }
 
-    public function testCheckBookAvailabilityPolling()
+    public function testCheckBookAvailabilityPolling(): void
     {
         $initialResponse = [
             'continue' => 1,
@@ -84,17 +84,17 @@ class calilApiLibraryTest extends TestCase
 
         Http::fake([
             '*' => Http::sequence()
-                        ->push($initialResponse, 200)
-                        ->push($finalResponse, 200)
+                ->push($initialResponse, 200)
+                ->push($finalResponse, 200)
         ]);
 
         $library = new calilApiLibrary();
         $result = $library->checkBookAvailability('1234567890', 'test_systemid');
 
-        $this->assertEquals('貸出中', $result['books']['1234567890']['test_systemid']['libkey']['lib_name1']);
+        $this->assertSame('貸出中', $result['books']['1234567890']['test_systemid']['libkey']['lib_name1']);
     }
 
-    public function testGetLibrariesBySystemIdSuccess()
+    public function testGetLibrariesBySystemIdSuccess(): void
     {
         $mockResponse = [
             'libraries' => [
@@ -117,15 +117,15 @@ class calilApiLibraryTest extends TestCase
         $result = $library->getLibrariesBySystemId('test_systemid');
 
         $this->assertCount(1, $result['libraries']);
-        $this->assertEquals('test_systemid', $result['libraries'][0]['systemid']);
-        $this->assertEquals('test_systemname', $result['libraries'][0]['systemname']);
-        $this->assertEquals('test_libid', $result['libraries'][0]['libid']);
-        $this->assertEquals('test_libkey', $result['libraries'][0]['libkey']);
-        $this->assertEquals('test_short', $result['libraries'][0]['short']);
-        $this->assertEquals('test_formal', $result['libraries'][0]['formal']);
+        $this->assertSame('test_systemid', $result['libraries'][0]['systemid']);
+        $this->assertSame('test_systemname', $result['libraries'][0]['systemname']);
+        $this->assertSame('test_libid', $result['libraries'][0]['libid']);
+        $this->assertSame('test_libkey', $result['libraries'][0]['libkey']);
+        $this->assertSame('test_short', $result['libraries'][0]['short']);
+        $this->assertSame('test_formal', $result['libraries'][0]['formal']);
     }
 
-    public function testGetLibrariesByPrefCitySuccess()
+    public function testGetLibrariesByPrefCitySuccess(): void
     {
         $mockResponse = [
             'libraries' => [
@@ -148,11 +148,11 @@ class calilApiLibraryTest extends TestCase
         $result = $library->getLibrariesByPrefCity('Tokyo', 'Shibuya');
 
         $this->assertCount(1, $result['libraries']);
-        $this->assertEquals('test_systemid', $result['libraries'][0]['systemid']);
-        $this->assertEquals('test_systemname', $result['libraries'][0]['systemname']);
-        $this->assertEquals('test_libid', $result['libraries'][0]['libid']);
-        $this->assertEquals('test_libkey', $result['libraries'][0]['libkey']);
-        $this->assertEquals('test_short', $result['libraries'][0]['short']);
-        $this->assertEquals('test_formal', $result['libraries'][0]['formal']);
+        $this->assertSame('test_systemid', $result['libraries'][0]['systemid']);
+        $this->assertSame('test_systemname', $result['libraries'][0]['systemname']);
+        $this->assertSame('test_libid', $result['libraries'][0]['libid']);
+        $this->assertSame('test_libkey', $result['libraries'][0]['libkey']);
+        $this->assertSame('test_short', $result['libraries'][0]['short']);
+        $this->assertSame('test_formal', $result['libraries'][0]['formal']);
     }
 }

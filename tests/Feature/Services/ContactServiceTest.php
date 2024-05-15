@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Contact;
 use App\Services\ContactService;
+use Illuminate\Database\Eloquent\Collection;
 
 class ContactServiceTest extends TestCase
 {
@@ -20,33 +21,37 @@ class ContactServiceTest extends TestCase
         Contact::create(['name' => 'Tanaka Taro', 'email' => 'test2@example.com', 'message' => 'Hi', 'status' => 2]);
     }
 
-    public function testSearchByName()
+    public function testSearchByName(): void
     {
+        /** @var Collection|Contact[] $result */
         $result = ContactService::search(['contactName' => 'Yamada'])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('Yamada Taro', $result->first()->name);
+        $this->assertSame('Yamada Taro', $result->first()->name);
     }
 
-    public function testSearchByEmail()
+    public function testSearchByEmail(): void
     {
+        /** @var Collection|Contact[] $result */
         $result = ContactService::search(['email' => 'test1'])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('test1@example.com', $result->first()->email);
+        $this->assertSame('test1@example.com', $result->first()->email);
     }
 
-    public function testSearchByStatus()
+    public function testSearchByStatus(): void
     {
+        /** @var Collection|Contact[] $result */
         $result = ContactService::search(['status' => 1])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals(1, $result->first()->status);
+        $this->assertSame(1, $result->first()->status);
     }
 
-    public function testSearchByMultiple()
+    public function testSearchByMultiple(): void
     {
+        /** @var Collection|Contact[] $result */
         $result = ContactService::search(['contactName' => 'Taro', 'email' => 'test2', 'status' => 2])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('Tanaka Taro', $result->first()->name);
-        $this->assertEquals('test2@example.com', $result->first()->email);
-        $this->assertEquals(2, $result->first()->status);
+        $this->assertSame('Tanaka Taro', $result->first()->name);
+        $this->assertSame('test2@example.com', $result->first()->email);
+        $this->assertSame(2, $result->first()->status);
     }
 }

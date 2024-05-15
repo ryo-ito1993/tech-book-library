@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class googleBooksApiLibraryTest extends TestCase
 {
-    public function testSearchBooksSuccess()
+    public function testSearchBooksSuccess(): void
     {
         $mockResponse = [
             'items' => [
@@ -42,16 +42,16 @@ class googleBooksApiLibraryTest extends TestCase
         $result = $library->searchBooks('test query');
 
         $this->assertCount(1, $result);
-        $this->assertEquals('Test Book', $result[0]['title']);
-        $this->assertEquals(['Author One', 'Author Two'], $result[0]['authors']);
-        $this->assertEquals('2020-01-01', $result[0]['publishedDate']);
-        $this->assertEquals('Test Publisher', $result[0]['publisher']);
-        $this->assertEquals('1234567890123', $result[0]['isbn']);
-        $this->assertEquals('http://example.com/thumbnail.jpg', $result[0]['thumbnail']);
-        $this->assertEquals('http://example.com/info', $result[0]['infoLink']);
+        $this->assertSame('Test Book', $result[0]['title']);
+        $this->assertSame(['Author One', 'Author Two'], $result[0]['authors']);
+        $this->assertSame('2020-01-01', $result[0]['publishedDate']);
+        $this->assertSame('Test Publisher', $result[0]['publisher']);
+        $this->assertSame('1234567890123', $result[0]['isbn']);
+        $this->assertSame('http://example.com/thumbnail.jpg', $result[0]['thumbnail']);
+        $this->assertSame('http://example.com/info', $result[0]['infoLink']);
     }
 
-    public function testSearchBooksApiFailure()
+    public function testSearchBooksApiFailure(): void
     {
         Http::fake([
             '*' => Http::response('API Error', 500)
@@ -65,7 +65,7 @@ class googleBooksApiLibraryTest extends TestCase
         $library->searchBooks('test query');
     }
 
-    public function testGetBookByIsbnSuccess()
+    public function testGetBookByIsbnSuccess(): void
     {
         $mockResponse = [
             'items' => [
@@ -95,16 +95,16 @@ class googleBooksApiLibraryTest extends TestCase
         $result = $library->getBookByIsbn('1234567890123');
 
         $this->assertNotNull($result);
-        $this->assertEquals('Test Book', $result['title']);
-        $this->assertEquals(['Author One', 'Author Two'], $result['authors']);
-        $this->assertEquals('2020-01-01', $result['publishedDate']);
-        $this->assertEquals('Test Publisher', $result['publisher']);
-        $this->assertEquals('1234567890123', $result['isbn']);
-        $this->assertEquals('http://example.com/thumbnail.jpg', $result['thumbnail']);
-        $this->assertEquals('http://example.com/info', $result['infoLink']);
+        $this->assertSame('Test Book', $result['title']);
+        $this->assertSame(['Author One', 'Author Two'], $result['authors']);
+        $this->assertSame('2020-01-01', $result['publishedDate']);
+        $this->assertSame('Test Publisher', $result['publisher']);
+        $this->assertSame('1234567890123', $result['isbn']);
+        $this->assertSame('http://example.com/thumbnail.jpg', $result['thumbnail']);
+        $this->assertSame('http://example.com/info', $result['infoLink']);
     }
 
-    public function testGetBookByIsbnNotFound()
+    public function testGetBookByIsbnNotFound(): void
     {
         Http::fake([
             '*' => Http::response(['items' => []], 200)
@@ -116,7 +116,7 @@ class googleBooksApiLibraryTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testSearchBooksNoIndustryIdentifiers()
+    public function testSearchBooksNoIndustryIdentifiers(): void
     {
         $mockResponse = [
             'items' => [

@@ -12,7 +12,7 @@ class FavoriteBookControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    public function testIndex()
+    public function testIndex(): void
     {
         $user = User::factory()->create();
         $books = Book::factory(3)->create();

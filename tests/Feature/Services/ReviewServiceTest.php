@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\LevelCategory;
 use App\Models\ReviewCategory;
 use App\Models\ReviewLevelCategory;
+use Illuminate\Support\Collection;
 
 class ReviewServiceTest extends TestCase
 {
@@ -34,45 +35,50 @@ class ReviewServiceTest extends TestCase
         ReviewLevelCategory::create(['review_id' => $review2->id, 'level_category_id' => $lavelCategory->id]);
     }
 
-    public function testSearchByUserName()
+    public function testSearchByUserName(): void
     {
+        /** @var Collection|Review[] $result */
         $result = ReviewService::search(['reviewer' => 'Yamada'])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('Yamada Taro', $result->first()->user->name);
+        $this->assertSame('Yamada Taro', $result->first()->user->name);
     }
 
-    public function testSearchByBookTitle()
+    public function testSearchByBookTitle(): void
     {
+        /** @var Collection|Review[] $result */
         $result = ReviewService::search(['bookName' => 'book1'])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('test_book1', $result->first()->book->title);
+        $this->assertSame('test_book1', $result->first()->book->title);
     }
 
-    public function testSerchMultiple()
+    public function testSerchMultiple(): void
     {
+        /** @var Collection|Review[] $result */
         $result = ReviewService::search(['reviewer' => 'Taro', 'bookName' => 'book2'])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('Tanaka Taro', $result->first()->user->name);
-        $this->assertEquals('test_book2', $result->first()->book->title);
+        $this->assertSame('Tanaka Taro', $result->first()->user->name);
+        $this->assertSame('test_book2', $result->first()->book->title);
     }
 
-    public function testSearchCategory()
+    public function testSearchCategory(): void
     {
         $category = Category::where('name', 'test_category')->first();
+        /** @var Collection|Review[] $result */
         $result = ReviewService::searchCategory(['category' => $category->id])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('test_category', $result->first()->categories->first()->name);
+        $this->assertSame('test_category', $result->first()->categories->first()->name);
     }
 
-    public function testSearchLevelCategory()
+    public function testSearchLevelCategory(): void
     {
         $levelCategory = LevelCategory::where('name', 'test_level_category')->first();
+        /** @var Collection|Review[] $result */
         $result = ReviewService::searchCategory(['levelCategory' => $levelCategory->id])->get();
         $this->assertCount(1, $result);
-        $this->assertEquals('test_level_category', $result->first()->levelCategories->first()->name);
+        $this->assertSame('test_level_category', $result->first()->levelCategories->first()->name);
     }
 
-    public function testStoreReview()
+    public function testStoreReview(): void
     {
         $service = new ReviewService();
         $review = Review::where('body', 'Good')->first();
@@ -90,11 +96,11 @@ class ReviewServiceTest extends TestCase
         ];
         $user = User::where('name', 'Yamada Taro')->first();
         $result = $service->storeReview($validated, $user->id);
-        $this->assertEquals('Good', $result->body);
-        $this->assertEquals(5, $result->rate);
-        $this->assertEquals('test_book1', $result->book->title);
-        $this->assertEquals('test_author', $result->book->authors->first()->name);
-        $this->assertEquals('test_category', $result->categories->first()->name);
-        $this->assertEquals('test_level_category', $result->levelCategories->first()->name);
+        $this->assertSame('Good', $result->body);
+        $this->assertSame(5, $result->rate);
+        $this->assertSame('test_book1', $result->book->title);
+        $this->assertSame('test_author', $result->book->authors->first()->name);
+        $this->assertSame('test_category', $result->categories->first()->name);
+        $this->assertSame('test_level_category', $result->levelCategories->first()->name);
     }
 }

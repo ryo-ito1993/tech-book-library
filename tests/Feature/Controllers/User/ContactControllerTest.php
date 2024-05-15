@@ -19,14 +19,14 @@ class ContactControllerTest extends TestCase
         Mail::fake();
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = $this->get(route('user.contacts.create'));
         $response->assertStatus(200);
         $response->assertViewIs('user.contacts.create');
     }
 
-    public function testConfirm()
+    public function testConfirm(): void
     {
         $data = [
             'name' => $this->faker->name,
@@ -40,7 +40,7 @@ class ContactControllerTest extends TestCase
         $response->assertViewHas('contact', $data);
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $data = [
             'name' => $this->faker->name,
@@ -56,14 +56,14 @@ class ContactControllerTest extends TestCase
         Mail::assertSent(AdminContactMail::class);
     }
 
-    public function testComplete()
+    public function testComplete(): void
     {
         $response = $this->get(route('user.contacts.complete'));
         $response->assertStatus(200);
         $response->assertViewIs('user.contacts.complete');
     }
 
-    public function testBack()
+    public function testBack(): void
     {
         $data = [
             'name' => $this->faker->name,
@@ -72,7 +72,7 @@ class ContactControllerTest extends TestCase
         ];
 
         $response = $this->from(route('user.contacts.confirm'))
-                        ->post(route('user.contacts.back'), $data);
+            ->post(route('user.contacts.back'), $data);
 
         $response->assertRedirect(route('user.contacts.create'));
         $response->assertSessionHasInput($data);
