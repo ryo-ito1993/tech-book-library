@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Library\googleBooksApiLibrary;
 use App\Models\Book;
 use Illuminate\View\View;
 
 class FavoriteBookController extends Controller
 {
-    public function __construct(
-        protected googleBooksApiLibrary $googleBooksApiLibrary
-    ) {
-    }
-
     public function index(): View
     {
         $user = auth()->user();
