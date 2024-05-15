@@ -14,7 +14,6 @@ class googleBooksApiLibraryTest extends TestCase
 {
     public function testSearchBooksSuccess()
     {
-        // モックするレスポンスデータ
         $mockResponse = [
             'items' => [
                 [
@@ -35,16 +34,13 @@ class googleBooksApiLibraryTest extends TestCase
             ]
         ];
 
-        // HTTPリクエストのモック
         Http::fake([
             '*' => Http::response($mockResponse, 200)
         ]);
 
-        // テスト対象のメソッドを呼び出す
         $library = new googleBooksApiLibrary();
         $result = $library->searchBooks('test query');
 
-        // 結果のアサーション
         $this->assertCount(1, $result);
         $this->assertEquals('Test Book', $result[0]['title']);
         $this->assertEquals(['Author One', 'Author Two'], $result[0]['authors']);
@@ -57,15 +53,12 @@ class googleBooksApiLibraryTest extends TestCase
 
     public function testSearchBooksApiFailure()
     {
-        // HTTPリクエストのモック（エラーレスポンス）
         Http::fake([
             '*' => Http::response('API Error', 500)
         ]);
 
-        // テスト対象のメソッドを呼び出す
         $library = new googleBooksApiLibrary();
 
-        // 例外が投げられることを期待する
         $this->expectException(HttpException::class);
         $this->expectExceptionMessage('API request failed: API Error');
 
@@ -74,7 +67,6 @@ class googleBooksApiLibraryTest extends TestCase
 
     public function testGetBookByIsbnSuccess()
     {
-        // モックするレスポンスデータ
         $mockResponse = [
             'items' => [
                 [
@@ -95,16 +87,13 @@ class googleBooksApiLibraryTest extends TestCase
             ]
         ];
 
-        // HTTPリクエストのモック
         Http::fake([
             '*' => Http::response($mockResponse, 200)
         ]);
 
-        // テスト対象のメソッドを呼び出す
         $library = new googleBooksApiLibrary();
         $result = $library->getBookByIsbn('1234567890123');
 
-        // 結果のアサーション
         $this->assertNotNull($result);
         $this->assertEquals('Test Book', $result['title']);
         $this->assertEquals(['Author One', 'Author Two'], $result['authors']);
@@ -117,22 +106,18 @@ class googleBooksApiLibraryTest extends TestCase
 
     public function testGetBookByIsbnNotFound()
     {
-        // HTTPリクエストのモック（空のレスポンス）
         Http::fake([
             '*' => Http::response(['items' => []], 200)
         ]);
 
-        // テスト対象のメソッドを呼び出す
         $library = new googleBooksApiLibrary();
         $result = $library->getBookByIsbn('1234567890123');
 
-        // 結果のアサーション
         $this->assertNull($result);
     }
 
     public function testSearchBooksNoIndustryIdentifiers()
     {
-        // モックするレスポンスデータ
         $mockResponse = [
             'items' => [
                 [
@@ -150,16 +135,13 @@ class googleBooksApiLibraryTest extends TestCase
             ]
         ];
 
-        // HTTPリクエストのモック
         Http::fake([
             '*' => Http::response($mockResponse, 200)
         ]);
 
-        // テスト対象のメソッドを呼び出す
         $library = new googleBooksApiLibrary();
         $result = $library->searchBooks('test query');
 
-        // 結果のアサーション
         $this->assertEmpty($result);
     }
 }
