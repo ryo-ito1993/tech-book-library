@@ -96,6 +96,5 @@ class ReviewServiceTest extends TestCase
         $this->assertEquals('test_author', $result->book->authors->first()->name);
         $this->assertEquals('test_category', $result->categories->first()->name);
         $this->assertEquals('test_level_category', $result->levelCategories->first()->name);
-
     }
 }
