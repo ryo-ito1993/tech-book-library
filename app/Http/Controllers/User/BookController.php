@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Library\calilApiLibrary;
 use App\Library\googleBooksApiLibrary;
 use App\Services\BookService;
 use App\Models\Book;
@@ -13,7 +12,6 @@ use Illuminate\Http\Request;
 class BookController extends Controller
 {
     public function __construct(
-        protected CalilApiLibrary $calilApiLibrary,
         protected googleBooksApiLibrary $googleBooksApiLibrary,
         protected BookService $bookService,
     ) {
