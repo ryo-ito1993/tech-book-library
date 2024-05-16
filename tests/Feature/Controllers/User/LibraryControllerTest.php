@@ -40,7 +40,7 @@ class LibraryControllerTest extends TestCase
     public function testCreate(): void
     {
         $user = User::factory()->create();
-        $prefectures = Prefecture::factory()->count(3)->create();
+        $prefectures = Prefecture::factory()->count(2)->create();
 
         $this->actingAs($user);
 
@@ -54,7 +54,7 @@ class LibraryControllerTest extends TestCase
     public function testCreateWithUserLibrary(): void
     {
         $user = User::factory()->create();
-        $prefectures = Prefecture::factory()->count(3)->create();
+        $prefectures = Prefecture::factory()->count(2)->create();
         $userLibrary = $user->library()->create([
             'system_id' => 'test_systemid',
             'system_name' => 'test_systemname',
