@@ -4,15 +4,15 @@
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
-    <header class="bg-primary py-3 px-4 mb-3 text-center">
-        <h1 class="btn-collapse mb-0 text-white h4">
+    <header class="bg-primary py-2 px-4 mb-3 text-center">
+        <h1 class="btn-collapse mb-0 text-white h5">
             技術書検索
         </h1>
     </header>
     <form action="{{ route('user.books.search') }}" method="GET" class="my-2 mb-3">
-        <input type="text" name="title" class="form-control bg-white mb-1" placeholder="タイトル" value="{{ old('title', $title) }}">
-        <input type="text" name="author" class="form-control bg-white mb-1" placeholder="著者名" value="{{ old('author', $author) }}">
-        <input type="text" name="isbn" class="form-control bg-white mb-1" placeholder="ISBN10またはISBN13(ともにハイフンなし)" value="{{ old('isbn', $isbn) }}">
+        <input type="text" name="title" class="form-control bg-white mb-2" placeholder="タイトル" value="{{ old('title', $title) }}">
+        <input type="text" name="author" class="form-control bg-white mb-2" placeholder="著者名" value="{{ old('author', $author) }}">
+        <input type="text" name="isbn" class="form-control bg-white mb-2" placeholder="ISBN10またはISBN13(ともにハイフンなし)" value="{{ old('isbn', $isbn) }}">
 
         <button class="btn btn-primary" type="submit">検索</button>
     </form>
@@ -36,7 +36,9 @@
             </div>
         @empty
             @if ($hasSearched)
-                <p>検索結果が見つかりませんでした。</p>
+                <div class="alert alert-info" role="alert">
+                    検索結果が見つかりませんでした。
+                </div>
             @endif
         @endforelse
     </div>

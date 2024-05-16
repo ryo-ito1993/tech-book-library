@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
@@ -22,8 +23,8 @@ class Book extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function favorites(): HasMany
+    public function favorites(): belongsToMany
     {
-        return $this->hasMany(FavoriteBook::class);
+        return $this->belongsToMany(User::class, 'favorite_books');
     }
 }

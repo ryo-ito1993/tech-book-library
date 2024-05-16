@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Library\calilApiLibrary;
 use App\Library\googleBooksApiLibrary;
+use App\Services\BookService;
 use App\Models\Book;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -12,42 +12,24 @@ use Illuminate\Http\Request;
 class BookController extends Controller
 {
     public function __construct(
-        protected CalilApiLibrary $calilApiLibrary,
-        protected googleBooksApiLibrary $googleBooksApiLibrary
+        protected googleBooksApiLibrary $googleBooksApiLibrary,
+        protected BookService $bookService,
     ) {
     }
 
     public function search(Request $request): View
     {
-        $title = $request->input('title', '');
-        $author = $request->input('author', '');
-        $isbn = $request->input('isbn', '');
+        $searchParams = [
+            'title' => $request->input('title', ''),
+            'author' => $request->input('author', ''),
+            'isbn' => $request->input('isbn', '')
+        ];
 
-        $query = '';
+        $books = $this->bookService->searchBooks($searchParams);
 
-        if ($title) {
-            $query .= 'intitle:' . $title . '+';
-        }
+        $hasSearched = !empty(array_filter($searchParams));
 
-        if ($author) {
-            $query .= 'inauthor:' . $author . '+';
-        }
-
-        if ($isbn) {
-            $query .= 'isbn:' . $isbn . '+';
-        }
-
-        $query = rtrim($query, '+');
-
-        $hasSearched = $query !== '';
-
-        $books = [];
-
-        if ($query) {
-            $books = $this->googleBooksApiLibrary->searchBooks($query);
-        }
-
-        return view('user.books.search', ['books' => $books, 'title' => $title, 'author' => $author, 'isbn' => $isbn, 'hasSearched' => $hasSearched]);
+        return view('user.books.search', ['books' => $books, 'title' => $searchParams['title'], 'author' => $searchParams['author'], 'isbn' => $searchParams['isbn'], 'hasSearched' => $hasSearched]);
     }
 
     public function show(string $isbn): View

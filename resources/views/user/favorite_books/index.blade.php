@@ -5,8 +5,8 @@
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
 
-    <header class="bg-primary py-3 px-4 mb-3 text-center">
-        <h1 class="btn-collapse mb-0 text-white h4">
+    <header class="bg-primary py-2 px-4 mb-3 text-center">
+        <h1 class="btn-collapse mb-0 text-white h5">
             読みたい一覧
         </h1>
     </header>

@@ -26,20 +26,20 @@ class ContactController extends Controller
         return view('user.contacts.confirm', ['contact' => $validated]);
     }
 
-        // 送信処理
-        public function store(StoreContactRequest $request): View
-        {
-            $validated = $request->validated();
-            $contact = Contact::create($validated);
+    // 送信処理
+    public function store(StoreContactRequest $request): View
+    {
+        $validated = $request->validated();
+        $contact = Contact::create($validated);
 
-            // 送信者にメールを送信
-            Mail::to($contact->email)->send(new UserContactMail($contact));
+        // 送信者にメールを送信
+        Mail::to($contact->email)->send(new UserContactMail($contact));
 
-            // 管理者にメールを送信
-            Mail::to(config('mail.from.address'))->send(new AdminContactMail($contact));
+        // 管理者にメールを送信
+        Mail::to(config('mail.from.address'))->send(new AdminContactMail($contact));
 
-            return view('user.contacts.complete');
-        }
+        return view('user.contacts.complete');
+    }
 
     public function complete(): View
     {

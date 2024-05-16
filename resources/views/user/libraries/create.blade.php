@@ -4,18 +4,18 @@
 
 @section('content')
 <div class="container-fluid" style="max-width: 1200px">
-    <header class="bg-primary py-3 px-4 mb-3 text-center">
-        <h1 class="btn-collapse mb-0 text-white h4">
+    <header class="bg-primary py-2 px-4 mb-3 text-center">
+        <h1 class="btn-collapse mb-0 text-white h5">
             {{ $userLibrary ? 'お気に入り図書館編集' : 'お気に入り図書館登録' }}
         </h1>
     </header>
     <div class="text-center">
-        <p class="text-secondary">蔵書検索の対象図書館を登録します。現在地または都道府県・市区町村で検索できます。</p>
+        <p class="text-secondary mb-4">蔵書検索の対象図書館を登録します。現在地または都道府県・市区町村で検索できます。</p>
         @if ($userLibrary)
-            <h4>お気に入り図書館エリア：<span>{{ $userLibrary->system_name }}</span></h4>
+            <h5 class="fw-bold mb-3">お気に入り図書館エリア：<span>{{ $userLibrary->system_name }}</span></h5>
         @endif
         @if ($userLibraries)
-            <div class="my-2">
+            <div class="my-3">
                 @foreach ($userLibraries as $library)
                     <span class="badge bg-info me-1 mb-2 fs-6">{{ $library['short'] }}</span>
                 @endforeach

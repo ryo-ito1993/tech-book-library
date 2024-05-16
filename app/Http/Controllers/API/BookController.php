@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -15,7 +16,7 @@ class BookController extends Controller
         $user = User::findorFail($request->input('user_id'));
         $isbn = $request->input('isbn');
 
-        \DB::transaction(function () use ($user, $isbn, $request) {
+        \DB::transaction(static function () use ($user, $isbn, $request) {
             $book = Book::firstOrCreate(
                 ['isbn' => $isbn],
                 ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
@@ -35,7 +36,10 @@ class BookController extends Controller
                     $book->delete();
                 }
             } else {
-                $user->favoriteBooks()->create(['book_id' => $book->id]);
+                $user->favoriteBooks()->attach($book->id, [
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
             }
         });
 
