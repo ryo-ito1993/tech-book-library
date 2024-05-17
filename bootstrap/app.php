@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -32,5 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(static function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (HttpException $e, $request) {
+            $statusCode = $e->getStatusCode();
+            return response()->view('errors.common', ['exception' => $e], $statusCode);
+        });
     })->create();
