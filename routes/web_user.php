@@ -23,6 +23,13 @@ Route::resource('contacts', ContactController::class)->only('create', 'store');
 
 // ログイン済のユーザーのみアクセス可能
 Route::middleware(['auth:web', 'verified'])->group(static function () {
+    // メールアドレス変更
+    Route::prefix('emails')->name('emails.')->group(static function () {
+        Route::get('{token}', [ChangeEmailController::class, 'updateEmail'])->name('update');
+        Route::get('/', [ChangeEmailController::class, 'displayEmailForm'])->name('form');
+        Route::post('/', [ChangeEmailController::class, 'sendChangeEmailLink'])->name('send');
+    });
+
     // パスワード変更
     Route::prefix('passwords')->name('passwords.')->group(static function () {
         Route::get('edit', [ChangePasswordController::class, 'edit'])->name('edit');
