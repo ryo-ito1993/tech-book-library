@@ -8,6 +8,9 @@
         <h1 class="mb-0 text-white h5">レビューリスト</h1>
     </header>
 
+    @if ($reviews->isEmpty())
+        <div class="alert alert-info">レビューはまだありません。</div>
+    @endif
     <div class="row">
         @foreach ($reviews as $review)
             <div class="col-12 mb-3">
