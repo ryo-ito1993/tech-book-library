@@ -19,7 +19,7 @@ class ChangePasswordControllerTest extends TestCase
         $response = $this->get(route('user.passwords.edit'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('user.change_password');
+        $response->assertViewIs('user.passwords.edit');
     }
 
     public function testUpdate(): void

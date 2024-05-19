@@ -17,6 +17,7 @@ class UserChangeEmailMail extends Mailable
 
     /**
      * Create a new message instance.
+     *
      * @return void
      */
     public function __construct(string $token)
@@ -54,7 +55,7 @@ class UserChangeEmailMail extends Mailable
         return [];
     }
 
-    public function build()
+    public function build(): UserChangeEmailMail
     {
         $url = config('app.url') . '/user/emails/' . $this->token;
 
