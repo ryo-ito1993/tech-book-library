@@ -81,7 +81,8 @@ class ChangeEmailController extends Controller
         if ($emailResets) {
             $emailResets->delete();
         }
-        return redirect()->route('user.login')->with('flash_alert', 'トークンの有効期限が切れているか、トークンが不正です。');
+
+        return redirect()->route('login')->with('flash_alert', 'トークンの有効期限が切れているか、トークンが不正です。');
     }
 
     /**
