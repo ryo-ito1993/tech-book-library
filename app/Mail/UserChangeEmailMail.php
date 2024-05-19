@@ -55,7 +55,7 @@ class UserChangeEmailMail extends Mailable
         return [];
     }
 
-    public function build(): UserChangeEmailMail
+    public function build(): self
     {
         $url = config('app.url') . '/user/emails/' . $this->token;
 
