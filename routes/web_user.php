@@ -6,6 +6,7 @@ use App\Http\Controllers\User\LibraryController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\ContactController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\ChangePasswordController;
 
 // レビュー一覧
 Route::controller(ReviewController::class)->name('reviews.')->group(static function () {
@@ -22,6 +23,12 @@ Route::resource('contacts', ContactController::class)->only('create', 'store');
 
 // ログイン済のユーザーのみアクセス可能
 Route::middleware(['auth:web', 'verified'])->group(static function () {
+    // パスワード変更
+    Route::prefix('passwords')->name('passwords.')->group(static function () {
+        Route::get('edit', [ChangePasswordController::class, 'edit'])->name('edit');
+        Route::patch('/', [ChangePasswordController::class, 'update'])->name('update');
+    });
+
     // 本の検索・詳細
     Route::controller(BookController::class)->name('books.')->group(static function () {
         Route::get('/books/search', 'search')->name('search');
