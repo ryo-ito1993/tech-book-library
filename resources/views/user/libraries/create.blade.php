@@ -19,6 +19,13 @@
                 @foreach ($userLibraries as $library)
                     <span class="badge bg-info me-1 mb-2 fs-6">{{ $library['short'] }}</span>
                 @endforeach
+                <div class="mt-1">
+                    <form action="{{ route('user.library.destroy', $userLibrary) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('お気に入り図書館を削除しますか？');">お気に入り図書館削除</button>
+                    </form>
+                </div>
             </div>
         @endif
         <div class="border-bottom border-1 mt-1"></div>

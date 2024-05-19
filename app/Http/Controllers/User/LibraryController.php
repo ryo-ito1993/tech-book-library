@@ -44,4 +44,11 @@ class LibraryController extends Controller
 
         return redirect()->back()->with('status', 'お気に入り図書館を登録しました');
     }
+
+    public function destroy(Library $library): RedirectResponse
+    {
+        $library->delete();
+
+        return redirect()->back()->with('status', 'お気に入り図書館を削除しました');
+    }
 }

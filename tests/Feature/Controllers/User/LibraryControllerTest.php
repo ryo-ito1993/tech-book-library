@@ -22,7 +22,7 @@ class LibraryControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->calilApiLibrary = $this->mock(calilApiLibrary::class, function ($mock) {
+        $this->calilApiLibrary = $this->mock(calilApiLibrary::class, static function ($mock) {
             $mock->shouldReceive('getLibrariesBySystemId')
                 ->andReturn([
                     [
@@ -96,6 +96,28 @@ class LibraryControllerTest extends TestCase
         $response->assertSessionHas('status', 'お気に入り図書館を登録しました');
 
         $this->assertDatabaseHas('libraries', [
+            'user_id' => $user->id,
+            'system_id' => 'test_systemid',
+            'system_name' => 'test_systemname',
+        ]);
+    }
+
+    public function testDestroy(): void
+    {
+        $user = User::factory()->create();
+        $library = $user->library()->create([
+            'system_id' => 'test_systemid',
+            'system_name' => 'test_systemname',
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->delete(route('user.library.destroy', $library));
+
+        $response->assertRedirect();
+        $response->assertSessionHas('status', 'お気に入り図書館を削除しました');
+
+        $this->assertDatabaseMissing('libraries', [
             'user_id' => $user->id,
             'system_id' => 'test_systemid',
             'system_name' => 'test_systemname',

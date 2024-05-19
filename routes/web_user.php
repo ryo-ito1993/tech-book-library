@@ -32,6 +32,7 @@ Route::middleware(['auth:web', 'verified'])->group(static function () {
     Route::controller(LibraryController::class)->name('library.')->group(static function () {
         Route::get('/library', 'create')->name('create');
         Route::post('/library', 'store')->name('store');
+        Route::delete('/library/{library}', 'destroy')->name('destroy');
     });
 
     // 本のお気に入り
