@@ -10,9 +10,9 @@
         </h1>
     </header>
     <form action="{{ route('user.books.search') }}" method="GET" class="my-2 mb-3">
-        <input type="text" name="title" class="form-control bg-white mb-2" placeholder="タイトル" value="{{ old('title', $title) }}">
-        <input type="text" name="author" class="form-control bg-white mb-2" placeholder="著者名" value="{{ old('author', $author) }}">
-        <input type="text" name="isbn" class="form-control bg-white mb-2" placeholder="ISBN10またはISBN13(ともにハイフンなし)" value="{{ old('isbn', $isbn) }}">
+        <input type="text" name="title" class="form-control bg-white mb-2 shadow" placeholder="タイトル" value="{{ old('title', $title) }}">
+        <input type="text" name="author" class="form-control bg-white mb-2 shadow" placeholder="著者名" value="{{ old('author', $author) }}">
+        <input type="text" name="isbn" class="form-control bg-white mb-2 shadow" placeholder="ISBN10またはISBN13(ともにハイフンなし)" value="{{ old('isbn', $isbn) }}">
 
         <button class="btn btn-primary" type="submit">検索</button>
     </form>

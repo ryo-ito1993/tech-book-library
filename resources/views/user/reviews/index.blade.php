@@ -11,7 +11,7 @@
     <div class="row">
         @forelse ($reviews as $review)
             <div class="col-12 mb-3">
-                <div class="card bg-white">
+                <div class="card bg-white shadow">
                     <div class="card-body">
                         <div class="d-flex flex-row">
                             <a href="{{ route('user.books.show', $review->book->isbn) }}" class="text-decoration-none">
