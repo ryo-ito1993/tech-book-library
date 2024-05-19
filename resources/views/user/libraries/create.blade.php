@@ -10,7 +10,7 @@
         </h1>
     </header>
     <div class="text-center">
-        <p class="text-secondary mb-4">蔵書検索の対象図書館を登録します。現在地または都道府県・市区町村で検索できます。</p>
+        <p class="mb-4 text-decoration-underline">蔵書検索の対象図書館を登録します。現在地または都道府県・市区町村で検索できます。</p>
         @if ($userLibrary)
             <h5 class="fw-bold mb-3">お気に入り図書館エリア：<span>{{ $userLibrary->system_name }}</span></h5>
         @endif
@@ -19,13 +19,21 @@
                 @foreach ($userLibraries as $library)
                     <span class="badge bg-info me-1 mb-2 fs-6">{{ $library['short'] }}</span>
                 @endforeach
+                <div class="mt-1">
+                    <form action="{{ route('user.library.destroy', $userLibrary) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('お気に入り図書館を削除しますか？');">お気に入り図書館削除</button>
+                    </form>
+                </div>
             </div>
         @endif
-        <div class="border-bottom mt-1"></div>
+        <div class="border-bottom border-1 mt-1"></div>
     </div>
-    <button class="btn btn-primary mt-4 btn-lg" @click="getLocation"><i class="fas fa-map-marker-alt me-1"></i>現在地から取得</button>
+    <button class="btn btn-primary mt-4 btn-lg" @click="getLocation"><i class="fas fa-map-marker-alt me-1"></i>現在地から探す</button>
     <div class="pt-3">
         <div class="input-group my-2">
+            <label class="input-group-text" for="prefecture">市区町村から探す</label>
             <select class="form-select bg-white" v-model="selectedPrefecture" @change="fetchCities">
                 <option value="">都道府県を選択</option>
                 <option v-for="prefecture in prefectures" :value="prefecture">@{{ prefecture.name }}</option>

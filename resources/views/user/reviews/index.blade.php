@@ -9,9 +9,9 @@
     </header>
 
     <div class="row">
-        @foreach ($reviews as $review)
+        @forelse ($reviews as $review)
             <div class="col-12 mb-3">
-                <div class="card bg-white">
+                <div class="card bg-white shadow">
                     <div class="card-body">
                         <div class="d-flex flex-row">
                             <a href="{{ route('user.books.show', $review->book->isbn) }}" class="text-decoration-none">
@@ -62,7 +62,11 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="alert alert-info text-center" role="alert">
+                レビューはまだありません。
+            </div>
+        @endforelse
     </div>
     {{ $reviews->links('pagination::bootstrap-5') }}
 </div>

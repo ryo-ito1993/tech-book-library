@@ -64,6 +64,14 @@
                                 {{ __('Logout') }}
                             </a>
 
+                            <a class="dropdown-item" href="{{ route('user.emails.edit') }}">
+                                {{ __('メールアドレス変更') }}
+                            </a>
+
+                            <a class="dropdown-item" href="{{ route('user.passwords.edit') }}">
+                                {{ __('パスワード変更') }}
+                            </a>
+
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>

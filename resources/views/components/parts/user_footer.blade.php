@@ -1,4 +1,3 @@
-<hr>
 <footer class="pb-4 pt-md-2  border-top border-2 border-info">
     <div class="container">
         <nav>

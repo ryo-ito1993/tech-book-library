@@ -6,6 +6,8 @@ use App\Http\Controllers\User\LibraryController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\ContactController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\ChangePasswordController;
+use App\Http\Controllers\User\ChangeEmailController;
 
 // レビュー一覧
 Route::controller(ReviewController::class)->name('reviews.')->group(static function () {
@@ -22,6 +24,19 @@ Route::resource('contacts', ContactController::class)->only('create', 'store');
 
 // ログイン済のユーザーのみアクセス可能
 Route::middleware(['auth:web', 'verified'])->group(static function () {
+    // メールアドレス変更
+    Route::prefix('emails')->name('emails.')->group(static function () {
+        Route::get('edit', [ChangeEmailController::class, 'edit'])->name('edit');
+        Route::get('{token}', [ChangeEmailController::class, 'updateEmail'])->name('update');
+        Route::post('/', [ChangeEmailController::class, 'sendChangeEmailLink'])->name('send');
+    });
+
+    // パスワード変更
+    Route::prefix('passwords')->name('passwords.')->group(static function () {
+        Route::get('edit', [ChangePasswordController::class, 'edit'])->name('edit');
+        Route::patch('/', [ChangePasswordController::class, 'update'])->name('update');
+    });
+
     // 本の検索・詳細
     Route::controller(BookController::class)->name('books.')->group(static function () {
         Route::get('/books/search', 'search')->name('search');
@@ -32,6 +47,7 @@ Route::middleware(['auth:web', 'verified'])->group(static function () {
     Route::controller(LibraryController::class)->name('library.')->group(static function () {
         Route::get('/library', 'create')->name('create');
         Route::post('/library', 'store')->name('store');
+        Route::delete('/library/{library}', 'destroy')->name('destroy');
     });
 
     // 本のお気に入り
