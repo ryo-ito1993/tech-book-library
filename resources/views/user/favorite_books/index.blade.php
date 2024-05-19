@@ -30,7 +30,7 @@
             </div>
         @empty
             <div class="alert alert-info text-center" role="alert">
-                「読みたい」登録はありません。
+                「読みたい」はまだありません。
             </div>
         @endforelse
     </div>

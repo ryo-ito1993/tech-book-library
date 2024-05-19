@@ -5,11 +5,11 @@
 @section('content')
     <div class="container" style="max-width: 1000px;">
         <div>
-            <div class="bg-primary p-3 text-center">
-                <h1 class="h4 m-0 text-white">
+            <header class="bg-primary py-2 px-4 mb-3 text-center">
+                <h1 class="btn-collapse mb-0 text-white h5">
                     お問い合わせ
                 </h1>
-            </div>
+            </header>
             <div class="px-3 pb-5 pt-3 collapse show">
                 <div class="card-body">
                     <form method="POST" action="{{ route('user.contacts.confirm') }}">

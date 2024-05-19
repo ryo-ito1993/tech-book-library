@@ -10,7 +10,7 @@
         </h1>
     </header>
     <div class="text-center">
-        <p class="text-secondary mb-4">蔵書検索の対象図書館を登録します。現在地または都道府県・市区町村で検索できます。</p>
+        <p class="mb-4">蔵書検索の対象図書館を登録します。現在地または都道府県・市区町村で検索できます。</p>
         @if ($userLibrary)
             <h5 class="fw-bold mb-3">お気に入り図書館エリア：<span>{{ $userLibrary->system_name }}</span></h5>
         @endif
@@ -21,7 +21,7 @@
                 @endforeach
             </div>
         @endif
-        <div class="border-bottom mt-1"></div>
+        <div class="border-bottom border-1 mt-1"></div>
     </div>
     <button class="btn btn-primary mt-4 btn-lg" @click="getLocation"><i class="fas fa-map-marker-alt me-1"></i>現在地から取得</button>
     <div class="pt-3">

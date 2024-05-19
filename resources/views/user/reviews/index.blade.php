@@ -8,11 +8,8 @@
         <h1 class="mb-0 text-white h5">レビューリスト</h1>
     </header>
 
-    @if ($reviews->isEmpty())
-        <div class="alert alert-info">レビューはまだありません。</div>
-    @endif
     <div class="row">
-        @foreach ($reviews as $review)
+        @forelse ($reviews as $review)
             <div class="col-12 mb-3">
                 <div class="card bg-white">
                     <div class="card-body">
@@ -65,7 +62,11 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="alert alert-info text-center" role="alert">
+                レビューはまだありません。
+            </div>
+        @endforelse
     </div>
     {{ $reviews->links('pagination::bootstrap-5') }}
 </div>
