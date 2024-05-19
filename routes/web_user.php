@@ -7,6 +7,7 @@ use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ChangePasswordController;
+use App\Http\Controllers\User\ChangeEmailController;
 
 // レビュー一覧
 Route::controller(ReviewController::class)->name('reviews.')->group(static function () {
@@ -25,8 +26,8 @@ Route::resource('contacts', ContactController::class)->only('create', 'store');
 Route::middleware(['auth:web', 'verified'])->group(static function () {
     // メールアドレス変更
     Route::prefix('emails')->name('emails.')->group(static function () {
+        Route::get('edit', [ChangeEmailController::class, 'edit'])->name('edit');
         Route::get('{token}', [ChangeEmailController::class, 'updateEmail'])->name('update');
-        Route::get('/', [ChangeEmailController::class, 'displayEmailForm'])->name('form');
         Route::post('/', [ChangeEmailController::class, 'sendChangeEmailLink'])->name('send');
     });
 

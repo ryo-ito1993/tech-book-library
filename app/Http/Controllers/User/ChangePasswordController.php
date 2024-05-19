@@ -13,7 +13,7 @@ class ChangePasswordController extends Controller
 {
     public function edit(): View
     {
-        return view('user.change_password');
+        return view('user.passwords.edit');
     }
 
     public function update(ChangePasswordRequest $request): RedirectResponse
