@@ -187,10 +187,8 @@
                             以上
                         </p>
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
