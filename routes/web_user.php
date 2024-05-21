@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ChangePasswordController;
 use App\Http\Controllers\User\ChangeEmailController;
 
+// 利用規約
+Route::view('/terms', 'user.other.terms')->name('terms');
+
+// プライバシーポリシー
+Route::view('/privacy', 'user.other.privacy')->name('privacy');
+
 // レビュー一覧
 Route::controller(ReviewController::class)->name('reviews.')->group(static function () {
     Route::get('/reviews', 'index')->name('index');

@@ -2,10 +2,10 @@
     <div class="container">
         <nav>
             <ul class="d-md-flex justify-content-center mb-0" style="list-style: none;">
-                <li class="pt-3"><a href="#" class="text-decoration-none me-4 text-dark">
+                <li class="pt-3"><a href="{{ route('user.terms') }}" class="text-decoration-none me-4 text-dark">
                         <span>利用規約</span>
                     </a></li>
-                <li class="pt-3"><a href="#" class="text-decoration-none me-4 text-dark">
+                <li class="pt-3"><a href="{{ route('user.privacy') }}" class="text-decoration-none me-4 text-dark">
                         <span>プライバシーポリシー</span>
                     </a></li>
                 <li class="pt-3"><a href="{{ route('user.contacts.create') }}"
