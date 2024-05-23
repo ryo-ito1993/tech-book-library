@@ -26,14 +26,16 @@
                                     <h1><i class="fas fa-spinner fa-pulse"></i></h1>
                                 </div>
                             </div>
-                            <div v-if="availability['{{ $book->isbn }}'] === '貸出可'">
-                                <span class="badge bg-info">貸出可</span>
-                            </div>
-                            <div v-if="availability['{{ $book->isbn }}'] === '貸出不可'">
-                                <span class="badge bg-danger">貸出不可</span>
-                            </div>
-                            <div v-if="availability['{{ $book->isbn }}'] === '蔵書なし'">
-                                <span class="badge bg-secondary">蔵書なし</span>
+                            <div class="text-center mt-2">
+                                <div v-if="availability['{{ $book->isbn }}'] === '貸出可'">
+                                    <span class="badge bg-info fs-6">貸出可</span>
+                                </div>
+                                <div v-if="availability['{{ $book->isbn }}'] === '貸出不可'">
+                                    <span class="badge bg-danger fs-6">貸出不可</span>
+                                </div>
+                                <div v-if="availability['{{ $book->isbn }}'] === '蔵書なし'">
+                                    <span class="badge bg-secondary fs-6">蔵書なし</span>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -79,7 +81,6 @@
                     let isAvailable = '蔵書なし';
                     if (data.books && data.books[isbn]) {
                         Object.values(data.books[isbn]).forEach(system => {
-                            console.log(system.libkey);
                             if (system.libkey && Object.keys(system.libkey).length > 0) {
                                 isAvailable = '貸出不可';
                             }
