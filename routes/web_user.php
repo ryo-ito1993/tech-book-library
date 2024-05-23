@@ -8,6 +8,7 @@ use App\Http\Controllers\User\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ChangePasswordController;
 use App\Http\Controllers\User\ChangeEmailController;
+use App\Http\Middleware\PreventGuestAccess;
 
 // 利用規約
 Route::view('/terms', 'user.other.terms')->name('terms');
@@ -31,14 +32,14 @@ Route::resource('contacts', ContactController::class)->only('create', 'store');
 // ログイン済のユーザーのみアクセス可能
 Route::middleware(['auth:web', 'verified'])->group(static function () {
     // メールアドレス変更
-    Route::prefix('emails')->name('emails.')->group(static function () {
+    Route::prefix('emails')->name('emails.')->middleware(PreventGuestAccess::class)->group(static function () {
         Route::get('edit', [ChangeEmailController::class, 'edit'])->name('edit');
         Route::get('{token}', [ChangeEmailController::class, 'updateEmail'])->name('update');
         Route::post('/', [ChangeEmailController::class, 'sendChangeEmailLink'])->name('send');
     });
 
     // パスワード変更
-    Route::prefix('passwords')->name('passwords.')->group(static function () {
+    Route::prefix('passwords')->name('passwords.')->middleware(PreventGuestAccess::class)->group(static function () {
         Route::get('edit', [ChangePasswordController::class, 'edit'])->name('edit');
         Route::patch('/', [ChangePasswordController::class, 'update'])->name('update');
     });
