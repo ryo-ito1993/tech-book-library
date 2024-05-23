@@ -21,6 +21,9 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    // ゲストユーザー用のユーザーIDを定数として定義
+    private const GUEST_USER_ID = 1;
+
     /**
      * Create a new controller instance.
      *
@@ -41,5 +44,15 @@ class LoginController extends Controller
         $user = Auth::user();
 
         return $user->library ? '/user/books/search' : '/user/library';
+    }
+
+    // ゲストログイン処理
+    public function guestLogin()
+    {
+        if (Auth::loginUsingId(self::GUEST_USER_ID)) {
+            return redirect('/user/library')->with('status', 'ゲストユーザーとしてログインしました。');
+        }
+
+        return redirect('/')->with('flash_message', 'ゲストログインに失敗しました。');
     }
 }

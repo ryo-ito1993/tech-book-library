@@ -7,6 +7,9 @@
         <div>
             <h1 class="display-1" style="font-family: 'Kaisei Tokumin', serif;">TechBookLibrary</h1>
             <p class="fs-5">TechBookLibraryは技術書検索と図書館検索を同時に行うことができるサービスです。</p>
+            @guest
+                <a href="{{ route('login.guest') }}" class="btn btn-success mt-3">ゲストログインで試してみる</a>
+            @endguest
         </div>
     </div>
 
