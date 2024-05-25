@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
@@ -47,7 +48,7 @@ class LoginController extends Controller
     }
 
     // ゲストログイン処理
-    public function guestLogin()
+    public function guestLogin(): RedirectResponse
     {
         if (Auth::loginUsingId(self::GUEST_USER_ID)) {
             return redirect('/user/library')->with('status', 'ゲストユーザーとしてログインしました。');
