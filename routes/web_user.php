@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ChangePasswordController;
 use App\Http\Controllers\User\ChangeEmailController;
 use App\Http\Middleware\PreventGuestAccess;
+use App\Http\Controllers\User\ReadBookController;
 
 // 利用規約
 Route::view('/terms', 'user.other.terms')->name('terms');
@@ -59,6 +60,9 @@ Route::middleware(['auth:web', 'verified'])->group(static function () {
 
     // 本のお気に入り
     Route::get('/favorite_books', [FavoriteBookController::class, 'index'])->name('favorite_books.index');
+
+    // 読んだ本
+    Route::get('/read_books', [ReadBookController::class, 'index'])->name('read_books.index');
 
     // レビューの登録・編集・削除
     Route::controller(ReviewController::class)->name('reviews.')->group(static function () {

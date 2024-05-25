@@ -15,6 +15,6 @@ class ReadBookController extends Controller
         $readBookIds = $user->readBooks()->pluck('book_id');
         $books = Book::whereIn('id', $readBookIds)->with('authors')->latest()->paginate(12);
 
-        return view('user.favorite_books.index', ['books' => $books, 'user' => $user]);
+        return view('user.read_books.index', ['books' => $books, 'user' => $user]);
     }
 }
