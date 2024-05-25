@@ -29,6 +29,6 @@ jobs:
           composer --version
       - name: Composer Install Larastan
         run: |
-          composer require --dev nunomaduro/larastan=2.4
+          composer require --dev nunomaduro/larastan
       - name: PHP Analyse
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
