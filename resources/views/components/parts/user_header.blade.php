@@ -48,6 +48,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('user.read_books.index') }}">
+                            <i class="fas fa-book me-1"></i>{{ __('読んだ') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.library.create') }}">
                             <i class="fa fa-university me-1"></i>{{ __('図書館登録') }}
                         </a>
