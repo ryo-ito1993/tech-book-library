@@ -23,7 +23,7 @@
                     <a href="{{ route('user.books.show', $book['isbn']) }}" class="text-decoration-none" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
                         <img class="card-img-top mt-1" style="max-width: 125px; object-fit: contain;" src="{{ !empty($book['thumbnail']) ? $book['thumbnail'] : asset('images/no-image.jpeg') }}" alt="thumbnail">
                         <div class="card-body" style="flex-grow: 0;">
-                            <div class="card-text">{{ $book['title'] }}</div>
+                            <div class="card-text">{{ Str::limit($book['title'], 100, '...') }}</div>
                             <div class="card-text">
                                 <small class="text-muted">
                                     <span class="me-1"><i class="fas fa-user-circle"></i></span>
