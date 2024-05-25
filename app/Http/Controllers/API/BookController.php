@@ -31,6 +31,7 @@ class BookController extends Controller
             }
 
             $favorite = FavoriteBook::where('user_id', $user->id)->where('book_id', $book->id)->first();
+            $read = ReadBook::where('user_id', $user->id)->where('book_id', $book->id)->first();
 
             if ($favorite) {
                 $favorite->delete();
@@ -42,6 +43,9 @@ class BookController extends Controller
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
+                if ($read) {
+                    $read->delete();
+                }
             }
         });
 
@@ -66,6 +70,7 @@ class BookController extends Controller
             }
 
             $read = ReadBook::where('user_id', $user->id)->where('book_id', $book->id)->first();
+            $favorite = FavoriteBook::where('user_id', $user->id)->where('book_id', $book->id)->first();
 
             if ($read) {
                 $read->delete();
@@ -77,6 +82,9 @@ class BookController extends Controller
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
+                if ($favorite) {
+                    $favorite->delete();
+                }
             }
         });
 

@@ -209,6 +209,9 @@
                 .then(response => response.json())
                 .then(data => {
                     this.isFavorite = !this.isFavorite;
+                    if (this.isFavorite) {
+                        this.isRead = false;
+                    }
                 })
                 .catch(error => {
                     alert('読みたいの登録に失敗しました');
@@ -231,6 +234,9 @@
                 .then(response => response.json())
                 .then(data => {
                     this.isRead = !this.isRead;
+                    if (this.isRead) {
+                        this.isFavorite = false;
+                    }
                 })
                 .catch(error => {
                     alert('読んだの登録に失敗しました');
