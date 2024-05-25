@@ -29,7 +29,7 @@ jobs:
           composer --version
       - name: Composer Install PHP CS Fixer
         run: |
-          composer require --dev friendsofphp/php-cs-fixer --with-all-dependencies
+          composer require --dev friendsofphp/php-cs-fixer=3.20 --with-all-dependencies
       - name: PHP CS Fixer Version
         run: ./vendor/bin/php-cs-fixer --version
       - name: PHP CS Fixer Run
