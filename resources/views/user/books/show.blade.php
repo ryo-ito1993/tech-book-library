@@ -35,12 +35,21 @@
                                         </a>
                                     </small>
                                 </div>
-                                <button v-if="!isFavorite" id="favorite-button" class="btn btn-outline-warning mt-2" type="button" @click="toggleFavorite">
-                                    <i class="fa fa-book-reader"></i> 読みたい
-                                </button>
-                                <button v-if="isFavorite" id="favorite-button" class="btn btn-warning mt-2" type="button" @click="toggleFavorite">
-                                    <i class="fa fa-book-reader"></i> 読みたい
-                                </button>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+
+                                    <button v-if="!isFavorite" id="favorite-button" class="btn btn-outline-warning mt-2" type="button" @click="toggleFavorite">
+                                        <i class="fa fa-book-reader"></i> 読みたい
+                                    </button>
+                                    <button v-if="isFavorite" id="favorite-button" class="btn btn-warning mt-2" type="button" @click="toggleFavorite">
+                                        <i class="fa fa-book-reader"></i> 読みたい
+                                    </button>
+                                    <button v-if="!isRead" id="favorite-button" class="btn btn-outline-warning mt-2" type="button" @click="toggleRead">
+                                        <i class="fa fa-book-reader"></i> 読んだ
+                                    </button>
+                                    <button v-if="isRead" id="favorite-button" class="btn btn-warning mt-2" type="button" @click="toggleRead">
+                                        <i class="fa fa-book-reader"></i> 読んだ
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -153,6 +162,7 @@
                 loading: false,
                 errorMessage: null,
                 isFavorite: {{ $isFavorite ? 'true' : 'false' }},
+                isRead: {{ $isRead ? 'true' : 'false' }},
             };
         },
         mounted() {
@@ -203,7 +213,29 @@
                 .catch(error => {
                     alert('読みたいの登録に失敗しました');
                 })
-            }
+            },
+            toggleRead() {
+                fetch(`/api/books/toggleRead`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        isbn: this.isbn,
+                        user_id: '{{ $user->id }}',
+                        title : '{{ optional($book)['title'] }}',
+                        thumbnail: '{{ optional($book)['thumbnail'] }}',
+                        authors: @json(optional($book)['authors']),
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.isRead = !this.isRead;
+                })
+                .catch(error => {
+                    alert('読んだの登録に失敗しました');
+                })
+            },
         }
     }).mount('#app');
 </script>

@@ -27,4 +27,9 @@ class Book extends Model
     {
         return $this->belongsToMany(User::class, 'favorite_books');
     }
+
+    public function reads(): belongsToMany
+    {
+        return $this->belongsToMany(User::class, 'read_books');
+    }
 }
