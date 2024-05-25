@@ -87,7 +87,7 @@ class ReviewController extends Controller
         $book = $review->book;
 
         $review->delete();
-        if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
+        if ($book->favorites()->doesntExist() && $book->reads()->doesntExist() && $book->reviews()->doesntExist()) {
             $book->delete();
         }
 
