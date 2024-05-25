@@ -27,5 +27,4 @@ class ReadBookControllerTest extends TestCase
             return $viewBooks->pluck('id')->diff($books->pluck('id'))->isEmpty();
         });
     }
-
 }
