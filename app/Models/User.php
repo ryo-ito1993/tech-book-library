@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -43,5 +45,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function library(): HasOne
+    {
+        return $this->hasOne(Library::class);
+    }
+
+    public function favoriteBooks(): belongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'favorite_books');
+    }
+
+    public function readBooks(): belongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'read_books');
     }
 }

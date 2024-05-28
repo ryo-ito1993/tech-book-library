@@ -31,4 +31,18 @@ return [
         ],
     ],
 
+    'calil' => [
+        'app_key' => env('CALIL_APP_KEY'),
+        'api_base_url' => 'https://api.calil.jp/',
+    ],
+
+    'google_books' => [
+        'api_base_url' => 'https://www.googleapis.com/books/v1/volumes/',
+    ],
+
+    'resas' => [
+        'api_key' => env('RESAS_API_KEY'),
+        'api_base_url' => 'https://opendata.resas-portal.go.jp/api/v1/',
+    ],
+
 ];
