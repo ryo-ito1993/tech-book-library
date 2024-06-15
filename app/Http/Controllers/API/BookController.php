@@ -10,15 +10,22 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Services\BookService;
 
 class BookController extends Controller
 {
+    public function __construct(
+        protected BookService $bookService,
+    ) {
+    }
+
     public function toggleFavorite(Request $request): JsonResponse
     {
         $user = User::findorFail($request->input('user_id'));
         $isbn = $request->input('isbn');
+        $bookService = $this->bookService;
 
-        \DB::transaction(static function () use ($user, $isbn, $request) {
+        \DB::transaction(static function () use ($user, $isbn, $request, $bookService) {
             $book = Book::firstOrCreate(
                 ['isbn' => $isbn],
                 ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
@@ -35,7 +42,7 @@ class BookController extends Controller
 
             if ($favorite) {
                 $favorite->delete();
-                if ($book->favorites()->doesntExist() && $book->reads()->doesntExist() && $book->reviews()->doesntExist()) {
+                if ($bookService->hasNoRelations($book)) {
                     $book->delete();
                 }
             } else {
@@ -56,8 +63,9 @@ class BookController extends Controller
     {
         $user = User::findorFail($request->input('user_id'));
         $isbn = $request->input('isbn');
+        $bookService = $this->bookService;
 
-        \DB::transaction(static function () use ($user, $isbn, $request) {
+        \DB::transaction(static function () use ($user, $isbn, $request, $bookService) {
             $book = Book::firstOrCreate(
                 ['isbn' => $isbn],
                 ['title' => $request->input('title'), 'thumbnail' => $request->input('thumbnail')]
@@ -74,7 +82,7 @@ class BookController extends Controller
 
             if ($read) {
                 $read->delete();
-                if ($book->favorites()->doesntExist() && $book->reads()->doesntExist() && $book->reviews()->doesntExist()) {
+                if ($bookService->hasNoRelations($book)) {
                     $book->delete();
                 }
             } else {
