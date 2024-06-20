@@ -13,3 +13,4 @@ Route::controller(LibraryController::class)->name('libraries.')->group(static fu
 });
 Route::post('/books/toggleFavorite', [BookController::class, 'toggleFavorite'])->name('books.toggleFavorite');
 Route::post('/books/toggleRead', [BookController::class, 'toggleRead'])->name('books.toggleRead');
+Route::post('/books/toggleNotification', [BookController::class, 'toggleNotification'])->name('books.toggleNotification');
