@@ -46,6 +46,6 @@ class BookService
     // お気に入り、読書、レビューの関連チェック
     public function hasNoRelations(Book $book): bool
     {
-        return !$book->favorites()->exists() && !$book->reads()->exists() && !$book->reviews()->exists();
+        return !$book->favorites()->exists() && !$book->reads()->exists() && !$book->reviews()->exists() && !$book->notifications()->exists();
     }
 }
