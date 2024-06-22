@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Models\Review;
+use App\Services\BookService;
 use App\Services\ReviewService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -12,7 +14,8 @@ use Illuminate\View\View;
 class ReviewController extends Controller
 {
     public function __construct(
-        protected ReviewService $reviewService
+        protected ReviewService $reviewService,
+        protected BookService $bookService
     ) {
     }
 
@@ -37,7 +40,7 @@ class ReviewController extends Controller
         $book = $review->book;
 
         $review->delete();
-        if ($book->favorites()->doesntExist() && $book->reviews()->doesntExist()) {
+        if ($this->bookService->hasNoRelations($book)) {
             $book->delete();
         }
 

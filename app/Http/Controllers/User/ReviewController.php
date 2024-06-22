@@ -12,6 +12,7 @@ use App\Models\LevelCategory;
 use App\Models\ReviewLevelCategory;
 use App\Models\Review;
 use App\Models\ReviewCategory;
+use App\Services\BookService;
 use App\Services\ReviewService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -21,7 +22,8 @@ class ReviewController extends Controller
 {
     public function __construct(
         protected googleBooksApiLibrary $googleBooksApiLibrary,
-        protected ReviewService $reviewService
+        protected ReviewService $reviewService,
+        protected BookService $bookService
     ) {
     }
 
@@ -87,7 +89,7 @@ class ReviewController extends Controller
         $book = $review->book;
 
         $review->delete();
-        if ($book->favorites()->doesntExist() && $book->reads()->doesntExist() && $book->reviews()->doesntExist()) {
+        if ($this->bookService->hasNoRelations($book)) {
             $book->delete();
         }
 

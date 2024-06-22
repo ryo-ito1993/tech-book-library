@@ -32,4 +32,9 @@ class Book extends Model
     {
         return $this->belongsToMany(User::class, 'read_books');
     }
+
+    public function notifications(): belongsToMany
+    {
+        return $this->belongsToMany(User::class, 'notification_books');
+    }
 }
