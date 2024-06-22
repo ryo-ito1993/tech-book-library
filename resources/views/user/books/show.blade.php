@@ -78,6 +78,14 @@
                                             <div class="mt-1">
                                                 <a v-if="info.reserveurl" :href="info.reserveurl" class="btn btn-primary mt-2" target="_blank">この本を予約する</a>
                                             </div>
+                                            <div class="mt-1">
+                                                <button v-if="!Object.values(info.libkey).includes('貸出可') && !isNotification" class="btn btn-outline-success mt-2" @click="toggleNotification">
+                                                    <i class="fas fa-bell"></i> 貸出可能になったとき通知する
+                                                </button>
+                                                <button v-if="!Object.values(info.libkey).includes('貸出可') && isNotification" class="btn btn-success mt-2" @click="toggleNotification">
+                                                    <i class="fas fa-bell"></i> 通知設定済み
+                                                </button>
+                                            </div>
                                         </div>
                                         <div v-else>
                                             <span class="badge bg-secondary fs-6">蔵書なし</span>
@@ -163,6 +171,7 @@
                 errorMessage: null,
                 isFavorite: {{ $isFavorite ? 'true' : 'false' }},
                 isRead: {{ $isRead ? 'true' : 'false' }},
+                isNotification: {{ $isNotification ? 'true' : 'false' }}
             };
         },
         mounted() {
@@ -242,6 +251,28 @@
                     alert('読んだの登録に失敗しました');
                 })
             },
+            toggleNotification() {
+                fetch(`/api/books/toggleNotification`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        isbn: this.isbn,
+                        user_id: '{{ $user->id }}',
+                        title : '{{ optional($book)['title'] }}',
+                        thumbnail: '{{ optional($book)['thumbnail'] }}',
+                        authors: @json(optional($book)['authors']),
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.isNotification = !this.isNotification;
+                })
+                .catch(error => {
+                    alert('通知設定に失敗しました');
+                })
+            }
         }
     }).mount('#app');
 </script>

@@ -40,8 +40,9 @@ class BookController extends Controller
         $bookModel = Book::with(['reviews.user', 'reviews.categories', 'reviews.levelCategories'])->where('isbn', $isbn)->first();
         $isFavorite = $bookModel ? $user->favoriteBooks()->where('book_id', $bookModel->id)->exists() : false;
         $isRead = $bookModel ? $user->readBooks()->where('book_id', $bookModel->id)->exists() : false;
+        $isNotification = $bookModel ? $user->notificationBooks()->where('book_id', $bookModel->id)->exists() : false;
         $reviews = $bookModel ? $bookModel->reviews->sortByDesc('created_at') : [];
 
-        return view('user.books.show', ['user' => $user, 'book' => $book, 'isFavorite' => $isFavorite, 'isRead' => $isRead, 'reviews' => $reviews]);
+        return view('user.books.show', ['user' => $user, 'book' => $book, 'isFavorite' => $isFavorite, 'isRead' => $isRead, 'reviews' => $reviews, 'isNotification' => $isNotification]);
     }
 }
