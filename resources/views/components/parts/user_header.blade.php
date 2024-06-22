@@ -69,6 +69,10 @@
                                 {{ __('Logout') }}
                             </a>
 
+                            <a class="dropdown-item" href="{{ route('user.notification_books.index') }}">
+                                {{ __('通知設定済書籍一覧') }}
+                            </a>
+
                             <a class="dropdown-item" href="{{ route('user.emails.edit') }}">
                                 {{ __('メールアドレス変更') }}
                             </a>
