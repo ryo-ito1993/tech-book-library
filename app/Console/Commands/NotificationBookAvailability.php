@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Notifications\Notification;
-use App\Library\CalilApiLibrary;
+use App\Library\calilApiLibrary;
 use App\Models\NotificationBook;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -28,7 +28,7 @@ class NotificationBookAvailability extends Command
      */
     protected $description = 'Command description';
 
-    protected $calilApiLibrary;
+    protected calilApiLibrary $calilApiLibrary;
 
     public function __construct(CalilApiLibrary $calilApiLibrary)
     {
@@ -39,7 +39,7 @@ class NotificationBookAvailability extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $notificationBooks = NotificationBook::with('book', 'user.library')->get();
 

@@ -16,6 +16,7 @@ class UserNotificationBookMail extends Mailable
     use Queueable, SerializesModels;
 
     public Book $book;
+
     public Library $library;
 
     /**
