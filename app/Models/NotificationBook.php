@@ -16,4 +16,9 @@ class NotificationBook extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function book(): BelongsTo
+    {
+        return $this->belongsTo(Book::class);
+    }
 }
