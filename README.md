@@ -52,4 +52,4 @@ TechBookLibraryは以下の方法でこれらの課題を解決します：
 [![Image from Gyazo](https://i.gyazo.com/a0002d0603390a9507c0f5fea6042ae8.png)](https://gyazo.com/a0002d0603390a9507c0f5fea6042ae8)
 
 ## ■[ER図](https://drive.google.com/file/d/1EIm1-x5Hvp7RhYqe0K9zcKMyxp2eH_P3/view?usp=sharing)
-[![Image from Gyazo](https://i.gyazo.com/fbaa52b77db60d087ca264e7f4ffb1ce.png)](https://gyazo.com/fbaa52b77db60d087ca264e7f4ffb1ce)
+[![Image from Gyazo](https://i.gyazo.com/f0504434d73992dc8f701cece05a6d78.png)](https://gyazo.com/f0504434d73992dc8f701cece05a6d78)
