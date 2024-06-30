@@ -49,7 +49,7 @@ TechBookLibraryは以下の方法でこれらの課題を解決します：
   - Route53(DNS)
 
 ## ■[画面遷移図](https://drive.google.com/file/d/1spMPvU-7c2W0sn3dUXYlyugFOF3SPa-l/view?usp=sharing)
-[![Image from Gyazo](https://i.gyazo.com/a0002d0603390a9507c0f5fea6042ae8.png)](https://gyazo.com/a0002d0603390a9507c0f5fea6042ae8)
+[![Image from Gyazo](https://i.gyazo.com/d0f6a3ace1f6795191dbf863a9be206e.png)](https://gyazo.com/d0f6a3ace1f6795191dbf863a9be206e)
 
 ## ■[ER図](https://drive.google.com/file/d/1EIm1-x5Hvp7RhYqe0K9zcKMyxp2eH_P3/view?usp=sharing)
 [![Image from Gyazo](https://i.gyazo.com/f0504434d73992dc8f701cece05a6d78.png)](https://gyazo.com/f0504434d73992dc8f701cece05a6d78)
